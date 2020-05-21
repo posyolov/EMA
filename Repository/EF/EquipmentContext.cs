@@ -13,6 +13,7 @@ namespace Repository.EF
             optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=EmaDb;AttachDbFilename='C:\TEMP\PrjVS\_DB\EmaDb.mdf';Trusted_Connection=True;");
         }
 
+        public DbSet<Vendor> Vendors { get; set; }
         public DbSet<CatalogItem> Catalog { get; set; }
     }
 }
