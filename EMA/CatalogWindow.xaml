@@ -6,7 +6,35 @@
         xmlns:local="clr-namespace:EMA"
         mc:Ignorable="d"
         Title="Catalog" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+
+    <ListView ItemsSource="{Binding CatalogItems}">
+        <ListView.View>
+            <GridView>
+                <GridView.Columns>
+
+                    <GridViewColumn Header="Id" 
+                                    DisplayMemberBinding="{Binding Id}">
+                    </GridViewColumn>
+
+                    <GridViewColumn Header="GlobalId" 
+                                    DisplayMemberBinding="{Binding GlobalId}">
+                    </GridViewColumn>
+
+                    <GridViewColumn Header="Vendor" 
+                                    DisplayMemberBinding="{Binding Vendor.Name}">
+                    </GridViewColumn>
+
+                    <GridViewColumn Header="ProductCode" 
+                                    DisplayMemberBinding="{Binding ProductCode}">
+                    </GridViewColumn>
+
+                    <GridViewColumn Header="Title" 
+                                    DisplayMemberBinding="{Binding Title}">
+                    </GridViewColumn>
+
+                </GridView.Columns>
+            </GridView>
+        </ListView.View>
+    </ListView>
+    
 </Window>
