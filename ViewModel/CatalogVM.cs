@@ -10,11 +10,11 @@ namespace ViewModel
     {
         public ObservableCollection<CatalogItem> CatalogItems { get; }
 
-        public CatalogVM()
+        public CatalogVM(IEnumerable<CatalogItem> catalogItems)
         {
-            CatalogItems = new ObservableCollection<CatalogItem>();
-            CatalogItems.Add(new CatalogItem { Id = 1, GlobalId = new Guid(), Vendor = new Vendor { Name = "Siemens" }, ProductCode = "111", Title = "aaa" });
-            CatalogItems.Add(new CatalogItem { Id = 2, GlobalId = new Guid(), Vendor = new Vendor { Name = "Sick" }, ProductCode = "222", Title = "bbb" });
+            CatalogItems = new ObservableCollection<CatalogItem>(catalogItems);
+            //CatalogItems.Add(new CatalogItem { Id = 1, GlobalId = new Guid(), Vendor = new Vendor { Name = "Siemens" }, ProductCode = "111", Title = "aaa" });
+            //CatalogItems.Add(new CatalogItem { Id = 2, GlobalId = new Guid(), Vendor = new Vendor { Name = "Sick" }, ProductCode = "222", Title = "bbb" });
         }
     }
 }

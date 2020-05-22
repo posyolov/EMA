@@ -20,6 +20,9 @@
                 <MenuItem Header="Catalog"
                           Command="{Binding OpenCatalogWindowCommand}">
                 </MenuItem>
+                <MenuItem Header="Vendors"
+                          Command="{Binding OpenVendorsWindowCommand}">
+                </MenuItem>
             </MenuItem>
         </Menu>
     </ControlTemplate>

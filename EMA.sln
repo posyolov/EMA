@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EMA", "EMA\EMA.csproj", "{4
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "Repository\Repository.csproj", "{AEB7899E-C85D-400E-98F6-1F94FF3F28FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewModel", "ViewModel\ViewModel.csproj", "{0A11646F-0E55-4B86-B527-7FE9C9C5D808}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewModel", "ViewModel\ViewModel.csproj", "{0A11646F-0E55-4B86-B527-7FE9C9C5D808}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{78A741F4-C955-43AE-8535-0F7E3CB26084}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{0A11646F-0E55-4B86-B527-7FE9C9C5D808}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A11646F-0E55-4B86-B527-7FE9C9C5D808}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A11646F-0E55-4B86-B527-7FE9C9C5D808}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78A741F4-C955-43AE-8535-0F7E3CB26084}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78A741F4-C955-43AE-8535-0F7E3CB26084}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78A741F4-C955-43AE-8535-0F7E3CB26084}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78A741F4-C955-43AE-8535-0F7E3CB26084}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
