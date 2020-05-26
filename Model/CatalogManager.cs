@@ -27,7 +27,7 @@ namespace Model
 
         public IEnumerable<CatalogItem> GetCatalog()
         {
-            return _catalogRepository.Get();
+            return _catalogRepository.GetWithInclude(i => i.Vendor);
         }
     }
 }
