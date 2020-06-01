@@ -29,16 +29,23 @@ namespace EMA
             };
             _mainVM.MainMenuVM.OpenVendorsWindowRequest += () =>
             {
-                //var vendorsWindow = new VendorsWindow();
-                //vendorsWindow.DataContext = new VendorsVM();
-                //vendorsWindow.Owner = _mainWindow;
-                //vendorsWindow.Show();
-                CreateCrudGetWindow<VendorsWindow>(new VendorsVM(_catalogManager.GetVendors())).Show();
+                var vendorsWindow = new VendorsWindow();
+                var vendorsVM = new VendorsVM(_catalogManager.GetVendors());
+                vendorsVM.EditVendorRequest += VendorsVM_EditVendorRequest;
+                vendorsWindow.DataContext = vendorsVM;
+                vendorsWindow.Owner = _mainWindow;
+                vendorsWindow.Show();
+                //CreateCrudGetWindow<VendorsWindow>(new VendorsVM(_catalogManager.GetVendors())).Show();
             };
 
             _mainWindow = new MainWindow();
             _mainWindow.DataContext = _mainVM;
             _mainWindow.Show();
+        }
+
+        private void VendorsVM_EditVendorRequest(Repository.EF.Vendor obj)
+        {
+            throw new System.NotImplementedException();
         }
 
         Window CreateCrudGetWindow<TWindow>(object context) where TWindow : Window,new()
