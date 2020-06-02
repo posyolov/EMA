@@ -25,17 +25,13 @@ namespace EMA
                 //catalogWindow.DataContext = new CatalogVM();
                 //catalogWindow.Owner = _mainWindow;
                 //catalogWindow.Show();
-                CreateCrudGetWindow<CatalogWindow>(new CatalogVM(_catalogManager.GetCatalog())).Show();
+                CreateViewModelWindow<CatalogWindow>(new CatalogVM(_catalogManager.GetCatalog())).Show();
             };
             _mainVM.MainMenuVM.OpenVendorsWindowRequest += () =>
             {
-                var vendorsWindow = new VendorsWindow();
                 var vendorsVM = new VendorsVM(_catalogManager.GetVendors());
                 vendorsVM.EditVendorRequest += VendorsVM_EditVendorRequest;
-                vendorsWindow.DataContext = vendorsVM;
-                vendorsWindow.Owner = _mainWindow;
-                vendorsWindow.Show();
-                //CreateCrudGetWindow<VendorsWindow>(new VendorsVM(_catalogManager.GetVendors())).Show();
+                CreateViewModelWindow<VendorsWindow>(vendorsVM).Show();
             };
 
             _mainWindow = new MainWindow();
@@ -45,10 +41,18 @@ namespace EMA
 
         private void VendorsVM_EditVendorRequest(Repository.EF.Vendor obj)
         {
-            throw new System.NotImplementedException();
+            var dialogViewModel = new DialogVM(obj);
+            var win = CreateViewModelWindow<VendorEditWindow>(dialogViewModel);
+            dialogViewModel.Ok += () =>
+            {
+                _catalogManager.UpdateVendor(obj);
+                win.Close();
+            };
+            win.ShowDialog();
+
         }
 
-        Window CreateCrudGetWindow<TWindow>(object context) where TWindow : Window,new()
+        Window CreateViewModelWindow<TWindow>(object context) where TWindow : Window, new()
         {
             TWindow window = new TWindow();
             window.DataContext = context;

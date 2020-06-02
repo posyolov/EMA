@@ -25,6 +25,11 @@ namespace Model
             return _vendorRepository.Get();
         }
 
+        public void UpdateVendor(Vendor vendor)
+        {
+            _vendorRepository.Update(vendor);
+        }
+
         public IEnumerable<CatalogItem> GetCatalog()
         {
             return _catalogRepository.GetWithInclude(i => i.Vendor);
