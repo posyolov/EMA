@@ -8,13 +8,43 @@ namespace ViewModel
 {
     public class CatalogVM
     {
-        public ObservableCollection<CatalogItem> CatalogItems { get; }
+        private CatalogItem selectedItem;
+        public IEnumerable<CatalogItem> Items { get; }
 
-        public CatalogVM(IEnumerable<CatalogItem> catalogItems)
+        public CatalogItem SelectedItem
         {
-            CatalogItems = new ObservableCollection<CatalogItem>(catalogItems);
-            //CatalogItems.Add(new CatalogItem { Id = 1, GlobalId = new Guid(), Vendor = new Vendor { Name = "Siemens" }, ProductCode = "111", Title = "aaa" });
-            //CatalogItems.Add(new CatalogItem { Id = 2, GlobalId = new Guid(), Vendor = new Vendor { Name = "Sick" }, ProductCode = "222", Title = "bbb" });
+            get => selectedItem;
+            set
+            {
+                selectedItem = value;
+                EditItemRequestCommand.RiseCanExecuteChanged();
+                DeleteItemRequestCommand.RiseCanExecuteChanged();
+            }
         }
+
+        public event Action CreateItemRequest;
+        public event Action<CatalogItem> EditItemRequest;
+        public event Action<CatalogItem> DeleteItemRequest;
+
+        public DelegateCommand<object> CreateItemRequestCommand { get; }
+        public DelegateCommand<object> EditItemRequestCommand { get; }
+        public DelegateCommand<object> DeleteItemRequestCommand { get; }
+
+        public CatalogVM(IEnumerable<CatalogItem> items)
+        {
+            Items = items;
+
+            CreateItemRequestCommand = new DelegateCommand<object>(
+                (obj) => CreateItemRequest?.Invoke());
+
+            EditItemRequestCommand = new DelegateCommand<object>(
+                canExecute: (obj) => SelectedItem != null,
+                execute: (obj) => EditItemRequest?.Invoke(selectedItem));
+
+            DeleteItemRequestCommand = new DelegateCommand<object>(
+                canExecute: (obj) => SelectedItem != null,
+                execute: (obj) => DeleteItemRequest?.Invoke(selectedItem));
+        }
+
     }
 }

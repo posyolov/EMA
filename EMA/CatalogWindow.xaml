@@ -5,36 +5,59 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EMA"
         mc:Ignorable="d"
-        Title="Catalog" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+        Title="Catalog" 
+        Height="450" Width="600" 
+        WindowStartupLocation="CenterOwner">
 
-    <ListView ItemsSource="{Binding CatalogItems}">
-        <ListView.View>
-            <GridView>
-                <GridView.Columns>
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="MinWidth" Value="70"/>
+        </Style>
+    </Window.Resources>
 
-                    <GridViewColumn Header="Id" 
+    <StackPanel Margin="10">
+
+        <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
+            <Button Content="Create"
+                    Command="{Binding CreateItemRequestCommand}"/>
+            <Button Content="Edit"
+                    Command="{Binding EditItemRequestCommand}"/>
+            <Button Content="Delete"
+                    Command="{Binding DeleteItemRequestCommand}"/>
+        </StackPanel>
+
+        <ListView ItemsSource="{Binding Items}" 
+                  SelectedItem="{Binding SelectedItem}">
+            <ListView.View>
+                <GridView>
+                    <GridView.Columns>
+
+                        <GridViewColumn Header="Id" 
                                     DisplayMemberBinding="{Binding Id}">
-                    </GridViewColumn>
+                        </GridViewColumn>
 
-                    <GridViewColumn Header="GlobalId" 
+                        <GridViewColumn Header="GlobalId" 
                                     DisplayMemberBinding="{Binding GlobalId}">
-                    </GridViewColumn>
+                        </GridViewColumn>
 
-                    <GridViewColumn Header="Vendor" 
+                        <GridViewColumn Header="Vendor" 
                                     DisplayMemberBinding="{Binding Vendor.Name}">
-                    </GridViewColumn>
+                        </GridViewColumn>
 
-                    <GridViewColumn Header="ProductCode" 
+                        <GridViewColumn Header="ProductCode" 
                                     DisplayMemberBinding="{Binding ProductCode}">
-                    </GridViewColumn>
+                        </GridViewColumn>
 
-                    <GridViewColumn Header="Title" 
+                        <GridViewColumn Header="Title" 
                                     DisplayMemberBinding="{Binding Title}">
-                    </GridViewColumn>
+                        </GridViewColumn>
 
-                </GridView.Columns>
-            </GridView>
-        </ListView.View>
-    </ListView>
-    
+                    </GridView.Columns>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+    </StackPanel>
+
 </Window>

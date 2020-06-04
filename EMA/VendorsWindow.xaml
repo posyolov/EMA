@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EMA"
         mc:Ignorable="d"
-        Title="VendorsWindow" Height="450" Width="300" 
+        Title="VendorsWindow" 
+        Height="450" Width="300" 
         WindowStartupLocation="CenterOwner">
 
     <Window.Resources>

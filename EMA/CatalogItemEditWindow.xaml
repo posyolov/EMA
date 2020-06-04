@@ -1,11 +1,11 @@
-﻿<Window x:Class="EMA.VendorEditWindow"
+﻿<Window x:Class="EMA.CatalogItemEditWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EMA"
         mc:Ignorable="d"
-        Title="VendorEditWindow" Height="120" Width="250" 
+        Title="CatalogItemEditWindow" Height="250" Width="250" 
         WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
 
     <Window.Resources>
@@ -20,7 +20,7 @@
             <Setter Property="Margin" Value="3"/>
         </Style>
     </Window.Resources>
-    
+
     <StackPanel HorizontalAlignment="Center">
         <Grid HorizontalAlignment="Center">
             <Grid.ColumnDefinitions>
@@ -30,20 +30,45 @@
             <Grid.RowDefinitions>
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
-            
+
             <TextBlock Grid.Column="0" Grid.Row="0"
                        Text="ID:"/>
             <TextBlock Grid.Column="1" Grid.Row="0"
-                       Text="{Binding ViewModel.Id}"/>
+                       Text="{Binding ViewModel.Item.Id}"/>
 
             <TextBlock Grid.Column="0" Grid.Row="1"
-                       Text="Name:"/>
+                       Text="Global ID:"/>
             <TextBox Grid.Column="1" Grid.Row="1" 
                        MinWidth="100"
-                       Text="{Binding ViewModel.Name}"/>
+                       Text="{Binding ViewModel.Item.GlobalId}"/>
+
+            <TextBlock Grid.Column="0" Grid.Row="2"
+                       Text="Vendor:"/>
+            <ComboBox Grid.Column="1" Grid.Row="2" 
+                       MinWidth="100" Margin="3"
+                       ItemsSource="{Binding ViewModel.Vendors}"
+                       DisplayMemberPath="Name"
+                       SelectedValuePath="Id"
+                       SelectedValue="{Binding ViewModel.Item.Vendor.Id}"
+                       SelectedItem="{Binding ViewModel.Item.Vendor}"/>
+
+            <TextBlock Grid.Column="0" Grid.Row="3"
+                       Text="Product code:"/>
+            <TextBox Grid.Column="1" Grid.Row="3" 
+                       MinWidth="100"
+                       Text="{Binding ViewModel.Item.ProductCode}"/>
+
+            <TextBlock Grid.Column="0" Grid.Row="4"
+                       Text="Title:"/>
+            <TextBox Grid.Column="1" Grid.Row="4" 
+                       MinWidth="100"
+                       Text="{Binding ViewModel.Item.Title}"/>
         </Grid>
-        <StackPanel Orientation="Horizontal">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Content="OK"
                     IsDefault="False"
                     Command="{Binding OkCommand}"/>

@@ -10,7 +10,8 @@ namespace ViewModel
     {
         private Vendor selectedVendor;
 
-        public ObservableCollection<Vendor> Vendors { get; }
+        //public ObservableCollection<Vendor> Vendors { get; }
+        public IEnumerable<Vendor> Vendors { get; }
         public Vendor SelectedVendor
         {
             get => selectedVendor;
@@ -32,7 +33,8 @@ namespace ViewModel
 
         public VendorsVM(IEnumerable<Vendor> vendorItems)
         {
-            Vendors = new ObservableCollection<Vendor>(vendorItems);
+            //Vendors = new ObservableCollection<Vendor>(vendorItems);
+            Vendors = vendorItems;
 
             CreateVendorRequestCommand = new DelegateCommand<object>(
                 (obj) => CreateVendorRequest?.Invoke());
