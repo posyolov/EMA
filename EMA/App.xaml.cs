@@ -70,10 +70,14 @@ namespace EMA
 
         private void VendorsVM_EditVendorRequest(Vendor obj)
         {
-            var dialogViewModel = new DialogVM(obj);
+            var vendorEdit = new VendorEditVM(obj);
+            var dialogViewModel = new DialogVM(vendorEdit);
             var win = CreateViewModelWindow<VendorEditWindow>(dialogViewModel);
             dialogViewModel.Ok += () =>
             {
+                //add check
+                obj.Name = vendorEdit.Name;
+
                 _catalogManager.UpdateVendor(obj);
                 win.Close();
             };
