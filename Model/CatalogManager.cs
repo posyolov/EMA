@@ -7,17 +7,17 @@ namespace Model
 {
     public class CatalogManager
     {
-        EquipmentContext _dbContext;
+        //EquipmentContext _dbContext;
 
         IRepository<Vendor> _vendorRepository;
         IRepository<CatalogItem> _catalogRepository;
 
         public CatalogManager()
         {
-            _dbContext = new EquipmentContext();
+            //_dbContext = new EquipmentContext();
 
-            _vendorRepository = new RepositoryEF<Vendor>(_dbContext);
-            _catalogRepository = new RepositoryEF<CatalogItem>(_dbContext);
+            _vendorRepository = new RepositoryEF<Vendor>(/*_dbContext*/);
+            _catalogRepository = new RepositoryEF<CatalogItem>(/*_dbContext*/);
         }
 
 
