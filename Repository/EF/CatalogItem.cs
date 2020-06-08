@@ -6,8 +6,11 @@ namespace Repository.EF
     {
         public int Id { get; set; }
         public Guid GlobalId { get; set; }
-        public Vendor Vendor { get; set; }
+        public int VendorId { get; set; }
         public string ProductCode { get; set; }
         public string Title { get; set; }
+
+        public virtual Vendor Vendor { get; set; }
+
     }
 }

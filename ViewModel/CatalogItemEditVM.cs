@@ -8,7 +8,7 @@ namespace ViewModel
     public class CatalogItemEditVM
     {
         public Guid GlobalId { get; set; }
-        public Vendor Vendor { get; set; }
+        public int VendorId { get; set; }
         public string ProductCode { get; set; }
         public string Title { get; set; }
         public IEnumerable<Vendor> Vendors { get; set; }
@@ -16,7 +16,7 @@ namespace ViewModel
         public CatalogItemEditVM(CatalogItem item, IEnumerable<Vendor> vendors)
         {
             GlobalId = item.GlobalId;
-            Vendor = item.Vendor;
+            VendorId = item.VendorId;
             ProductCode = item.ProductCode;
             Title = item.Title;
 

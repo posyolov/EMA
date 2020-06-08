@@ -52,8 +52,7 @@
                        ItemsSource="{Binding ViewModel.Vendors}"
                        DisplayMemberPath="Name"
                        SelectedValuePath="Id"
-                       SelectedValue="{Binding ViewModel.Vendor.Id}"
-                       SelectedItem="{Binding ViewModel.Vendor}"/>
+                       SelectedValue="{Binding ViewModel.VendorId}"/>
 
             <TextBlock Grid.Column="0" Grid.Row="3"
                        Text="Product code:"/>

@@ -5,7 +5,7 @@ namespace Repository.EF
 {
     public class EquipmentContext : DbContext
     {
-        public static readonly ILoggerFactory MyLoggerFactory = LoggerFactory.Create(builder => { builder.AddConsole(); });
+        public static readonly ILoggerFactory MyLoggerFactory = LoggerFactory.Create(builder => { builder.AddDebug(); });
 
         public EquipmentContext()
         {
