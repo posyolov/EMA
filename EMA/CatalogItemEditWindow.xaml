@@ -37,14 +37,13 @@
 
             <TextBlock Grid.Column="0" Grid.Row="0"
                        Text="ID:"/>
-            <TextBlock Grid.Column="1" Grid.Row="0"
-                       Text="{Binding ViewModel.Item.Id}"/>
+
 
             <TextBlock Grid.Column="0" Grid.Row="1"
                        Text="Global ID:"/>
             <TextBox Grid.Column="1" Grid.Row="1" 
                        MinWidth="100"
-                       Text="{Binding ViewModel.Item.GlobalId}"/>
+                       Text="{Binding ViewModel.GlobalId}"/>
 
             <TextBlock Grid.Column="0" Grid.Row="2"
                        Text="Vendor:"/>
@@ -53,20 +52,20 @@
                        ItemsSource="{Binding ViewModel.Vendors}"
                        DisplayMemberPath="Name"
                        SelectedValuePath="Id"
-                       SelectedValue="{Binding ViewModel.Item.Vendor.Id}"
-                       SelectedItem="{Binding ViewModel.Item.Vendor}"/>
+                       SelectedValue="{Binding ViewModel.Vendor.Id}"
+                       SelectedItem="{Binding ViewModel.Vendor}"/>
 
             <TextBlock Grid.Column="0" Grid.Row="3"
                        Text="Product code:"/>
             <TextBox Grid.Column="1" Grid.Row="3" 
                        MinWidth="100"
-                       Text="{Binding ViewModel.Item.ProductCode}"/>
+                       Text="{Binding ViewModel.ProductCode}"/>
 
             <TextBlock Grid.Column="0" Grid.Row="4"
                        Text="Title:"/>
             <TextBox Grid.Column="1" Grid.Row="4" 
                        MinWidth="100"
-                       Text="{Binding ViewModel.Item.Title}"/>
+                       Text="{Binding ViewModel.Title}"/>
         </Grid>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Content="OK"

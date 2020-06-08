@@ -7,12 +7,19 @@ namespace ViewModel
 {
     public class CatalogItemEditVM
     {
-        public CatalogItem Item { get; set; }
+        public Guid GlobalId { get; set; }
+        public Vendor Vendor { get; set; }
+        public string ProductCode { get; set; }
+        public string Title { get; set; }
         public IEnumerable<Vendor> Vendors { get; set; }
 
         public CatalogItemEditVM(CatalogItem item, IEnumerable<Vendor> vendors)
         {
-            Item = item;
+            GlobalId = item.GlobalId;
+            Vendor = item.Vendor;
+            ProductCode = item.ProductCode;
+            Title = item.Title;
+
             Vendors = vendors;
         }
     }

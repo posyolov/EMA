@@ -54,6 +54,9 @@ namespace Repository.EF
             context.SaveChanges();
             //_context.Entry(item).State = EntityState.Modified;
             //_context.SaveChanges();
+
+            Console.ReadLine();
+
         }
         public void Remove(TEntity item)
         {

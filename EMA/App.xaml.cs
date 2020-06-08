@@ -105,11 +105,17 @@ namespace EMA
 
         private void CatalogVM_EditItemRequest(CatalogItem obj)
         {
-            var catalogItemEditViewModel = new CatalogItemEditVM(obj, _catalogManager.GetVendors());
-            var dialogViewModel = new DialogVM(catalogItemEditViewModel);
+            var catalogItemEdit = new CatalogItemEditVM(obj, _catalogManager.GetVendors());
+            var dialogViewModel = new DialogVM(catalogItemEdit);
             var win = CreateViewModelWindow<CatalogItemEditWindow>(dialogViewModel);
             dialogViewModel.Ok += () =>
             {
+                //add check
+                obj.GlobalId = catalogItemEdit.GlobalId;
+                obj.Vendor = catalogItemEdit.Vendor;
+                obj.ProductCode = catalogItemEdit.ProductCode;
+                obj.Title = catalogItemEdit.Title;
+
                 _catalogManager.UpdateCatalogItem(obj);
                 win.Close();
             };
