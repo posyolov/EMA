@@ -45,7 +45,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
-
     </StackPanel>
 
 </Window>

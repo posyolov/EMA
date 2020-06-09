@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace ViewModel
@@ -10,9 +12,20 @@ namespace ViewModel
     public class VendorsVM : INotifyPropertyChanged
     {
         private Vendor selectedVendor;
+        private ObservableCollection<Vendor> vendors;
 
-        //public ObservableCollection<Vendor> Vendors { get; }
-        public ObservableCollection<Vendor> Vendors { get; }
+        public ObservableCollection<Vendor> Vendors
+        {
+            get
+            {
+                return vendors;
+            }
+            private set
+            {
+                vendors = value;
+                NotifyPropertyChanged();
+            }
+        }
         public Vendor SelectedVendor
         {
             get => selectedVendor;
@@ -36,7 +49,6 @@ namespace ViewModel
         public VendorsVM(IEnumerable<Vendor> vendorItems)
         {
             Vendors = new ObservableCollection<Vendor>(vendorItems);
-            //Vendors = vendorItems;
 
             CreateVendorRequestCommand = new DelegateCommand<object>(
                 (obj) => CreateVendorRequest?.Invoke());
@@ -50,9 +62,15 @@ namespace ViewModel
                 execute: (obj) => DeleteVendorRequest?.Invoke(selectedVendor));
         }
 
-        public void RaisePropertyChanged(string propertyName)
+        public void UpdateVendorsList(IEnumerable<Vendor> vendorItems)
+        {
+            Vendors = new ObservableCollection<Vendor>(vendorItems);
+        }
+
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
     }
 }

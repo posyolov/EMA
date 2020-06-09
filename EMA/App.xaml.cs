@@ -31,9 +31,8 @@ namespace EMA
             };
             _mainVM.MainMenuVM.OpenVendorsWindowRequest += () =>
             {
-                //var vendorsVM = new VendorsVM(_catalogManager.GetVendors());
-                var vendorsVM = new VendorsVM(_catalogManager.Vendors);
-                _catalogManager.PropertyChanged += vendorsVM.RaisePropertyChanged;
+                var vendorsVM = new VendorsVM(_catalogManager.GetVendors());
+                _catalogManager.VendorsChanged += () => vendorsVM.UpdateVendorsList(_catalogManager.GetVendors());
                 vendorsVM.CreateVendorRequest += VendorsVM_CreateVendorRequest;
                 vendorsVM.EditVendorRequest += VendorsVM_EditVendorRequest;
                 vendorsVM.DeleteVendorRequest += VendorsVM_DeleteVendorRequest;

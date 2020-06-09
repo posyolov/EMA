@@ -13,9 +13,7 @@ namespace Model
         IRepository<Vendor> _vendorRepository;
         IRepository<CatalogItem> _catalogRepository;
 
-        private List<Vendor> vendors;
-
-        public event Action<string> PropertyChanged;
+        public event Action VendorsChanged;
 
         public CatalogManager()
         {
@@ -23,19 +21,6 @@ namespace Model
 
             _vendorRepository = new RepositoryEF<Vendor>(/*_dbContext*/);
             _catalogRepository = new RepositoryEF<CatalogItem>(/*_dbContext*/);
-
-            vendors = new List<Vendor>();
-        }
-
-        public IEnumerable<Vendor> Vendors
-        {
-            get
-            {
-                vendors.Clear();
-                vendors.AddRange(GetVendors());
-
-                return vendors;
-            }
         }
 
         public IEnumerable<Vendor> GetVendors()
@@ -46,18 +31,19 @@ namespace Model
         public void AddVendor(Vendor entity)
         {
             _vendorRepository.Create(entity);
-            RaisePropertyChanged("Vendors");
+            VendorsChanged?.Invoke();
         }
 
         public void UpdateVendor(Vendor entity)
         {
             _vendorRepository.Update(entity);
-            RaisePropertyChanged("Vendors");
+            VendorsChanged?.Invoke();
         }
 
         public void DeleteVendor(Vendor entity)
         {
             _vendorRepository.Remove(entity);
+            VendorsChanged?.Invoke();
         }
 
 
@@ -81,10 +67,5 @@ namespace Model
             _catalogRepository.Remove(entity);
         }
 
-
-        private void RaisePropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(propertyName);
-        }
     }
 }
