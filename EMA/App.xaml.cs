@@ -22,12 +22,6 @@ namespace EMA
             _mainVM = new MainVM();
             _mainVM.MainMenuVM.OpenCatalogWindowRequest += () =>
             {
-                //var catalogWindow = new CatalogWindow();
-                //catalogWindow.DataContext = new CatalogVM();
-                //catalogWindow.Owner = _mainWindow;
-                //catalogWindow.Show();
-                //CreateViewModelWindow<CatalogWindow>(new CatalogVM(_catalogManager.GetCatalog())).Show();
-
                 var catalogVM = new CatalogVM(_catalogManager.GetCatalog());
                 catalogVM.CreateItemRequest += CatalogVM_CreateItemRequest;
                 catalogVM.EditItemRequest += CatalogVM_EditItemRequest;
@@ -37,7 +31,9 @@ namespace EMA
             };
             _mainVM.MainMenuVM.OpenVendorsWindowRequest += () =>
             {
-                var vendorsVM = new VendorsVM(_catalogManager.GetVendors());
+                //var vendorsVM = new VendorsVM(_catalogManager.GetVendors());
+                var vendorsVM = new VendorsVM(_catalogManager.Vendors);
+                _catalogManager.PropertyChanged += vendorsVM.RaisePropertyChanged;
                 vendorsVM.CreateVendorRequest += VendorsVM_CreateVendorRequest;
                 vendorsVM.EditVendorRequest += VendorsVM_EditVendorRequest;
                 vendorsVM.DeleteVendorRequest += VendorsVM_DeleteVendorRequest;
@@ -50,18 +46,17 @@ namespace EMA
         }
 
 
-        private void VendorsVM_DeleteVendorRequest(Vendor obj)
-        {
-            _catalogManager.DeleteVendor(obj);
-        }
-
         private void VendorsVM_CreateVendorRequest()
         {
             var newVendor = new Vendor();
-            var dialogViewModel = new DialogVM(newVendor);
+            var vendorEdit = new VendorEditVM(newVendor);
+            var dialogViewModel = new DialogVM(vendorEdit);
             var win = CreateViewModelWindow<VendorEditWindow>(dialogViewModel);
             dialogViewModel.Ok += () =>
             {
+                //add check
+                newVendor.Name = vendorEdit.Name;
+
                 _catalogManager.AddVendor(newVendor);
                 win.Close();
             };
@@ -83,12 +78,11 @@ namespace EMA
             };
             win.ShowDialog();
         }
-
-
-        private void CatalogVM_DeleteItemRequest(CatalogItem obj)
+                private void VendorsVM_DeleteVendorRequest(Vendor obj)
         {
-            _catalogManager.DeleteCatalogItem(obj);
+            _catalogManager.DeleteVendor(obj);
         }
+
 
         private void CatalogVM_CreateItemRequest()
         {
@@ -127,6 +121,11 @@ namespace EMA
                 win.Close();
             };
             win.ShowDialog();
+        }
+
+        private void CatalogVM_DeleteItemRequest(CatalogItem obj)
+        {
+            _catalogManager.DeleteCatalogItem(obj);
         }
 
 
