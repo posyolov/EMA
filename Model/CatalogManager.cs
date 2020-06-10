@@ -13,6 +13,7 @@ namespace Model
         IRepository<Vendor> _vendorRepository;
         IRepository<CatalogItem> _catalogRepository;
 
+        public event Action CatalogChanged;
         public event Action VendorsChanged;
 
         public CatalogManager()
@@ -55,16 +56,19 @@ namespace Model
         public void AddCatalogItem(CatalogItem entity)
         {
             _catalogRepository.Create(entity);
+            CatalogChanged?.Invoke();
         }
 
         public void UpdateCatalogItem(CatalogItem entity)
         {
             _catalogRepository.Update(entity);
+            CatalogChanged?.Invoke();
         }
 
         public void DeleteCatalogItem(CatalogItem entity)
         {
             _catalogRepository.Remove(entity);
+            CatalogChanged?.Invoke();
         }
 
     }

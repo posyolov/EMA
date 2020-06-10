@@ -6,8 +6,8 @@ namespace ViewModel
 {
     public class MainMenuVM
     {
-        public event Action OpenCatalogWindowRequest;
-        public event Action OpenVendorsWindowRequest;
+        public event Action CatalogRequest;
+        public event Action VendorsRequest;
 
         public DelegateCommand<object> OpenCatalogWindowCommand { get; }
         public DelegateCommand<object> OpenVendorsWindowCommand { get; }
@@ -15,10 +15,10 @@ namespace ViewModel
         public MainMenuVM()
         {
             OpenCatalogWindowCommand = new DelegateCommand<object>(
-                (obj) => OpenCatalogWindowRequest?.Invoke());
+                (obj) => CatalogRequest?.Invoke());
 
             OpenVendorsWindowCommand = new DelegateCommand<object>(
-                (obj) => OpenVendorsWindowRequest?.Invoke());
+                (obj) => VendorsRequest?.Invoke());
         }
 
     }

@@ -26,6 +26,7 @@ namespace ViewModel
                 NotifyPropertyChanged();
             }
         }
+
         public Vendor SelectedVendor
         {
             get => selectedVendor;
@@ -37,21 +38,21 @@ namespace ViewModel
             }
         }
 
-        public event Action CreateVendorRequest;
+        public event Action AddVendorRequest;
         public event Action<Vendor> EditVendorRequest;
         public event Action<Vendor> DeleteVendorRequest;
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public DelegateCommand<object> CreateVendorRequestCommand { get; }
+        public DelegateCommand<object> AddVendorRequestCommand { get; }
         public DelegateCommand<object> EditVendorRequestCommand { get; }
         public DelegateCommand<object> DeleteVendorRequestCommand { get; }
 
-        public VendorsVM(IEnumerable<Vendor> vendorItems)
+        public VendorsVM(IEnumerable<Vendor> items)
         {
-            Vendors = new ObservableCollection<Vendor>(vendorItems);
+            Vendors = new ObservableCollection<Vendor>(items);
 
-            CreateVendorRequestCommand = new DelegateCommand<object>(
-                (obj) => CreateVendorRequest?.Invoke());
+            AddVendorRequestCommand = new DelegateCommand<object>(
+                (obj) => AddVendorRequest?.Invoke());
 
             EditVendorRequestCommand = new DelegateCommand<object>(
                 canExecute: (obj) => SelectedVendor != null,
@@ -62,9 +63,9 @@ namespace ViewModel
                 execute: (obj) => DeleteVendorRequest?.Invoke(selectedVendor));
         }
 
-        public void UpdateVendorsList(IEnumerable<Vendor> vendorItems)
+        public void UpdateVendorsList(IEnumerable<Vendor> items)
         {
-            Vendors = new ObservableCollection<Vendor>(vendorItems);
+            Vendors = new ObservableCollection<Vendor>(items);
         }
 
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
