@@ -3,6 +3,7 @@ using ViewModel;
 using Model;
 using Repository.EF;
 using System;
+using System.Collections.Generic;
 
 namespace EMA
 {
@@ -21,8 +22,23 @@ namespace EMA
             _catalogManager = new CatalogManager();
 
             _mainVM = new MainVM();
-            _mainVM.MainMenuVM.CatalogRequest += CreateCatalogWindow;
-            _mainVM.MainMenuVM.VendorsRequest += CreateVendorsWindow;
+
+            _mainVM.MainMenuVM.CatalogRequest += () =>
+            {
+                _catalogManager.CatalogChanged += () => 
+                CreateEntitiesListEditWindow<CatalogWindow, CatalogItem>(
+                    _catalogManager.GetCatalog,
+                    CreateCatalogItemAddWindow,
+                    CreateCatalogItemEditWindow,
+                    DeleteCatalogItem).UpdateList(_catalogManager.GetCatalog());
+            };
+
+            _mainVM.MainMenuVM.VendorsRequest += () =>
+               CreateEntitiesListEditWindow<VendorsWindow, Vendor>(
+                    _catalogManager.GetVendors,
+                    CreateVendorAddWindow,
+                    CreateVendorEditWindow,
+                    VendorDelete);
 
             _mainWindow = new MainWindow();
             _mainWindow.DataContext = _mainVM;
@@ -31,8 +47,8 @@ namespace EMA
 
         private void CreateCatalogWindow()
         {
-            var catalogVM = new CatalogVM(_catalogManager.GetCatalog());
-            _catalogManager.CatalogChanged += () => catalogVM.UpdateCatalogList(_catalogManager.GetCatalog());
+            var catalogVM = new EntitiesListEditVM<CatalogItem>(_catalogManager.GetCatalog());
+            _catalogManager.CatalogChanged += () => catalogVM.UpdateList(_catalogManager.GetCatalog());
             catalogVM.AddItemRequest += CreateCatalogItemAddWindow;
             catalogVM.EditItemRequest += CreateCatalogItemEditWindow;
             catalogVM.DeleteItemRequest += DeleteCatalogItem;
@@ -41,11 +57,11 @@ namespace EMA
 
         private void CreateVendorsWindow()
         {
-            var vendorsVM = new VendorsVM(_catalogManager.GetVendors());
-            _catalogManager.VendorsChanged += () => vendorsVM.UpdateVendorsList(_catalogManager.GetVendors());
-            vendorsVM.AddVendorRequest += CreateVendorAddWindow;
-            vendorsVM.EditVendorRequest += CreateVendorEditWindow;
-            vendorsVM.DeleteVendorRequest += VendorDelete;
+            var vendorsVM = new EntitiesListEditVM<Vendor>(_catalogManager.GetVendors());
+            _catalogManager.VendorsChanged += () => vendorsVM.UpdateList(_catalogManager.GetVendors());
+            vendorsVM.AddItemRequest += CreateVendorAddWindow;
+            vendorsVM.EditItemRequest += CreateVendorEditWindow;
+            vendorsVM.DeleteItemRequest += VendorDelete;
             CreateViewModelWindow<VendorsWindow>(vendorsVM).Show();
         }
 
@@ -137,6 +153,23 @@ namespace EMA
         Window CreateViewModelWindow<TWindow>(object context) where TWindow : Window, new()
         {
             return new TWindow { DataContext = context, Owner = _mainWindow };
+        }
+
+        private EntitiesListEditVM<TEntity> CreateEntitiesListEditWindow<TWindow, TEntity>(
+            Func<IEnumerable<TEntity>> getItemsDelegate,
+            Action addItemDelegate,
+            Action<TEntity> editItemDelegate,
+            Action<TEntity> deleteItemDelegate
+            ) where TWindow : Window, new()
+        {
+            var vm = new EntitiesListEditVM<TEntity>(getItemsDelegate());
+            //itemsChangedEvent += () => vm.UpdateList(getItemsDelegate());
+            vm.AddItemRequest += addItemDelegate;
+            vm.EditItemRequest += editItemDelegate;
+            vm.DeleteItemRequest += deleteItemDelegate;
+            CreateViewModelWindow<TWindow>(vm).Show();
+
+            return vm;
         }
     }
 }

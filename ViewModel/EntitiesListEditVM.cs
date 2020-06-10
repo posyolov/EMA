@@ -1,5 +1,4 @@
-﻿using Repository.EF;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -8,12 +7,21 @@ using System.Text;
 
 namespace ViewModel
 {
-    public class CatalogVM : INotifyPropertyChanged
+    public class EntitiesListEditVM<TEntity> : INotifyPropertyChanged
     {
-        private CatalogItem selectedItem;
-        private ObservableCollection<CatalogItem> items;
+        public event Action AddItemRequest;
+        public event Action<TEntity> EditItemRequest;
+        public event Action<TEntity> DeleteItemRequest;
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public ObservableCollection<CatalogItem> Items
+        public DelegateCommand<object> AddItemRequestCommand { get; }
+        public DelegateCommand<object> EditItemRequestCommand { get; }
+        public DelegateCommand<object> DeleteItemRequestCommand { get; }
+
+        private TEntity selectedItem;
+        private ObservableCollection<TEntity> items;
+
+        public ObservableCollection<TEntity> Items
         {
             get
             {
@@ -26,8 +34,7 @@ namespace ViewModel
             }
         }
 
-
-        public CatalogItem SelectedItem
+        public TEntity SelectedItem
         {
             get => selectedItem;
             set
@@ -38,18 +45,10 @@ namespace ViewModel
             }
         }
 
-        public event Action AddItemRequest;
-        public event Action<CatalogItem> EditItemRequest;
-        public event Action<CatalogItem> DeleteItemRequest;
-        public event PropertyChangedEventHandler PropertyChanged;
 
-        public DelegateCommand<object> AddItemRequestCommand { get; }
-        public DelegateCommand<object> EditItemRequestCommand { get; }
-        public DelegateCommand<object> DeleteItemRequestCommand { get; }
-
-        public CatalogVM(IEnumerable<CatalogItem> items)
+        public EntitiesListEditVM(IEnumerable<TEntity> items)
         {
-            Items = new ObservableCollection<CatalogItem>(items);
+            Items = new ObservableCollection<TEntity>(items);
 
             AddItemRequestCommand = new DelegateCommand<object>(
                 (obj) => AddItemRequest?.Invoke());
@@ -63,15 +62,14 @@ namespace ViewModel
                 execute: (obj) => DeleteItemRequest?.Invoke(selectedItem));
         }
 
-        public void UpdateCatalogList(IEnumerable<CatalogItem> items)
+        public void UpdateList(IEnumerable<TEntity> items)
         {
-            Items = new ObservableCollection<CatalogItem>(items);
+            Items = new ObservableCollection<TEntity>(items);
         }
 
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
     }
 }
