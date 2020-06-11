@@ -25,57 +25,34 @@ namespace EMA
 
             _mainVM.MainMenuVM.CatalogRequest += () =>
             {
-                _catalogManager.CatalogChanged += () => 
-                CreateEntitiesListEditWindow<CatalogWindow, CatalogItem>(
-                    _catalogManager.GetCatalog,
-                    CreateCatalogItemAddWindow,
-                    CreateCatalogItemEditWindow,
-                    DeleteCatalogItem).UpdateList(_catalogManager.GetCatalog());
+                var vm = new EntitiesListEditVM<CatalogItem>(_catalogManager.GetCatalog, CreateCatalogItemAddWindow, CreateCatalogItemEditWindow, CatalogItemDelete);
+                _catalogManager.CatalogChanged += vm.UpdateList;
+                var win = new CatalogWindow { DataContext = vm, Owner = _mainWindow };
+                win.Show();
             };
 
             _mainVM.MainMenuVM.VendorsRequest += () =>
-               CreateEntitiesListEditWindow<VendorsWindow, Vendor>(
-                    _catalogManager.GetVendors,
-                    CreateVendorAddWindow,
-                    CreateVendorEditWindow,
-                    VendorDelete);
+            {
+                var vm = new EntitiesListEditVM<Vendor>(_catalogManager.GetVendors, CreateVendorAddWindow, CreateVendorEditWindow, VendorDelete);
+                _catalogManager.VendorsChanged += vm.UpdateList;
+                var win = new VendorsWindow { DataContext = vm, Owner = _mainWindow };
+                win.Show();
+            };
 
-            _mainWindow = new MainWindow();
-            _mainWindow.DataContext = _mainVM;
+            _mainWindow = new MainWindow { DataContext = _mainVM };
             _mainWindow.Show();
         }
-
-        private void CreateCatalogWindow()
-        {
-            var catalogVM = new EntitiesListEditVM<CatalogItem>(_catalogManager.GetCatalog());
-            _catalogManager.CatalogChanged += () => catalogVM.UpdateList(_catalogManager.GetCatalog());
-            catalogVM.AddItemRequest += CreateCatalogItemAddWindow;
-            catalogVM.EditItemRequest += CreateCatalogItemEditWindow;
-            catalogVM.DeleteItemRequest += DeleteCatalogItem;
-            CreateViewModelWindow<CatalogWindow>(catalogVM).Show();
-        }
-
-        private void CreateVendorsWindow()
-        {
-            var vendorsVM = new EntitiesListEditVM<Vendor>(_catalogManager.GetVendors());
-            _catalogManager.VendorsChanged += () => vendorsVM.UpdateList(_catalogManager.GetVendors());
-            vendorsVM.AddItemRequest += CreateVendorAddWindow;
-            vendorsVM.EditItemRequest += CreateVendorEditWindow;
-            vendorsVM.DeleteItemRequest += VendorDelete;
-            CreateViewModelWindow<VendorsWindow>(vendorsVM).Show();
-        }
-
 
         private void CreateVendorAddWindow()
         {
             var newVendor = new Vendor();
-            var vendorEdit = new VendorEditVM(newVendor);
-            var dialogViewModel = new DialogVM(vendorEdit);
-            var win = CreateViewModelWindow<VendorEditWindow>(dialogViewModel);
-            dialogViewModel.Ok += () =>
+
+            var vendorEditVM = new VendorEditVM(newVendor);
+            var win = new VendorEditWindow { DataContext = vendorEditVM, Owner = _mainWindow };
+            vendorEditVM.Ok += () =>
             {
                 //add check
-                newVendor.Name = vendorEdit.Name;
+                vendorEditVM.Apply();
 
                 _catalogManager.AddVendor(newVendor);
                 win.Close();
@@ -85,13 +62,12 @@ namespace EMA
 
         private void CreateVendorEditWindow(Vendor obj)
         {
-            var vendorEdit = new VendorEditVM(obj);
-            var dialogViewModel = new DialogVM(vendorEdit);
-            var win = CreateViewModelWindow<VendorEditWindow>(dialogViewModel);
-            dialogViewModel.Ok += () =>
+            var vendorEditVM = new VendorEditVM(obj);
+            var win = new VendorEditWindow { DataContext = vendorEditVM, Owner = _mainWindow };
+            vendorEditVM.Ok += () =>
             {
                 //add check
-                obj.Name = vendorEdit.Name;
+                vendorEditVM.Apply();
 
                 _catalogManager.UpdateVendor(obj);
                 win.Close();
@@ -108,16 +84,13 @@ namespace EMA
         private void CreateCatalogItemAddWindow()
         {
             var newCatalogItem = new CatalogItem();
-            var catalogItemEdit = new CatalogItemEditVM(newCatalogItem, _catalogManager.GetVendors());
-            var dialogViewModel = new DialogVM(catalogItemEdit);
-            var win = CreateViewModelWindow<CatalogItemEditWindow>(dialogViewModel);
-            dialogViewModel.Ok += () =>
+
+            var catalogItemEditVM = new CatalogItemEditVM(newCatalogItem, _catalogManager.GetVendors());
+            var win = new CatalogItemEditWindow { DataContext = catalogItemEditVM, Owner = _mainWindow };
+            catalogItemEditVM.Ok += () =>
             {
                 //add check
-                newCatalogItem.GlobalId = catalogItemEdit.GlobalId;
-                newCatalogItem.VendorId = catalogItemEdit.VendorId;
-                newCatalogItem.ProductCode = catalogItemEdit.ProductCode;
-                newCatalogItem.Title = catalogItemEdit.Title;
+                catalogItemEditVM.Apply();
 
                 _catalogManager.AddCatalogItem(newCatalogItem);
                 win.Close();
@@ -127,16 +100,12 @@ namespace EMA
 
         private void CreateCatalogItemEditWindow(CatalogItem obj)
         {
-            var catalogItemEdit = new CatalogItemEditVM(obj, _catalogManager.GetVendors());
-            var dialogViewModel = new DialogVM(catalogItemEdit);
-            var win = CreateViewModelWindow<CatalogItemEditWindow>(dialogViewModel);
-            dialogViewModel.Ok += () =>
+            var catalogItemEditVM = new CatalogItemEditVM(obj, _catalogManager.GetVendors());
+            var win = new CatalogItemEditWindow { DataContext = catalogItemEditVM, Owner = _mainWindow };
+            catalogItemEditVM.Ok += () =>
             {
                 //add check
-                obj.GlobalId = catalogItemEdit.GlobalId;
-                obj.VendorId = catalogItemEdit.VendorId;
-                obj.ProductCode = catalogItemEdit.ProductCode;
-                obj.Title = catalogItemEdit.Title;
+                catalogItemEditVM.Apply();
 
                 _catalogManager.UpdateCatalogItem(obj);
                 win.Close();
@@ -144,32 +113,10 @@ namespace EMA
             win.ShowDialog();
         }
 
-        private void DeleteCatalogItem(CatalogItem obj)
+        private void CatalogItemDelete(CatalogItem obj)
         {
             _catalogManager.DeleteCatalogItem(obj);
         }
 
-
-        Window CreateViewModelWindow<TWindow>(object context) where TWindow : Window, new()
-        {
-            return new TWindow { DataContext = context, Owner = _mainWindow };
-        }
-
-        private EntitiesListEditVM<TEntity> CreateEntitiesListEditWindow<TWindow, TEntity>(
-            Func<IEnumerable<TEntity>> getItemsDelegate,
-            Action addItemDelegate,
-            Action<TEntity> editItemDelegate,
-            Action<TEntity> deleteItemDelegate
-            ) where TWindow : Window, new()
-        {
-            var vm = new EntitiesListEditVM<TEntity>(getItemsDelegate());
-            //itemsChangedEvent += () => vm.UpdateList(getItemsDelegate());
-            vm.AddItemRequest += addItemDelegate;
-            vm.EditItemRequest += editItemDelegate;
-            vm.DeleteItemRequest += deleteItemDelegate;
-            CreateViewModelWindow<TWindow>(vm).Show();
-
-            return vm;
-        }
     }
 }

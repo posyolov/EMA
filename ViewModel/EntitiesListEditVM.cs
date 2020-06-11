@@ -20,6 +20,7 @@ namespace ViewModel
 
         private TEntity selectedItem;
         private ObservableCollection<TEntity> items;
+        private Func<IEnumerable<TEntity>> getListDelegate;
 
         public ObservableCollection<TEntity> Items
         {
@@ -46,9 +47,11 @@ namespace ViewModel
         }
 
 
-        public EntitiesListEditVM(IEnumerable<TEntity> items)
+        public EntitiesListEditVM(Func<IEnumerable<TEntity>> getListDelegate)
         {
-            Items = new ObservableCollection<TEntity>(items);
+            this.getListDelegate = getListDelegate;
+
+            Items = new ObservableCollection<TEntity>(getListDelegate());
 
             AddItemRequestCommand = new DelegateCommand<object>(
                 (obj) => AddItemRequest?.Invoke());
@@ -62,9 +65,17 @@ namespace ViewModel
                 execute: (obj) => DeleteItemRequest?.Invoke(selectedItem));
         }
 
-        public void UpdateList(IEnumerable<TEntity> items)
+        public EntitiesListEditVM(Func<IEnumerable<TEntity>> getListDelegate, Action addItemDelegate, Action<TEntity> editItemDelegate, Action<TEntity> deleteItemDelegate)
+            : this(getListDelegate)
         {
-            Items = new ObservableCollection<TEntity>(items);
+            AddItemRequest += addItemDelegate;
+            EditItemRequest += editItemDelegate;
+            DeleteItemRequest += deleteItemDelegate;
+        }
+
+        public void UpdateList()
+        {
+            Items = new ObservableCollection<TEntity>(getListDelegate());
         }
 
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
