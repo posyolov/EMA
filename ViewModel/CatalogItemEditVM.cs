@@ -8,6 +8,7 @@ namespace ViewModel
     public class CatalogItemEditVM : DialogVM
     {
         private readonly CatalogItem original;
+        private readonly Action<CatalogItem> executeDelegate;
 
         public Guid GlobalId { get; set; }
         public int VendorId { get; set; }
@@ -16,9 +17,11 @@ namespace ViewModel
 
         public IEnumerable<Vendor> Vendors { get; set; }
 
-        public CatalogItemEditVM(CatalogItem item, IEnumerable<Vendor> vendors)
+        public CatalogItemEditVM(CatalogItem item, IEnumerable<Vendor> vendors, Action<CatalogItem> executeDelegate, Action closeDialogDelegate)
+            : base(closeDialogDelegate)
         {
             original = item;
+            this.executeDelegate = executeDelegate;
 
             GlobalId = original.GlobalId;
             VendorId = original.VendorId;
@@ -28,12 +31,18 @@ namespace ViewModel
             Vendors = vendors;
         }
 
-        public void Apply()
+        protected override void OnOk()
         {
+            //add validation
+
             original.GlobalId = GlobalId;
             original.VendorId = VendorId;
             original.ProductCode = ProductCode;
             original.Title = Title;
+
+            executeDelegate(original);
+
+            closeDialogDelegate();
         }
     }
 }

@@ -4,13 +4,17 @@ using System.Text;
 
 namespace ViewModel
 {
-    public class DialogVM
+    public abstract class DialogVM
     {
-        public event Action Ok;
+        protected readonly Action closeDialogDelegate;
         public DelegateCommand<object> OkCommand { get; }
-        public DialogVM()
+
+        public DialogVM(Action closeDialogDelegate)
         {
-            OkCommand = new DelegateCommand<object>((obj) => Ok?.Invoke());
+            this.closeDialogDelegate = closeDialogDelegate;
+            OkCommand = new DelegateCommand<object>((obj) => OnOk());
         }
+
+        protected abstract void OnOk();
     }
 }

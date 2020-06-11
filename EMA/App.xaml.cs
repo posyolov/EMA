@@ -12,29 +12,29 @@ namespace EMA
     /// </summary>
     public partial class App : Application
     {
-        CatalogManager _catalogManager;
+        CatalogManager catalogManager;
 
         MainVM _mainVM;
         MainWindow _mainWindow;
 
         private void OnStartup(object sender, StartupEventArgs e)
         {
-            _catalogManager = new CatalogManager();
+            catalogManager = new CatalogManager();
 
             _mainVM = new MainVM();
 
             _mainVM.MainMenuVM.CatalogRequest += () =>
             {
-                var vm = new EntitiesListEditVM<CatalogItem>(_catalogManager.GetCatalog, CreateCatalogItemAddWindow, CreateCatalogItemEditWindow, CatalogItemDelete);
-                _catalogManager.CatalogChanged += vm.UpdateList;
+                var vm = new EntitiesListEditVM<CatalogItem>(catalogManager.GetCatalog, CreateCatalogItemAddWindow, CreateCatalogItemEditWindow, CatalogItemDelete);
+                catalogManager.CatalogChanged += vm.UpdateList;
                 var win = new CatalogWindow { DataContext = vm, Owner = _mainWindow };
                 win.Show();
             };
 
             _mainVM.MainMenuVM.VendorsRequest += () =>
             {
-                var vm = new EntitiesListEditVM<Vendor>(_catalogManager.GetVendors, CreateVendorAddWindow, CreateVendorEditWindow, VendorDelete);
-                _catalogManager.VendorsChanged += vm.UpdateList;
+                var vm = new EntitiesListEditVM<Vendor>(catalogManager.GetVendors, CreateVendorAddWindow, CreateVendorEditWindow, VendorDelete);
+                catalogManager.VendorsChanged += vm.UpdateList;
                 var win = new VendorsWindow { DataContext = vm, Owner = _mainWindow };
                 win.Show();
             };
@@ -45,77 +45,45 @@ namespace EMA
 
         private void CreateVendorAddWindow()
         {
-            var newVendor = new Vendor();
-
-            var vendorEditVM = new VendorEditVM(newVendor);
-            var win = new VendorEditWindow { DataContext = vendorEditVM, Owner = _mainWindow };
-            vendorEditVM.Ok += () =>
-            {
-                //add check
-                vendorEditVM.Apply();
-
-                _catalogManager.AddVendor(newVendor);
-                win.Close();
-            };
+            var win = new VendorEditWindow();
+            win.DataContext = new VendorEditVM(new Vendor(), catalogManager.AddVendor, win.Close);
+            win.Owner = _mainWindow;
             win.ShowDialog();
         }
 
         private void CreateVendorEditWindow(Vendor obj)
         {
-            var vendorEditVM = new VendorEditVM(obj);
-            var win = new VendorEditWindow { DataContext = vendorEditVM, Owner = _mainWindow };
-            vendorEditVM.Ok += () =>
-            {
-                //add check
-                vendorEditVM.Apply();
-
-                _catalogManager.UpdateVendor(obj);
-                win.Close();
-            };
+            var win = new VendorEditWindow();
+            win.DataContext = new VendorEditVM(obj, catalogManager.UpdateVendor, win.Close);
+            win.Owner = _mainWindow;
             win.ShowDialog();
         }
 
         private void VendorDelete(Vendor obj)
         {
-            _catalogManager.DeleteVendor(obj);
+            catalogManager.DeleteVendor(obj);
         }
 
 
         private void CreateCatalogItemAddWindow()
         {
-            var newCatalogItem = new CatalogItem();
-
-            var catalogItemEditVM = new CatalogItemEditVM(newCatalogItem, _catalogManager.GetVendors());
-            var win = new CatalogItemEditWindow { DataContext = catalogItemEditVM, Owner = _mainWindow };
-            catalogItemEditVM.Ok += () =>
-            {
-                //add check
-                catalogItemEditVM.Apply();
-
-                _catalogManager.AddCatalogItem(newCatalogItem);
-                win.Close();
-            };
+            var win = new CatalogItemEditWindow();
+            win.DataContext = new CatalogItemEditVM(new CatalogItem(), catalogManager.GetVendors(), catalogManager.AddCatalogItem, win.Close);
+            win.Owner = _mainWindow;
             win.ShowDialog();
         }
 
         private void CreateCatalogItemEditWindow(CatalogItem obj)
         {
-            var catalogItemEditVM = new CatalogItemEditVM(obj, _catalogManager.GetVendors());
-            var win = new CatalogItemEditWindow { DataContext = catalogItemEditVM, Owner = _mainWindow };
-            catalogItemEditVM.Ok += () =>
-            {
-                //add check
-                catalogItemEditVM.Apply();
-
-                _catalogManager.UpdateCatalogItem(obj);
-                win.Close();
-            };
+            var win = new CatalogItemEditWindow();
+            win.DataContext = new CatalogItemEditVM(obj, catalogManager.GetVendors(), catalogManager.UpdateCatalogItem, win.Close);
+            win.Owner = _mainWindow;
             win.ShowDialog();
         }
 
         private void CatalogItemDelete(CatalogItem obj)
         {
-            _catalogManager.DeleteCatalogItem(obj);
+            catalogManager.DeleteCatalogItem(obj);
         }
 
     }
