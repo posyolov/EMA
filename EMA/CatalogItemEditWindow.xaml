@@ -43,28 +43,28 @@
                        Text="Global ID:"/>
             <TextBox Grid.Column="1" Grid.Row="1" 
                        MinWidth="100"
-                       Text="{Binding GlobalId}"/>
+                       Text="{Binding EntityViewModel.GlobalId}"/>
 
             <TextBlock Grid.Column="0" Grid.Row="2"
                        Text="Vendor:"/>
             <ComboBox Grid.Column="1" Grid.Row="2" 
                        MinWidth="100" Margin="3"
-                       ItemsSource="{Binding Vendors}"
+                       ItemsSource="{Binding RelationData}"
                        DisplayMemberPath="Name"
                        SelectedValuePath="Id"
-                       SelectedValue="{Binding VendorId}"/>
+                       SelectedValue="{Binding EntityViewModel.VendorId}"/>
 
             <TextBlock Grid.Column="0" Grid.Row="3"
                        Text="Product code:"/>
             <TextBox Grid.Column="1" Grid.Row="3" 
                        MinWidth="100"
-                       Text="{Binding ProductCode}"/>
+                       Text="{Binding EntityViewModel.ProductCode}"/>
 
             <TextBlock Grid.Column="0" Grid.Row="4"
                        Text="Title:"/>
             <TextBox Grid.Column="1" Grid.Row="4" 
                        MinWidth="100"
-                       Text="{Binding Title}"/>
+                       Text="{Binding EntityViewModel.Title}"/>
         </Grid>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Content="OK"

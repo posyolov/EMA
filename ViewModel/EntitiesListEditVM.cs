@@ -7,9 +7,9 @@ using System.Text;
 
 namespace ViewModel
 {
-    public class EntitiesListEditVM<TEntity> : INotifyPropertyChanged
+    public class EntitiesListEditVM<TEntity> : INotifyPropertyChanged where TEntity : new()
     {
-        public event Action AddItemRequest;
+        public event Action<TEntity> AddItemRequest;
         public event Action<TEntity> EditItemRequest;
         public event Action<TEntity> DeleteItemRequest;
         public event PropertyChangedEventHandler PropertyChanged;
@@ -20,7 +20,7 @@ namespace ViewModel
 
         private TEntity selectedItem;
         private ObservableCollection<TEntity> items;
-        private Func<IEnumerable<TEntity>> getListDelegate;
+        private readonly Func<IEnumerable<TEntity>> getListDelegate;
 
         public ObservableCollection<TEntity> Items
         {
@@ -54,7 +54,7 @@ namespace ViewModel
             Items = new ObservableCollection<TEntity>(getListDelegate());
 
             AddItemRequestCommand = new DelegateCommand<object>(
-                (obj) => AddItemRequest?.Invoke());
+                (obj) => AddItemRequest?.Invoke(new TEntity()));
 
             EditItemRequestCommand = new DelegateCommand<object>(
                 canExecute: (obj) => SelectedItem != null,
@@ -65,12 +65,12 @@ namespace ViewModel
                 execute: (obj) => DeleteItemRequest?.Invoke(selectedItem));
         }
 
-        public EntitiesListEditVM(Func<IEnumerable<TEntity>> getListDelegate, Action addItemDelegate, Action<TEntity> editItemDelegate, Action<TEntity> deleteItemDelegate)
+        public EntitiesListEditVM(Func<IEnumerable<TEntity>> getListDelegate, Action<TEntity> addDelegate, Action<TEntity> editDelegate, Action<TEntity> deleteDelegate)
             : this(getListDelegate)
         {
-            AddItemRequest += addItemDelegate;
-            EditItemRequest += editItemDelegate;
-            DeleteItemRequest += deleteItemDelegate;
+            AddItemRequest += addDelegate;
+            EditItemRequest += editDelegate;
+            DeleteItemRequest += deleteDelegate;
         }
 
         public void UpdateList()

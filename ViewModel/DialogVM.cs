@@ -4,15 +4,18 @@ using System.Text;
 
 namespace ViewModel
 {
-    public abstract class DialogVM
+    public abstract class DialogVM<TEntity>
     {
+        protected readonly Func<TEntity, bool> executeDelegate;
         protected readonly Action closeDialogDelegate;
-        public DelegateCommand<object> OkCommand { get; }
+        public DelegateCommand<TEntity> OkCommand { get; }
 
-        public DialogVM(Action closeDialogDelegate)
+        protected DialogVM(Func<TEntity, bool> executeDialogDelegate, Action closeDialogDelegate)
         {
+            this.executeDelegate = executeDialogDelegate;
             this.closeDialogDelegate = closeDialogDelegate;
-            OkCommand = new DelegateCommand<object>((obj) => OnOk());
+
+            OkCommand = new DelegateCommand<TEntity>((obj) => OnOk());
         }
 
         protected abstract void OnOk();

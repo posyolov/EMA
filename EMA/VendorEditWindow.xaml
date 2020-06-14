@@ -35,13 +35,13 @@
             <TextBlock Grid.Column="0" Grid.Row="0"
                        Text="ID:"/>
             <TextBlock Grid.Column="1" Grid.Row="0"
-                       Text="{Binding Id}"/>
+                       Text="{Binding EntityViewModel.Id}"/>
 
             <TextBlock Grid.Column="0" Grid.Row="1"
                        Text="Name:"/>
             <TextBox Grid.Column="1" Grid.Row="1" 
                        MinWidth="100"
-                       Text="{Binding Name}"/>
+                       Text="{Binding EntityViewModel.Name}"/>
         </Grid>
         <StackPanel Orientation="Horizontal">
             <Button Content="OK"

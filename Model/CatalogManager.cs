@@ -3,6 +3,7 @@ using Repository.EF;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
 namespace Model
 {
@@ -10,8 +11,8 @@ namespace Model
     {
         //EquipmentContext _dbContext;
 
-        IRepository<Vendor> _vendorRepository;
-        IRepository<CatalogItem> _catalogRepository;
+        IRepository<Vendor> vendorRepository;
+        IRepository<CatalogItem> catalogRepository;
 
         public event Action CatalogChanged;
         public event Action VendorsChanged;
@@ -20,55 +21,79 @@ namespace Model
         {
             //_dbContext = new EquipmentContext();
 
-            _vendorRepository = new RepositoryEF<Vendor>(/*_dbContext*/);
-            _catalogRepository = new RepositoryEF<CatalogItem>(/*_dbContext*/);
+            vendorRepository = new RepositoryEF<Vendor>(/*_dbContext*/);
+            catalogRepository = new RepositoryEF<CatalogItem>(/*_dbContext*/);
         }
 
         public IEnumerable<Vendor> GetVendors()
         {
-            return _vendorRepository.Get();
+            return vendorRepository.Get();
         }
 
-        public void AddVendor(Vendor entity)
+        public bool AddVendor(Vendor entity)
         {
-            _vendorRepository.Create(entity);
-            VendorsChanged?.Invoke();
+            if (!vendorRepository.IsExist(e => e.Name == entity.Name) &&
+                !String.IsNullOrWhiteSpace(entity.Name))
+            {
+                vendorRepository.Create(entity);
+                VendorsChanged?.Invoke();
+                return true;
+            }
+            return false;
         }
 
-        public void UpdateVendor(Vendor entity)
+        public bool UpdateVendor(Vendor entity)
         {
-            _vendorRepository.Update(entity);
-            VendorsChanged?.Invoke();
+            if (!vendorRepository.IsExist(e => e.Name == entity.Name) &&
+                !String.IsNullOrWhiteSpace(entity.Name))
+            {
+                vendorRepository.Update(entity);
+                VendorsChanged?.Invoke();
+                return true;
+            }
+            return false;
         }
 
-        public void DeleteVendor(Vendor entity)
+        public bool DeleteVendor(Vendor entity)
         {
-            _vendorRepository.Remove(entity);
+            vendorRepository.Remove(entity);
             VendorsChanged?.Invoke();
+            return true;
         }
 
 
         public IEnumerable<CatalogItem> GetCatalog()
         {
-            return _catalogRepository.GetWithInclude(i => i.Vendor);
+            return catalogRepository.GetWithInclude(i => i.Vendor);
         }
 
-        public void AddCatalogItem(CatalogItem entity)
+        public bool AddCatalogItem(CatalogItem entity)
         {
-            _catalogRepository.Create(entity);
-            CatalogChanged?.Invoke();
+            if (!catalogRepository.IsExist(e => e.GlobalId == entity.GlobalId))
+            {
+                catalogRepository.Create(entity);
+                CatalogChanged?.Invoke();
+                return true;
+            }
+            return false;
         }
 
-        public void UpdateCatalogItem(CatalogItem entity)
+        public bool UpdateCatalogItem(CatalogItem entity)
         {
-            _catalogRepository.Update(entity);
-            CatalogChanged?.Invoke();
+            if (!catalogRepository.IsExist(e => e.GlobalId == entity.GlobalId))
+            {
+                catalogRepository.Update(entity);
+                CatalogChanged?.Invoke();
+                return true;
+            }
+            return false;
         }
 
-        public void DeleteCatalogItem(CatalogItem entity)
+        public bool DeleteCatalogItem(CatalogItem entity)
         {
-            _catalogRepository.Remove(entity);
+            catalogRepository.Remove(entity);
             CatalogChanged?.Invoke();
+            return true;
         }
 
     }

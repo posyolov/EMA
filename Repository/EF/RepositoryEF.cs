@@ -84,5 +84,11 @@ namespace Repository.EF
             IQueryable<TEntity> query = context.Set<TEntity>().AsNoTracking();
             return includeProperties.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
         }
+
+        public bool IsExist(Func<TEntity, bool> predicate)
+        {
+            using EquipmentContext context = new EquipmentContext();
+            return context.Set<TEntity>().AsNoTracking().Count<TEntity>(predicate) != 0;
+        }
     }
 }
