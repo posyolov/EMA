@@ -8,9 +8,11 @@ namespace ViewModel
     {
         public event Action CatalogRequest;
         public event Action VendorsRequest;
+        public event Action PositionsRequest;
 
         public DelegateCommand<object> OpenCatalogWindowCommand { get; }
         public DelegateCommand<object> OpenVendorsWindowCommand { get; }
+        public DelegateCommand<object> OpenPositionsWindowCommand { get; }
 
         public MainMenuVM()
         {
@@ -19,6 +21,9 @@ namespace ViewModel
 
             OpenVendorsWindowCommand = new DelegateCommand<object>(
                 (obj) => VendorsRequest?.Invoke());
+
+            OpenPositionsWindowCommand = new DelegateCommand<object>(
+                (obj) => PositionsRequest?.Invoke());
         }
 
     }

@@ -13,6 +13,7 @@ namespace EMA
     public partial class App : Application
     {
         CatalogManager catalogManager;
+        PositionsManager positionManager;
 
         MainVM _mainVM;
         MainWindow _mainWindow;
@@ -20,6 +21,7 @@ namespace EMA
         private void OnStartup(object sender, StartupEventArgs e)
         {
             catalogManager = new CatalogManager();
+            positionManager = new PositionsManager();
 
             _mainVM = new MainVM();
 
@@ -44,6 +46,18 @@ namespace EMA
                     (obj) => CreateEntityEditDialog<Vendor, VendorVM, VendorDeleteWindow>(catalogManager.DeleteVendor, obj, null));
                 catalogManager.VendorsChanged += vm.UpdateList;
                 var win = new VendorsWindow { DataContext = vm, Owner = _mainWindow };
+                win.Show();
+            };
+
+            _mainVM.MainMenuVM.PositionsRequest += () =>
+            {
+                var vm = new EntitiesListEditVM<Position>(
+                    positionManager.GetPositions,
+                    (obj) => CreateEntityEditDialog<Position, PositionVM, PositionEditWindow>(positionManager.AddPosition, obj, positionManager.GetPositions()),
+                    (obj) => CreateEntityEditDialog<Position, PositionVM, PositionEditWindow>(positionManager.UpdatePosition, obj, positionManager.GetPositions()),
+                    (obj) => CreateEntityEditDialog<Position, PositionVM, PositionDeleteWindow>(positionManager.DeletePosition, obj, null));
+                positionManager.PositionsChanged += vm.UpdateList;
+                var win = new PositionsListWindow { DataContext = vm, Owner = _mainWindow };
                 win.Show();
             };
 

@@ -69,7 +69,8 @@ namespace Model
 
         public bool AddCatalogItem(CatalogItem entity)
         {
-            if (!catalogRepository.IsExist(e => e.GlobalId == entity.GlobalId))
+            if (!catalogRepository.IsExist(e => e.GlobalId == entity.GlobalId) &&
+                !String.IsNullOrWhiteSpace(entity.Title))
             {
                 catalogRepository.Create(entity);
                 CatalogChanged?.Invoke();
@@ -80,7 +81,7 @@ namespace Model
 
         public bool UpdateCatalogItem(CatalogItem entity)
         {
-            if (!catalogRepository.IsExist(e => e.GlobalId == entity.GlobalId))
+            if (!String.IsNullOrWhiteSpace(entity.Title))
             {
                 catalogRepository.Update(entity);
                 CatalogChanged?.Invoke();

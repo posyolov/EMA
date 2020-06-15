@@ -21,5 +21,6 @@ namespace Repository.EF
 
         public DbSet<Vendor> Vendors { get; set; }
         public DbSet<CatalogItem> Catalog { get; set; }
+        public DbSet<Position> Positions { get; set; }
     }
 }

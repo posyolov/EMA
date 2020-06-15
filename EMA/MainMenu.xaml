@@ -23,6 +23,9 @@
                 <MenuItem Header="Vendors"
                           Command="{Binding OpenVendorsWindowCommand}">
                 </MenuItem>
+                <MenuItem Header="Positions"
+                          Command="{Binding OpenPositionsWindowCommand}">
+                </MenuItem>
             </MenuItem>
         </Menu>
     </ControlTemplate>
