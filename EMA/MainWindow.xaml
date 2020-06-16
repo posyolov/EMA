@@ -11,7 +11,8 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="MainMenu.xaml" />
+                <ResourceDictionary Source="MainMenu.xaml"/>
+                <ResourceDictionary Source="PositionsTree.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -20,6 +21,21 @@
         <ContentControl DataContext="{Binding MainMenuVM}"
                         Template="{StaticResource MainMenu}" 
                         DockPanel.Dock="Top"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <ContentControl Grid.Column="0"
+                DataContext="{Binding PositionsVM}"
+                Template="{StaticResource PositionsTree}"/>
+
+            <GridSplitter Grid.Column="1" Width="10" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+
+        </Grid>
+
     </DockPanel>
-    
+
 </Window>
