@@ -19,7 +19,7 @@ namespace Model
 
         public IEnumerable<Position> GetPositions()
         {
-            return positionsRepository.GetWithInclude(p => p.Parent, c => c.CatalogItem);
+            return positionsRepository.GetWithInclude(p => p.Parent, c => c.CatalogItem, v => v.CatalogItem.Vendor);
         }
 
         public bool AddPosition(Position entity)

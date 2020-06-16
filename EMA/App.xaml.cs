@@ -53,8 +53,8 @@ namespace EMA
             {
                 var vm = new EntitiesListEditVM<Position>(
                     positionManager.GetPositions,
-                    (obj) => CreateEntityEditDialog<Position, PositionVM, PositionEditWindow>(positionManager.AddPosition, obj, positionManager.GetPositions()),
-                    (obj) => CreateEntityEditDialog<Position, PositionVM, PositionEditWindow>(positionManager.UpdatePosition, obj, positionManager.GetPositions()),
+                    (obj) => CreateEntityEditDialog<Position, PositionVM, PositionEditWindow>(positionManager.AddPosition, obj, new object[] { positionManager.GetPositions(), catalogManager.GetCatalog() }),
+                    (obj) => CreateEntityEditDialog<Position, PositionVM, PositionEditWindow>(positionManager.UpdatePosition, obj, new object[] { positionManager.GetPositions(), catalogManager.GetCatalog() }),
                     (obj) => CreateEntityEditDialog<Position, PositionVM, PositionDeleteWindow>(positionManager.DeletePosition, obj, null));
                 positionManager.PositionsChanged += vm.UpdateList;
                 var win = new PositionsListWindow { DataContext = vm, Owner = _mainWindow };

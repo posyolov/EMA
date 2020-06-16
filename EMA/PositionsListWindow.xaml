@@ -36,11 +36,11 @@
                         <GridViewColumn Header="Id" 
                                     DisplayMemberBinding="{Binding Id}">
                         </GridViewColumn>
-                        
+
                         <GridViewColumn Header="Parent" 
                                     DisplayMemberBinding="{Binding Parent.Name}">
                         </GridViewColumn>
-                        
+
                         <GridViewColumn Header="Name" 
                                     DisplayMemberBinding="{Binding Name}">
                         </GridViewColumn>
@@ -49,8 +49,14 @@
                                     DisplayMemberBinding="{Binding Title}">
                         </GridViewColumn>
 
-                        <GridViewColumn Header="CatalogItem" 
-                                    DisplayMemberBinding="{Binding CatalogItem.Title}">
+                        <GridViewColumn Header="CatalogItem">
+                            <GridViewColumn.DisplayMemberBinding>
+                                <MultiBinding StringFormat="{}{0} {1} {2}">
+                                    <Binding Path="CatalogItem.Vendor.Name"/>
+                                    <Binding Path="CatalogItem.ProductCode"/>
+                                    <Binding Path="CatalogItem.Title"/>
+                                </MultiBinding>
+                            </GridViewColumn.DisplayMemberBinding>
                         </GridViewColumn>
 
                     </GridView.Columns>

@@ -39,7 +39,7 @@
                        Text="Parent:"/>
             <ComboBox Grid.Column="1" Grid.Row="2" 
                        MinWidth="100" Margin="3"
-                       ItemsSource="{Binding RelationData}"
+                       ItemsSource="{Binding RelationData[0]}"
                        DisplayMemberPath="Name"
                        SelectedValuePath="Id"
                        SelectedValue="{Binding EntityViewModel.ParentId}"/>
@@ -55,7 +55,28 @@
             <TextBox Grid.Column="1" Grid.Row="3" 
                        MinWidth="100"
                        Text="{Binding EntityViewModel.Title}"/>
-
+            
+            <TextBlock Grid.Column="0" Grid.Row="4"
+                       Text="CatalogItem:"/>
+            <ComboBox Grid.Column="1" Grid.Row="4" 
+                       MinWidth="100" Margin="3"
+                       ItemsSource="{Binding RelationData[1]}"
+                       SelectedValuePath="Id"
+                       SelectedValue="{Binding EntityViewModel.CatalogItemId}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock>
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0} {1} {2}">
+                                    <Binding Path="Vendor.Name"/>
+                                    <Binding Path="ProductCode"/>
+                                    <Binding Path="Title"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
         </Grid>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Content="OK"
