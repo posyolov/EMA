@@ -7,12 +7,11 @@ using System.Text;
 
 namespace ViewModel
 {
-    public class EntitiesListEditVM<TEntity> : INotifyPropertyChanged where TEntity : new()
+    public class EntitiesListEditVM<TEntity> : NotifyViewModel where TEntity : new()
     {
         public event Action<TEntity> AddItemRequest;
         public event Action<TEntity> EditItemRequest;
         public event Action<TEntity> DeleteItemRequest;
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public DelegateCommand<object> AddItemRequestCommand { get; }
         public DelegateCommand<object> EditItemRequestCommand { get; }
@@ -76,11 +75,6 @@ namespace ViewModel
         public void UpdateList()
         {
             Items = new ObservableCollection<TEntity>(getListDelegate());
-        }
-
-        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

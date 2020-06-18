@@ -2,6 +2,7 @@
 using Repository.EF;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Model
@@ -17,15 +18,24 @@ namespace Model
             positionsRepository = new RepositoryEF<Position>();
         }
 
+        public Position GetPositionFullData(int id)
+        {
+            return positionsRepository.GetWithInclude(p => p.Parent, c => c.CatalogItem, v => v.CatalogItem.Vendor).FirstOrDefault(e => e.Id == id);
+        }
+
         public IEnumerable<Position> GetPositions()
         {
             return positionsRepository.GetWithInclude(p => p.Parent, c => c.CatalogItem, v => v.CatalogItem.Vendor);
         }
 
+        public IEnumerable<Position> GetPositionsTree()
+        {
+            return positionsRepository.GetWithInclude(p => p.ParentId == null, ch => ch.Children, p => p.Parent, c => c.CatalogItem, v => v.CatalogItem.Vendor);
+        }
+
         public bool AddPosition(Position entity)
         {
-            if (!positionsRepository.IsExist(e => e.Name == entity.Name) &&
-                !String.IsNullOrWhiteSpace(entity.Name))
+            if (!String.IsNullOrWhiteSpace(entity.Name))
             {
                 positionsRepository.Create(entity);
                 PositionsChanged?.Invoke();

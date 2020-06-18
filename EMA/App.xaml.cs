@@ -15,17 +15,17 @@ namespace EMA
         CatalogManager catalogManager;
         PositionsManager positionManager;
 
-        MainVM _mainVM;
-        MainWindow _mainWindow;
+        MainVM mainVM;
+        MainWindow mainWindow;
 
         private void OnStartup(object sender, StartupEventArgs e)
         {
             catalogManager = new CatalogManager();
             positionManager = new PositionsManager();
 
-            _mainVM = new MainVM();
+            mainVM = new MainVM();
 
-            _mainVM.MainMenuVM.CatalogRequest += () =>
+            mainVM.MainMenuVM.CatalogRequest += () =>
             {
                 var vm = new EntitiesListEditVM<CatalogItem>(
                     catalogManager.GetCatalog, 
@@ -33,11 +33,11 @@ namespace EMA
                     (obj) => CreateEntityEditDialog<CatalogItem, CatalogItemVM, CatalogItemEditWindow>(catalogManager.UpdateCatalogItem, obj, catalogManager.GetVendors()),
                     (obj) => CreateEntityEditDialog<CatalogItem, CatalogItemVM, CatalogItemDeleteWindow>(catalogManager.DeleteCatalogItem, obj, null));
                 catalogManager.CatalogChanged += vm.UpdateList;
-                var win = new CatalogWindow { DataContext = vm, Owner = _mainWindow };
+                var win = new CatalogWindow { DataContext = vm, Owner = mainWindow };
                 win.Show();
             };
 
-            _mainVM.MainMenuVM.VendorsRequest += () =>
+            mainVM.MainMenuVM.VendorsRequest += () =>
             {
                 var vm = new EntitiesListEditVM<Vendor>(
                     catalogManager.GetVendors, 
@@ -45,11 +45,11 @@ namespace EMA
                     (obj) => CreateEntityEditDialog<Vendor, VendorVM, VendorEditWindow>(catalogManager.UpdateVendor, obj, null), 
                     (obj) => CreateEntityEditDialog<Vendor, VendorVM, VendorDeleteWindow>(catalogManager.DeleteVendor, obj, null));
                 catalogManager.VendorsChanged += vm.UpdateList;
-                var win = new VendorsWindow { DataContext = vm, Owner = _mainWindow };
+                var win = new VendorsWindow { DataContext = vm, Owner = mainWindow };
                 win.Show();
             };
 
-            _mainVM.MainMenuVM.PositionsRequest += () =>
+            mainVM.MainMenuVM.PositionsRequest += () =>
             {
                 var vm = new EntitiesListEditVM<Position>(
                     positionManager.GetPositions,
@@ -57,19 +57,22 @@ namespace EMA
                     (obj) => CreateEntityEditDialog<Position, PositionVM, PositionEditWindow>(positionManager.UpdatePosition, obj, new object[] { positionManager.GetPositions(), catalogManager.GetCatalog() }),
                     (obj) => CreateEntityEditDialog<Position, PositionVM, PositionDeleteWindow>(positionManager.DeletePosition, obj, null));
                 positionManager.PositionsChanged += vm.UpdateList;
-                var win = new PositionsListWindow { DataContext = vm, Owner = _mainWindow };
+                var win = new PositionsListWindow { DataContext = vm, Owner = mainWindow };
                 win.Show();
             };
 
-            _mainWindow = new MainWindow { DataContext = _mainVM };
-            _mainWindow.Show();
+            mainVM.PositionsTreeVM = new PositionsTreeVM(positionManager.GetPositionsTree, positionManager.GetPositionFullData);
+            positionManager.PositionsChanged += mainVM.PositionsTreeVM.UpdateTree;
+
+            mainWindow = new MainWindow { DataContext = mainVM };
+            mainWindow.Show();
         }
 
         private void CreateEntityEditDialog<TEntity, TEntityVM, TEntityV>(Func<TEntity, bool> executeDelegate, TEntity entity,  object relationData) where TEntityV : Window, new() where TEntityVM : IEntityVM<TEntity>, new()
         {
             var win = new TEntityV();
             win.DataContext = new EntityEditVM<TEntity, TEntityVM>(executeDelegate, win.Close, entity, relationData);
-            win.Owner = _mainWindow;
+            win.Owner = mainWindow;
             win.ShowDialog();
         }
     }

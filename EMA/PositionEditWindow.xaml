@@ -45,9 +45,21 @@
             <ComboBox Grid.Column="1" Grid.Row="1" 
                        MinWidth="100" Margin="3"
                        ItemsSource="{Binding RelationData[0]}"
-                       DisplayMemberPath="Name"
                        SelectedValuePath="Id"
-                       SelectedValue="{Binding EntityViewModel.ParentId}"/>
+                       SelectedValue="{Binding EntityViewModel.ParentId}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock>
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0} {1}">
+                                    <Binding Path="Name"/>
+                                    <Binding Path="Title"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
 
             <TextBlock Grid.Column="0" Grid.Row="2"
                        Text="Title:"/>

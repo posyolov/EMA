@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EMA"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
+        Title="MainWindow" Height="600" Width="800"
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
@@ -27,9 +27,9 @@
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-
+            
             <ContentControl Grid.Column="0"
-                DataContext="{Binding PositionsVM}"
+                DataContext="{Binding PositionsTreeVM}"
                 Template="{StaticResource PositionsTree}"/>
 
             <GridSplitter Grid.Column="1" Width="10" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
