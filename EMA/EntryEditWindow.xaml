@@ -1,0 +1,143 @@
+﻿<Window x:Class="EMA.EntryEditWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EMA"
+        mc:Ignorable="d"
+        Title="EntryEditWindow" Height="Auto" Width="Auto" 
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="MinWidth" Value="70"/>
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="3"/>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Margin" Value="3"/>
+            <Setter Property="MinWidth" Value="100"/>
+        </Style>
+    </Window.Resources>
+
+    <StackPanel HorizontalAlignment="Center">
+        <Grid HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Column="0" Grid.Row="0"
+                       Text="Parent:"/>
+            <ComboBox Grid.Column="1" Grid.Row="0" 
+                       ItemsSource="{Binding RelationData[0]}"
+                       SelectedValuePath="Id"
+                       SelectedValue="{Binding EntityViewModel.ParentId}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock>
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0} {1}">
+                                    <Binding Path="Position.Name"/>
+                                    <Binding Path="Title"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <TextBlock Grid.Column="0" Grid.Row="1"
+                       Text="IsFinal:"/>
+            <CheckBox  Grid.Column="1" Grid.Row="1" 
+                       VerticalAlignment="Center" HorizontalAlignment="Center"
+                       IsChecked="{Binding EntityViewModel.IsFinal}"/>
+
+            <TextBlock Grid.Column="0" Grid.Row="2"
+                       Text="OccurDateTime:"/>
+            <TextBox Grid.Column="1" Grid.Row="2" 
+                       MinWidth="100"
+                       Text="{Binding EntityViewModel.OccurDateTime, ConverterCulture=ru}"/>
+
+            <TextBlock Grid.Column="0" Grid.Row="3"
+                       Text="Title:"/>
+            <TextBox Grid.Column="1" Grid.Row="3" 
+                       MinWidth="100"
+                       Text="{Binding EntityViewModel.Title}"/>
+
+            <TextBlock Grid.Column="0" Grid.Row="4"
+                       Text="Description:"/>
+            <TextBox Grid.Column="1" Grid.Row="4" 
+                       MinWidth="100"
+                       Text="{Binding EntityViewModel.Description}"/>
+
+            <TextBlock Grid.Column="0" Grid.Row="5"
+                       Text="Position:"/>
+            <ComboBox Grid.Column="1" Grid.Row="5" 
+                       ItemsSource="{Binding RelationData[1]}"
+                       DisplayMemberPath="Name"
+                       SelectedValuePath="Id"
+                       SelectedValue="{Binding EntityViewModel.PositionId}"/>
+
+            <TextBlock Grid.Column="0" Grid.Row="6"
+                       Text="Reason:"/>
+            <ComboBox Grid.Column="1" Grid.Row="6" 
+                       ItemsSource="{Binding RelationData[2]}"
+                       DisplayMemberPath="Title"
+                       SelectedValuePath="Id"
+                       SelectedValue="{Binding EntityViewModel.ReasonId}"/>
+
+            <TextBlock Grid.Column="0" Grid.Row="7"
+                       Text="ContinuationCriteria:"/>
+            <ComboBox Grid.Column="1" Grid.Row="7" 
+                       ItemsSource="{Binding RelationData[3]}"
+                       DisplayMemberPath="Title"
+                       SelectedValuePath="Id"
+                       SelectedValue="{Binding EntityViewModel.ContinuationCriteriaId}"/>
+
+            <TextBlock Grid.Column="0" Grid.Row="8"
+                       Text="Priority:"/>
+            <TextBox Grid.Column="1" Grid.Row="8" 
+                       MinWidth="100"
+                       Text="{Binding EntityViewModel.Priority}"/>
+
+            <TextBlock Grid.Column="0" Grid.Row="9"
+                       Text="PlannedStartDate:"/>
+            <TextBox Grid.Column="1" Grid.Row="9" 
+                       MinWidth="100"
+                       Text="{Binding EntityViewModel.PlannedStartDate, ConverterCulture=ru}"/>
+
+            <TextBlock Grid.Column="0" Grid.Row="10"
+                       Text="EstimatedResources:"/>
+            <TextBox Grid.Column="1" Grid.Row="10" 
+                       MinWidth="100"
+                       Text="{Binding EntityViewModel.EstimatedResources}"/>
+
+        </Grid>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Content="OK"
+                    IsDefault="False"
+                    Command="{Binding OkCommand}"/>
+            <Button Content="Cancel"
+                    IsCancel="True"/>
+        </StackPanel>
+    </StackPanel>
+</Window>

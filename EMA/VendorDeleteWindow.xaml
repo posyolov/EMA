@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EMA"
         mc:Ignorable="d"
-        Title="VendorDeleteWindow" Height="120" Width="250" 
+        Title="VendorDeleteWindow" Height="Auto" Width="Auto" 
         WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
     
     <Window.Resources>

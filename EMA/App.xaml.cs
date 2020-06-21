@@ -14,6 +14,7 @@ namespace EMA
     {
         CatalogManager catalogManager;
         PositionsManager positionManager;
+        EntriesManager entriesManager;
 
         MainVM mainVM;
         MainWindow mainWindow;
@@ -22,6 +23,7 @@ namespace EMA
         {
             catalogManager = new CatalogManager();
             positionManager = new PositionsManager();
+            entriesManager = new EntriesManager();
 
             mainVM = new MainVM();
 
@@ -61,8 +63,23 @@ namespace EMA
                 win.Show();
             };
 
+            mainVM.MainMenuVM.EntriesRequest += () =>
+            {
+                var vm = new EntitiesListEditVM<Entry>(
+                    entriesManager.GetEntries,
+                    (obj) => CreateEntityEditDialog<Entry, EntryVM, EntryEditWindow>(entriesManager.AddEntry, obj, new object[] { entriesManager.GetEntries(), positionManager.GetPositions(), entriesManager.GetReasons(), entriesManager.GetContinuationCriterias() }),
+                    (obj) => CreateEntityEditDialog<Entry, EntryVM, EntryEditWindow>(entriesManager.UpdateEntry, obj, new object[] { entriesManager.GetEntries(), positionManager.GetPositions(), entriesManager.GetReasons(), entriesManager.GetContinuationCriterias() }),
+                    (obj) => CreateEntityEditDialog<Entry, EntryVM, EntryDeleteWindow>(entriesManager.DeleteEntry, obj, null));
+                entriesManager.EntriesChanged += vm.UpdateList;
+                var win = new EntriesListWindow { DataContext = vm, Owner = mainWindow };
+                win.Show();
+            };
+
             mainVM.PositionsTreeVM = new PositionsTreeVM(positionManager.GetPositionsTree, positionManager.GetPositionFullData);
             positionManager.PositionsChanged += mainVM.PositionsTreeVM.UpdateTree;
+
+            mainVM.EntriesListVM = new EntriesListVM(entriesManager.GetEntries);
+            entriesManager.EntriesChanged += mainVM.EntriesListVM.UpdateList;
 
             mainWindow = new MainWindow { DataContext = mainVM };
             mainWindow.Show();

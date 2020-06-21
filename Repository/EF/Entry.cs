@@ -8,10 +8,8 @@ namespace Repository.EF
     public class Entry
     {
         public int Id { get; set; }
-        [ForeignKey("Prev")]
-        public int? PrevId { get; set; }
-        [ForeignKey("Next")]
-        public int? NextId { get; set; }
+        public int? ParentId { get; set; }
+        public bool IsFinal { get; set; }
         public DateTime OccurDateTime { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
@@ -21,13 +19,13 @@ namespace Repository.EF
         public ushort? Priority { get; set; }
         public DateTime? PlannedStartDate { get; set; }
         public float? EstimatedResources { get; set; }
+        public DateTime ChangeDateTime { get; set; }
+        public int ChangeUserId { get; set; }
 
-        public virtual Entry Prev { get; set; }
-        public virtual Entry Next { get; set; }
+        public virtual Entry Parent { get; set; }
         public virtual Position Position { get; set; }
         public virtual EntryReason Reason { get; set; }
         public virtual EntryContinuationCriteria ContinuationCriteria { get; set; }
-        //public virtual ICollection<Department> AttachedDepartments { get; set; }
-
+        public virtual User ChangeUser { get; set; }
     }
 }

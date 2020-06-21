@@ -26,6 +26,9 @@
                 <MenuItem Header="Positions"
                           Command="{Binding OpenPositionsWindowCommand}">
                 </MenuItem>
+                <MenuItem Header="Entries"
+                          Command="{Binding OpenEntriesWindowCommand}">
+                </MenuItem>
             </MenuItem>
         </Menu>
     </ControlTemplate>

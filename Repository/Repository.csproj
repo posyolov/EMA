@@ -9,6 +9,8 @@
     <Compile Remove="Migrations\20200614164249_positions.Designer.cs" />
     <Compile Remove="Migrations\20200614164647_positions2.cs" />
     <Compile Remove="Migrations\20200614164647_positions2.Designer.cs" />
+    <Compile Remove="Migrations\20200620154551_entries_no_linkedlist.cs" />
+    <Compile Remove="Migrations\20200620154551_entries_no_linkedlist.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
