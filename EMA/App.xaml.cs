@@ -78,8 +78,8 @@ namespace EMA
             mainVM.PositionsTreeVM = new PositionsTreeVM(positionManager.GetPositionsTree, positionManager.GetPositionFullData);
             positionManager.PositionsChanged += mainVM.PositionsTreeVM.UpdateTree;
 
-            mainVM.EntriesListVM = new EntriesListVM(entriesManager.GetEntries);
-            entriesManager.EntriesChanged += mainVM.EntriesListVM.UpdateList;
+            mainVM.EntriesTreeVM = new EntriesTreeVM(entriesManager.GetEntries, entriesManager.GetEntriesTree);
+            entriesManager.EntriesChanged += mainVM.EntriesTreeVM.UpdateList;
 
             mainWindow = new MainWindow { DataContext = mainVM };
             mainWindow.Show();

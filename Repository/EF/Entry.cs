@@ -23,6 +23,7 @@ namespace Repository.EF
         public int ChangeUserId { get; set; }
 
         public virtual Entry Parent { get; set; }
+        public virtual ICollection<Entry> Children { get; set; }
         public virtual Position Position { get; set; }
         public virtual EntryReason Reason { get; set; }
         public virtual EntryContinuationCriteria ContinuationCriteria { get; set; }

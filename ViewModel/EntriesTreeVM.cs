@@ -2,22 +2,22 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace ViewModel
 {
-    public class EntriesListVM : NotifyViewModel
+    public class EntriesTreeVM : NotifyViewModel
     {
         private readonly Func<IEnumerable<Entry>> getListDelegate;
+        private readonly Func<IEnumerable<Entry>> getTreeDelegate;
 
         private ObservableCollection<Entry> entries;
+        private ObservableCollection<Entry> entriesTree;
         private Entry selectedItem;
 
         public ObservableCollection<Entry> Entries
         {
-            get
-            {
-                return entries;
-            }
+            get => entries;
             private set
             {
                 entries = value;
@@ -25,12 +25,20 @@ namespace ViewModel
             }
         }
 
+        public ObservableCollection<Entry> EntriesTree
+        {
+            get => entriesTree;
+            set
+            { 
+                entriesTree = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+
         public Entry SelectedItem
         {
-            get
-            {
-                return selectedItem;
-            }
+            get => selectedItem;
             set
             {
                 selectedItem = value;
@@ -38,15 +46,18 @@ namespace ViewModel
             }
         }
 
-        public EntriesListVM(Func<IEnumerable<Entry>> getListDelegate)
+        public EntriesTreeVM(Func<IEnumerable<Entry>> getListDelegate, Func<IEnumerable<Entry>> getTreeDelegate)
         {
             this.getListDelegate = getListDelegate;
+            this.getTreeDelegate = getTreeDelegate;
             Entries = new ObservableCollection<Entry>(getListDelegate?.Invoke());
+            EntriesTree = new ObservableCollection<Entry>(getTreeDelegate?.Invoke());
         }
 
         public void UpdateList()
         {
             Entries = new ObservableCollection<Entry>(getListDelegate?.Invoke());
+            EntriesTree = new ObservableCollection<Entry>(getTreeDelegate?.Invoke());
         }
     }
 }

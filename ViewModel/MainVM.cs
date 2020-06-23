@@ -4,7 +4,7 @@
     {
         public MainMenuVM MainMenuVM { get; }
         public PositionsTreeVM PositionsTreeVM { get; set; }
-        public EntriesListVM EntriesListVM { get; set; }
+        public EntriesTreeVM EntriesTreeVM { get; set; }
 
         public MainVM()
         {

@@ -13,7 +13,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="MainMenu.xaml"/>
                 <ResourceDictionary Source="PositionsTree.xaml"/>
-                <ResourceDictionary Source="EntriesList.xaml"/>
+                <ResourceDictionary Source="EntriesTree.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -36,8 +36,8 @@
             <GridSplitter Grid.Column="1" Width="10" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
 
             <ContentControl Grid.Column="2"
-                DataContext="{Binding EntriesListVM}"
-                Template="{StaticResource EntriesList}"/>
+                DataContext="{Binding EntriesTreeVM}"
+                Template="{StaticResource EntriesTree}"/>
         </Grid>
 
     </DockPanel>
