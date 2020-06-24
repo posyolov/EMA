@@ -5,37 +5,164 @@
 
     <ControlTemplate x:Key="EntriesTree">
 
-        <ControlTemplate.Resources>
-            <Style TargetType="Button">
-                <Setter Property="Margin" Value="5"/>
-                <Setter Property="MinWidth" Value="70"/>
-            </Style>
-            <Style TargetType="TextBlock">
-                <Setter Property="Margin" Value="5"/>
-            </Style>
-            <Style TargetType="TextBox">
-                <Setter Property="Margin" Value="3"/>
-            </Style>
-        </ControlTemplate.Resources>
 
 
-        <ScrollViewer Grid.Row="0" Margin="3 0 0 0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+
+
+        <!--<ListView.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.ContainerStyle>
+                        <Style TargetType="{x:Type GroupItem}">
+                            <Setter Property="Margin" Value="0,0,0,5"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type GroupItem}">
+                                        <Expander IsExpanded="True" BorderBrush="#FFA4B97F" BorderThickness="0,0,0,1">
+                                            <Expander.Header>
+                                                <DockPanel>
+                                                    <TextBlock FontWeight="Bold" Text="{Binding Path=OccurDateTime}" Margin="5,0,0,0" Width="100"/>
+                                                    <TextBlock FontWeight="Bold"  Text="{Binding Path=Title}"/>
+                                                </DockPanel>
+                                            </Expander.Header>
+                                            <Expander.Content>
+                                                <ItemsPresenter />
+                                            </Expander.Content>
+                                        </Expander>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </GroupStyle.ContainerStyle>
+                </GroupStyle>
+            </ListView.GroupStyle>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    
+                </DataTemplate>
+            </ListView.ItemTemplate>-->
+
+        <ListView ItemsSource="{Binding EntriesTree}">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="BorderBrush" Value="Black"></Setter>
+                    <Setter Property="BorderThickness" Value="0,0,0,1"></Setter>
+                    <Setter Property="Focusable" Value="False" />
+                    <Setter Property="HorizontalAlignment" Value="Stretch" />
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="VerticalAlignment" Value="Top"></Setter>
+                    <Setter Property="VerticalContentAlignment" Value="Top"></Setter>
+                </Style>
+            </ListView.ItemContainerStyle>
+            
+            <ListView.ItemTemplate>
+                <DataTemplate>
+
+                    <HeaderedContentControl Header="{Binding Title}">
+
+                        <ListView ItemsSource="{Binding Children}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridView.Columns>
+
+                                        <GridViewColumn Header="OccurDateTime"  DisplayMemberBinding="{Binding OccurDateTime, ConverterCulture=ru}">
+                                        </GridViewColumn>
+
+                                        <GridViewColumn Header="Title"  DisplayMemberBinding="{Binding Title}">
+                                        </GridViewColumn>
+
+                                        <GridViewColumn Header="Position"  DisplayMemberBinding="{Binding Position.Name}">
+                                        </GridViewColumn>
+
+                                    </GridView.Columns>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </HeaderedContentControl>
+                    
+                </DataTemplate>
+            </ListView.ItemTemplate>
+
+            <!--<ListView.View>
+                <GridView>
+                    <GridView.Columns>
+
+                        <GridViewColumn Header="OccurDateTime">
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="Title">
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="Position">
+                        </GridViewColumn>
+
+                    </GridView.Columns>
+                </GridView>
+
+
+
+            </ListView.View>-->
+        </ListView>
+
+
+
+
+        <!--<ScrollViewer Grid.Row="0" Margin="3 0 0 0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
             <TreeView ItemsSource="{Binding EntriesTree}">
                 <i:Interaction.Behaviors>
                     <local:TreeViewSelectedItemBehavior SelectedItem="{Binding SelectedItem}" />
                 </i:Interaction.Behaviors>
-                <TreeView.ItemTemplate>
-                    <HierarchicalDataTemplate ItemsSource="{Binding Children, Mode=OneWay}">
-                        <TextBlock Text="{Binding Title}"/>
-                    </HierarchicalDataTemplate>
-                </TreeView.ItemTemplate>
                 <TreeView.ItemContainerStyle>
-                    <Style TargetType="{x:Type TreeViewItem}">
+                    <Style TargetType="TreeViewItem">
                         <Setter Property="IsExpanded" Value="True"/>
                     </Style>
                 </TreeView.ItemContainerStyle>
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Children, Mode=OneWay}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" MinWidth="120"
+                               Text="{Binding OccurDateTime, ConverterCulture=ru}"/>
+
+                            <TextBlock Grid.Column="1"
+                               Text="{Binding Position.Name}"/>
+
+                            <TextBlock Grid.Column="2" 
+                               Text="{Binding Title}"/>
+
+                            <TextBlock Grid.Column="3" 
+                               Text="{Binding Reason.Title}"/>
+
+                            <TextBlock Grid.Column="4" 
+                               Text="{Binding ContinuationCriteria.Title}"/>
+
+                            <TextBlock Grid.Column="5"
+                               Text="{Binding Priority}"/>
+
+                            <TextBlock Grid.Column="6"
+                               Text="{Binding PlannedStartDate, ConverterCulture=ru}"/>
+
+                            <TextBlock Grid.Column="7"
+                               Text="{Binding EstimatedResources}"/>
+
+                            <CheckBox  Grid.Column="8" VerticalAlignment="Center" HorizontalAlignment="Center"
+                               IsEnabled="False"
+                               IsChecked="{Binding IsFinal}"/>
+                        </Grid>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
             </TreeView>
-        </ScrollViewer>
+        </ScrollViewer>-->
 
     </ControlTemplate>
 
