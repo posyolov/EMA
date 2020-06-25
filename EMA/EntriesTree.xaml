@@ -4,7 +4,11 @@
                     xmlns:local="clr-namespace:EMA" >
 
     <ControlTemplate x:Key="EntriesTree">
-
+        <ControlTemplate.Resources>
+            <Style x:Key="textMargin">
+                <Setter Property="Control.Margin" Value="10 0"/>
+            </Style>
+        </ControlTemplate.Resources>
 
 
 
@@ -42,7 +46,7 @@
             </ListView.ItemTemplate>-->
 
         <ListView ItemsSource="{Binding EntriesTree}">
-            <ListView.ItemContainerStyle>
+            <!--<ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Setter Property="BorderBrush" Value="Black"></Setter>
                     <Setter Property="BorderThickness" Value="0,0,0,1"></Setter>
@@ -52,55 +56,48 @@
                     <Setter Property="VerticalAlignment" Value="Top"></Setter>
                     <Setter Property="VerticalContentAlignment" Value="Top"></Setter>
                 </Style>
-            </ListView.ItemContainerStyle>
-            
-            <ListView.ItemTemplate>
+            </ListView.ItemContainerStyle>-->
+
+            <ItemsControl.ItemTemplate>
                 <DataTemplate>
 
-                    <HeaderedContentControl Header="{Binding Title}">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding OccurDateTime, ConverterCulture=ru}" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding Position.Name}" FontWeight="Bold" Style="{StaticResource textMargin}"/>
+                            <TextBlock Text="{Binding Title}" FontWeight="Bold" Style="{StaticResource textMargin}"/>
+                            <TextBlock Text="{Binding Reason.Title}" FontWeight="Bold" Style="{StaticResource textMargin}"/>
+                            <TextBlock Text="{Binding ContinuationCriteria.Title}" FontWeight="Bold" Style="{StaticResource textMargin}"/>
+                            <TextBlock Text="{Binding Priority}" FontWeight="Bold" Style="{StaticResource textMargin}"/>
+                            <TextBlock Text="{Binding PlannedStartDate, ConverterCulture=ru}" FontWeight="Bold" Style="{StaticResource textMargin}"/>
+                            <TextBlock Text="{Binding EstimatedResources}" FontWeight="Bold" Style="{StaticResource textMargin}"/>
+                            <CheckBox  Grid.Column="8" VerticalAlignment="Center" HorizontalAlignment="Center" IsEnabled="False" IsChecked="{Binding IsFinal}" Style="{StaticResource textMargin}"/>
+                        </StackPanel>
 
-                        <ListView ItemsSource="{Binding Children}">
-                            <ListView.View>
-                                <GridView>
-                                    <GridView.Columns>
+                        <ItemsControl ItemsSource="{Binding Children}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding OccurDateTime, ConverterCulture=ru}" Style="{StaticResource textMargin}"/>
+                                        <TextBlock Text="{Binding Position.Name}" Style="{StaticResource textMargin}"/>
+                                        <TextBlock Text="{Binding Title}" Style="{StaticResource textMargin}"/>
+                                        <TextBlock Text="{Binding Reason.Title}" Style="{StaticResource textMargin}"/>
+                                        <TextBlock Text="{Binding ContinuationCriteria.Title}" Style="{StaticResource textMargin}"/>
+                                        <TextBlock Text="{Binding Priority}" Style="{StaticResource textMargin}"/>
+                                        <TextBlock Text="{Binding PlannedStartDate, ConverterCulture=ru}" Style="{StaticResource textMargin}"/>
+                                        <TextBlock Text="{Binding EstimatedResources}" Style="{StaticResource textMargin}"/>
+                                        <CheckBox  Grid.Column="8" VerticalAlignment="Center" HorizontalAlignment="Center" IsEnabled="False" IsChecked="{Binding IsFinal}" Style="{StaticResource textMargin}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
 
-                                        <GridViewColumn Header="OccurDateTime"  DisplayMemberBinding="{Binding OccurDateTime, ConverterCulture=ru}">
-                                        </GridViewColumn>
+                    </StackPanel>
 
-                                        <GridViewColumn Header="Title"  DisplayMemberBinding="{Binding Title}">
-                                        </GridViewColumn>
-
-                                        <GridViewColumn Header="Position"  DisplayMemberBinding="{Binding Position.Name}">
-                                        </GridViewColumn>
-
-                                    </GridView.Columns>
-                                </GridView>
-                            </ListView.View>
-                        </ListView>
-                    </HeaderedContentControl>
-                    
                 </DataTemplate>
-            </ListView.ItemTemplate>
-
-            <!--<ListView.View>
-                <GridView>
-                    <GridView.Columns>
-
-                        <GridViewColumn Header="OccurDateTime">
-                        </GridViewColumn>
-
-                        <GridViewColumn Header="Title">
-                        </GridViewColumn>
-
-                        <GridViewColumn Header="Position">
-                        </GridViewColumn>
-
-                    </GridView.Columns>
-                </GridView>
+            </ItemsControl.ItemTemplate>
 
 
-
-            </ListView.View>-->
         </ListView>
 
 
