@@ -13,8 +13,8 @@ namespace Repository.EF
         public int? CatalogItemId { get; set; }
         public string Description { get; set; }
 
-        public virtual Position Parent { get; set; }
-        public virtual ICollection<Position> Children { get; set; }
+        public Position Parent { get; set; }
+        public ICollection<Position> Children { get; set; }
         public virtual CatalogItem CatalogItem { get; set; }
     }
 }

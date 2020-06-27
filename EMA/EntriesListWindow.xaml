@@ -40,7 +40,7 @@
                         <GridViewColumn Header="Parent">
                             <GridViewColumn.DisplayMemberBinding>
                             <MultiBinding StringFormat="{}{0} {1}">
-                                <Binding Path="Parent.Position.Name"/>
+                                <Binding Path="Parent.Position.Name" Converter="{StaticResource positionNameConverter}"/>
                                 <Binding Path="Parent.Title"/>
                             </MultiBinding>
                             </GridViewColumn.DisplayMemberBinding>
@@ -63,7 +63,7 @@
                         </GridViewColumn>
 
                         <GridViewColumn Header="Position" 
-                                    DisplayMemberBinding="{Binding Position.Name}">
+                                    DisplayMemberBinding="{Binding Position.Name, Converter={StaticResource positionNameConverter}}">
                         </GridViewColumn>
 
                         <GridViewColumn Header="Reason" 

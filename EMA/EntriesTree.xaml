@@ -64,7 +64,7 @@
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding OccurDateTime, ConverterCulture=ru}" FontWeight="Bold"/>
-                            <TextBlock Text="{Binding Position.Name}" FontWeight="Bold" Style="{StaticResource textMargin}"/>
+                            <TextBlock Text="{Binding Position.Name, Converter={StaticResource positionNameConverter}}" FontWeight="Bold" Style="{StaticResource textMargin}"/>
                             <TextBlock Text="{Binding Title}" FontWeight="Bold" Style="{StaticResource textMargin}"/>
                             <TextBlock Text="{Binding Reason.Title}" FontWeight="Bold" Style="{StaticResource textMargin}"/>
                             <TextBlock Text="{Binding ContinuationCriteria.Title}" FontWeight="Bold" Style="{StaticResource textMargin}"/>
@@ -79,7 +79,7 @@
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{Binding OccurDateTime, ConverterCulture=ru}" Style="{StaticResource textMargin}"/>
-                                        <TextBlock Text="{Binding Position.Name}" Style="{StaticResource textMargin}"/>
+                                        <TextBlock Text="{Binding Position.Name, Converter={StaticResource positionNameConverter}}" Style="{StaticResource textMargin}"/>
                                         <TextBlock Text="{Binding Title}" Style="{StaticResource textMargin}"/>
                                         <TextBlock Text="{Binding Reason.Title}" Style="{StaticResource textMargin}"/>
                                         <TextBlock Text="{Binding ContinuationCriteria.Title}" Style="{StaticResource textMargin}"/>

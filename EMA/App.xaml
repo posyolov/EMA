@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:EMA"
              Startup="OnStartup">
     <Application.Resources>
-         
+        <local:PositionNameConverter x:Key="positionNameConverter"/>
     </Application.Resources>
 </Application>

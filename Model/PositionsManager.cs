@@ -30,7 +30,8 @@ namespace Model
 
         public IEnumerable<Position> GetPositionsTree()
         {
-            return positionsRepository.GetWithInclude(p => p.ParentId == null, ch => ch.Children, p => p.Parent, c => c.CatalogItem, v => v.CatalogItem.Vendor);
+            //return positionsRepository.GetWithInclude(p => p.ParentId == null, ch => ch.Children, p => p.Parent, c => c.CatalogItem, v => v.CatalogItem.Vendor);
+            return positionsRepository.Get().Where(p => p.ParentId == null);
         }
 
         public bool AddPosition(Position entity)

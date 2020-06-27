@@ -20,7 +20,7 @@ namespace Repository.EF
         public IEnumerable<TEntity> Get()
         {
             using EquipmentContext context = new EquipmentContext();
-            return context.Set<TEntity>().AsNoTracking().ToList<TEntity>();
+            return context.Set<TEntity>()./*AsNoTracking().*/ToList<TEntity>();
             //return _dbSet.AsNoTracking().ToList();
             //return _dbSet.ToList();
         }
