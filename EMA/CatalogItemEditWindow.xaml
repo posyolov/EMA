@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EMA"
         mc:Ignorable="d"
-        Title="CatalogItemEditWindow" Height="Auto" Width="Auto" 
+        Title="CatalogItemEditWindow" SizeToContent="WidthAndHeight" 
         WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
 
     <Window.Resources>

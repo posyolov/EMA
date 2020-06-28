@@ -18,10 +18,14 @@ namespace EMA
             char[] chars = str.ToCharArray();
 
             int j = 0;
-            for (var i = 0; i < str.Length && j < symbols.Length; i++)
+            for (var i = 0; i < str.Length; i++)
             {
                 if (str[i] == DELIMITER)
-                    chars[i] = symbols[j++];
+                {
+                    chars[i] = symbols[j];
+                    if (j < symbols.Length - 1)
+                        j++;
+                }
             }
             return new string(chars);
         }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EMA"
         mc:Ignorable="d"
-        Title="PositionDeleteWindow" Height="Auto" Width="Auto" 
+        Title="PositionDeleteWindow" SizeToContent="WidthAndHeight" 
         WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
 
     <Window.Resources>
@@ -24,7 +24,8 @@
     <StackPanel HorizontalAlignment="Center">
         <StackPanel HorizontalAlignment="Center">
             <TextBlock Text="Do you really want delete this item?"/>
-            <TextBlock Text="{Binding EntityViewModel.Name}" HorizontalAlignment="Center"/>
+            <TextBlock Text="{Binding EntityViewModel.Name, Converter={StaticResource positionNameConverter}}" 
+                       HorizontalAlignment="Center"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Content="OK"

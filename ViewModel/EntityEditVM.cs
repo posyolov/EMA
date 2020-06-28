@@ -17,6 +17,7 @@ namespace ViewModel
             entityModel = entity;
             EntityViewModel = new TEntityVM();
             EntityViewModel.ToViewModel(entityModel);
+
             RelationData = relationData;
         }
 

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EMA"
         mc:Ignorable="d"
-        Title="PositionEditWindow" Height="Auto" Width="Auto" 
+        Title="PositionEditWindow" SizeToContent="WidthAndHeight" 
         WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
 
     <Window.Resources>
@@ -36,17 +36,20 @@
 
             <TextBlock Grid.Column="0" Grid.Row="0"
                        Text="Name:"/>
-            <TextBox Grid.Column="1" Grid.Row="0" 
-                       MinWidth="100"
-                       Text="{Binding EntityViewModel.Name, Converter={StaticResource positionNameConverter}}"/>
+            <StackPanel Grid.Column="1" Grid.Row="0"
+                        Orientation="Horizontal">
+                <TextBlock Margin="5 5 0 5" VerticalAlignment="Center"
+                       Text="{Binding EntityViewModel.NamePrefix, Converter={StaticResource positionNameConverter}}"/>
+                <TextBox MinWidth="50" Margin="2 5"
+                       Text="{Binding EntityViewModel.ShortName}"/>
+            </StackPanel>
 
             <TextBlock Grid.Column="0" Grid.Row="1"
                        Text="Parent:"/>
             <ComboBox Grid.Column="1" Grid.Row="1" 
                        MinWidth="100" Margin="3"
                        ItemsSource="{Binding RelationData[0]}"
-                       SelectedValuePath="Id"
-                       SelectedValue="{Binding EntityViewModel.ParentId}">
+                       SelectedItem="{Binding EntityViewModel.Parent}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock>
@@ -66,7 +69,7 @@
             <TextBox Grid.Column="1" Grid.Row="2" 
                        MinWidth="100"
                        Text="{Binding EntityViewModel.Title}"/>
-            
+
             <TextBlock Grid.Column="0" Grid.Row="3"
                        Text="CatalogItem:"/>
             <ComboBox Grid.Column="1" Grid.Row="3" 

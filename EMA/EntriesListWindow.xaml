@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:EMA"
         mc:Ignorable="d"
         Title="EntriesListWindow"  
-        Height="450" Width="Auto" 
+        SizeToContent="WidthAndHeight" 
         WindowStartupLocation="CenterOwner">
 
     <Window.Resources>

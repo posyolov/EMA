@@ -9,6 +9,7 @@ namespace Model
 {
     public class PositionsManager
     {
+        const char DELIMITER = ';';
         IRepository<Position> positionsRepository;
 
         public event Action PositionsChanged;
@@ -20,7 +21,7 @@ namespace Model
 
         public Position GetPositionFullData(int id)
         {
-            return positionsRepository.GetWithInclude(p => p.Parent, c => c.CatalogItem, v => v.CatalogItem.Vendor).FirstOrDefault(e => e.Id == id);
+            return positionsRepository.GetWithInclude(p => p.Parent, c => c.CatalogItem, v => v.CatalogItem.Vendor, ch => ch.Children).FirstOrDefault(e => e.Id == id);
         }
 
         public IEnumerable<Position> GetPositions()
@@ -49,7 +50,21 @@ namespace Model
         {
             if (!String.IsNullOrWhiteSpace(entity.Name))
             {
+                var old = GetPositionFullData(entity.Id);
+
                 positionsRepository.Update(entity);
+
+                //update children names
+                if (entity.Name != old.Name && old.Children != null)
+                {
+                    var positions = positionsRepository.Get(n => n.Name.Contains(old.Name + DELIMITER));
+                    foreach (var item in positions)
+                    {
+                        item.Name = item.Name.Replace(old.Name, entity.Name);
+                        positionsRepository.Update(item);
+                    }
+                }
+
                 PositionsChanged?.Invoke();
                 return true;
             }

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:EMA"
         mc:Ignorable="d"
         Title="Catalog" 
-        Height="450" Width="600" 
+        SizeToContent="WidthAndHeight" 
         WindowStartupLocation="CenterOwner">
 
     <Window.Resources>
