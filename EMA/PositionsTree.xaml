@@ -27,14 +27,53 @@
 
             <ScrollViewer Grid.Row="0" Margin="3 0 0 0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                 <TreeView ItemsSource="{Binding Positions}">
+                    
                     <i:Interaction.Behaviors>
                         <local:TreeViewSelectedItemBehavior SelectedItem="{Binding SelectedItem}" />
                     </i:Interaction.Behaviors>
+                    
                     <TreeView.ItemTemplate>
                         <HierarchicalDataTemplate ItemsSource="{Binding Children, Mode=OneWay}">
                             <TextBlock Text="{Binding Name, Converter={StaticResource positionNameConverter}}"/>
                         </HierarchicalDataTemplate>
                     </TreeView.ItemTemplate>
+
+                    <TreeView.ContextMenu>
+                        <ContextMenu>
+                            <!--<MenuItem Command="{Binding JournalEntryCreateReqCommand}"
+                                Header="Create entry"/>-->
+
+                            <Separator/>
+
+                            <MenuItem Command="{Binding AddPositionRequestCommand}">
+                                <MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Add position in " Margin="0"/>
+                                        <TextBlock Text="{Binding SelectedItem.Name, Converter={StaticResource positionNameConverter}}" Margin="0"/>
+                                    </StackPanel>
+                                </MenuItem.Header>
+                            </MenuItem>
+
+                            <MenuItem Command="{Binding EditPositionRequestCommand}">
+                                <MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Edit position " Margin="0"/>
+                                        <TextBlock Text="{Binding SelectedItem.Name, Converter={StaticResource positionNameConverter}}" Margin="0"/>
+                                    </StackPanel>
+                                </MenuItem.Header>
+                            </MenuItem>
+
+                            <MenuItem Command="{Binding DeletePositionRequestCommand}">
+                                <MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Delete position " Margin="0"/>
+                                        <TextBlock Text="{Binding SelectedItem.Name, Converter={StaticResource positionNameConverter}}" Margin="0"/>
+                                    </StackPanel>
+                                </MenuItem.Header>
+                            </MenuItem>
+                        </ContextMenu>
+                    </TreeView.ContextMenu>
+                    
                 </TreeView>
             </ScrollViewer>
 
