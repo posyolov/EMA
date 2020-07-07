@@ -76,6 +76,7 @@ namespace EMA
             };
 
             mainVM.PositionsTreeVM = new PositionsTreeVM(positionManager.GetPositionsTree, positionManager.GetPositionFullData);
+            mainVM.PositionsTreeVM.AddEntryRequest += (obj) => CreateEntityEditDialog<Entry, EntryVM, EntryEditWindow>(entriesManager.AddEntry, new Entry { PositionId = obj }, new object[] { entriesManager.GetEntries(), positionManager.GetPositions(), entriesManager.GetReasons(), entriesManager.GetContinuationCriterias() });
             mainVM.PositionsTreeVM.AddPositionRequest += (obj) => CreateEntityEditDialog<Position, PositionVM, PositionEditWindow>(positionManager.AddPosition, obj, new object[] { positionManager.GetPositions(), catalogManager.GetCatalog() });
             mainVM.PositionsTreeVM.EditPositionRequest += (obj) => CreateEntityEditDialog<Position, PositionVM, PositionEditWindow>(positionManager.UpdatePosition, obj, new object[] { positionManager.GetPositions(), catalogManager.GetCatalog() });
             mainVM.PositionsTreeVM.DeletePositionRequest += (obj) => CreateEntityEditDialog<Position, PositionVM, PositionDeleteWindow>(positionManager.DeletePosition, obj, null);

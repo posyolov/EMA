@@ -13,10 +13,12 @@ namespace ViewModel
         private ObservableCollection<Position> positions;
         private Position selectedItem;
 
+        public event Action<int> AddEntryRequest;
         public event Action<Position> AddPositionRequest;
         public event Action<Position> EditPositionRequest;
         public event Action<Position> DeletePositionRequest;
 
+        public DelegateCommand<object> AddEntryRequestCommand { get; }
         public DelegateCommand<object> AddPositionRequestCommand { get; }
         public DelegateCommand<object> EditPositionRequestCommand { get; }
         public DelegateCommand<object> DeletePositionRequestCommand { get; }
@@ -52,6 +54,10 @@ namespace ViewModel
             this.getTreeDelegate = getTreeDelegate;
             this.getPositionFullDataDelegate = getPositionFullDataDelegate;
             Positions = new ObservableCollection<Position>(getTreeDelegate?.Invoke());
+
+            AddEntryRequestCommand = new DelegateCommand<object>(
+                canExecute: (obj) => SelectedItem != null,
+                execute: (obj) => AddEntryRequest?.Invoke(selectedItem.Id));
 
             AddPositionRequestCommand = new DelegateCommand<object>(
                 canExecute: (obj) => SelectedItem != null,

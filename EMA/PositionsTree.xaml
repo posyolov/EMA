@@ -40,8 +40,14 @@
 
                     <TreeView.ContextMenu>
                         <ContextMenu>
-                            <!--<MenuItem Command="{Binding JournalEntryCreateReqCommand}"
-                                Header="Create entry"/>-->
+                            <MenuItem Command="{Binding AddEntryRequestCommand}">
+                                <MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Create entry by " Margin="0"/>
+                                        <TextBlock Text="{Binding SelectedItem.Name, Converter={StaticResource positionNameConverter}}" Margin="0"/>
+                                    </StackPanel>
+                                </MenuItem.Header>                                
+                            </MenuItem>
 
                             <Separator/>
 
