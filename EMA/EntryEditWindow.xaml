@@ -26,121 +26,144 @@
     </Window.Resources>
 
     <StackPanel HorizontalAlignment="Center">
-        <Grid HorizontalAlignment="Center">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-            </Grid.RowDefinitions>
 
-            <TextBlock Grid.Column="0" Grid.Row="0"
-                       Text="Parent:"/>
-            <ComboBox Grid.Column="1" Grid.Row="0" 
-                      Grid.ColumnSpan="3"
-                      ItemsSource="{Binding RelationData[0]}"
-                      SelectedValuePath="Id"
-                      SelectedValue="{Binding EntityViewModel.ParentId}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock>
-                            <TextBlock.Text>
-                                <MultiBinding StringFormat="{}{0} {1}">
-                                    <Binding Path="Position.Name" Converter="{StaticResource positionNameConverter}" FallbackValue=""/>
-                                    <Binding Path="Title"/>
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-
-            <TextBlock Grid.Column="0" Grid.Row="1"
-                       Text="IsFinal:"/>
-            <CheckBox  Grid.Column="1" Grid.Row="1" 
-                       VerticalAlignment="Center" HorizontalAlignment="Center"
-                       IsChecked="{Binding EntityViewModel.IsFinal}"/>
-
-            <TextBlock Grid.Column="0" Grid.Row="2"
+        <StackPanel Orientation="Horizontal">
+            <StackPanel>
+                <TextBlock Grid.Column="0" Grid.Row="3"
+                       Text="OccurDateTime:"/>
+                <TextBox Grid.Column="1" Grid.Row="3" 
+                       MinWidth="100"
+                       Text="{Binding EntityViewModel.OccurDateTime, ConverterCulture=ru}"/>
+            </StackPanel>
+            <StackPanel>
+                <TextBlock Grid.Column="0" Grid.Row="2"
                        Text="Position:"/>
-            <ComboBox Grid.Column="1" Grid.Row="2" 
+                <ComboBox Grid.Column="1" Grid.Row="2" 
                        ItemsSource="{Binding RelationData[1]}"
                        SelectedValuePath="Id"
                        SelectedValue="{Binding EntityViewModel.PositionId}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Path=Name, Converter={StaticResource positionNameConverter}}"/>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=Name, Converter={StaticResource positionNameConverter}}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </StackPanel>
+            <StackPanel>
+                <TextBlock Grid.Column="2" Grid.Row="2"
+                       Text="Reason:"/>
+                <ComboBox Grid.Column="3" Grid.Row="2" 
+                       ItemsSource="{Binding RelationData[2]}"
+                       DisplayMemberPath="Title"
+                       SelectedValuePath="Id"
+                       SelectedValue="{Binding EntityViewModel.ReasonId}"/>
+            </StackPanel>
+        </StackPanel>
 
-            <TextBlock Grid.Column="0" Grid.Row="3"
-                       Text="OccurDateTime:"/>
-            <TextBox Grid.Column="1" Grid.Row="3" 
-                       MinWidth="100"
-                       Text="{Binding EntityViewModel.OccurDateTime, ConverterCulture=ru}"/>
-
+        <StackPanel>
             <TextBlock Grid.Column="0" Grid.Row="4"
                        Text="Title:"/>
             <TextBox Grid.Column="1" Grid.Row="4" 
                      Grid.ColumnSpan="3"
                        MinWidth="100"
                        Text="{Binding EntityViewModel.Title}"/>
+        </StackPanel>
 
+        <StackPanel>
             <TextBlock Grid.Column="0" Grid.Row="5"
                        Text="Description:"/>
             <TextBox Grid.Column="1" Grid.Row="5" 
-                       MinWidth="100"
-                       Text="{Binding EntityViewModel.Description}"/>
+                     MinWidth="100"
+                     TextWrapping="Wrap"
+                     AcceptsReturn="True"
+                     SpellCheck.IsEnabled="True"
+                     HorizontalScrollBarVisibility="Disabled"
+                     VerticalScrollBarVisibility="Auto"
+                     MinLines="3"
+                     MaxLines="3"
+                     Text="{Binding EntityViewModel.Description}"/>
+        </StackPanel>
 
-            <TextBlock Grid.Column="2" Grid.Row="2"
-                       Text="Reason:"/>
-            <ComboBox Grid.Column="3" Grid.Row="2" 
-                       ItemsSource="{Binding RelationData[2]}"
-                       DisplayMemberPath="Title"
-                       SelectedValuePath="Id"
-                       SelectedValue="{Binding EntityViewModel.ReasonId}"/>
-
-            <TextBlock Grid.Column="0" Grid.Row="7"
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center">
+            <StackPanel>
+                <TextBlock Grid.Column="0" Grid.Row="7"
                        Text="ContinuationCriteria:"/>
-            <ComboBox Grid.Column="1" Grid.Row="7" 
+                <ComboBox Grid.Column="1" Grid.Row="7" 
                        ItemsSource="{Binding RelationData[3]}"
                        DisplayMemberPath="Title"
                        SelectedValuePath="Id"
                        SelectedValue="{Binding EntityViewModel.ContinuationCriteriaId}"/>
+            </StackPanel>
 
-            <TextBlock Grid.Column="0" Grid.Row="8"
+            <StackPanel>
+                <TextBlock Grid.Column="0" Grid.Row="8"
                        Text="Priority:"/>
-            <TextBox Grid.Column="1" Grid.Row="8" 
+                <TextBox Grid.Column="1" Grid.Row="8" 
                        MinWidth="100"
                        Text="{Binding EntityViewModel.Priority}"/>
+            </StackPanel>
+        </StackPanel>
 
-            <TextBlock Grid.Column="0" Grid.Row="9"
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center">
+            <StackPanel>
+                <TextBlock Grid.Column="0" Grid.Row="9"
                        Text="PlannedStartDate:"/>
-            <TextBox Grid.Column="1" Grid.Row="9" 
+                <TextBox Grid.Column="1" Grid.Row="9" 
                        MinWidth="100"
                        Text="{Binding EntityViewModel.PlannedStartDate, ConverterCulture=ru}"/>
+            </StackPanel>
 
-            <TextBlock Grid.Column="0" Grid.Row="10"
+            <StackPanel>
+                <TextBlock Grid.Column="0" Grid.Row="10"
                        Text="EstimatedResources:"/>
-            <TextBox Grid.Column="1" Grid.Row="10" 
+                <TextBox Grid.Column="1" Grid.Row="10" 
                        MinWidth="100"
                        Text="{Binding EntityViewModel.EstimatedResources}"/>
+            </StackPanel>
+        </StackPanel>
 
-        </Grid>
+
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center">
+            <StackPanel>
+                <TextBlock Grid.Column="0" Grid.Row="0"
+                       Text="Parent:"/>
+                <ComboBox Grid.Column="1" Grid.Row="0" 
+                      Grid.ColumnSpan="3"
+                      ItemsSource="{Binding RelationData[0]}"
+                      SelectedValuePath="Id"
+                      SelectedValue="{Binding EntityViewModel.ParentId}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="Position.Name" Converter="{StaticResource positionNameConverter}" FallbackValue=""/>
+                                        <Binding Path="Title"/>
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </StackPanel>
+
+            <StackPanel>
+                <TextBlock Grid.Column="0" Grid.Row="1"
+                       Text="IsFinal:"/>
+                <CheckBox  Grid.Column="1" Grid.Row="1" 
+                       VerticalAlignment="Center" HorizontalAlignment="Center"
+                       IsChecked="{Binding EntityViewModel.IsFinal}"/>
+            </StackPanel>
+
+        </StackPanel>
+
+
+
+
+
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Content="OK"
                     IsDefault="False"
