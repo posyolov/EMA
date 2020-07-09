@@ -10,53 +10,7 @@
             </Style>
         </ControlTemplate.Resources>
 
-
-
-
-        <!--<ListView.GroupStyle>
-                <GroupStyle>
-                    <GroupStyle.ContainerStyle>
-                        <Style TargetType="{x:Type GroupItem}">
-                            <Setter Property="Margin" Value="0,0,0,5"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type GroupItem}">
-                                        <Expander IsExpanded="True" BorderBrush="#FFA4B97F" BorderThickness="0,0,0,1">
-                                            <Expander.Header>
-                                                <DockPanel>
-                                                    <TextBlock FontWeight="Bold" Text="{Binding Path=OccurDateTime}" Margin="5,0,0,0" Width="100"/>
-                                                    <TextBlock FontWeight="Bold"  Text="{Binding Path=Title}"/>
-                                                </DockPanel>
-                                            </Expander.Header>
-                                            <Expander.Content>
-                                                <ItemsPresenter />
-                                            </Expander.Content>
-                                        </Expander>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </GroupStyle.ContainerStyle>
-                </GroupStyle>
-            </ListView.GroupStyle>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    
-                </DataTemplate>
-            </ListView.ItemTemplate>-->
-
-        <ListView ItemsSource="{Binding EntriesTree}" HorizontalContentAlignment="Stretch">
-            <!--<ListView.ItemContainerStyle>
-                <Style TargetType="{x:Type ListViewItem}">
-                    <Setter Property="BorderBrush" Value="Black"></Setter>
-                    <Setter Property="BorderThickness" Value="0,0,0,1"></Setter>
-                    <Setter Property="Focusable" Value="False" />
-                    <Setter Property="HorizontalAlignment" Value="Stretch" />
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    <Setter Property="VerticalAlignment" Value="Top"></Setter>
-                    <Setter Property="VerticalContentAlignment" Value="Top"></Setter>
-                </Style>
-            </ListView.ItemContainerStyle>-->
+        <!--<ListView ItemsSource="{Binding EntriesTree}" HorizontalContentAlignment="Stretch">
 
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
@@ -101,7 +55,9 @@
                                             <ColumnDefinition Width="1*"/>
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0" Text="{Binding OccurDateTime, ConverterCulture=ru}" Style="{StaticResource textMargin}"/>
-                                        <!--<TextBlock Grid.Column="1" Text="{Binding Position.Name, Converter={StaticResource positionNameConverter}}" Style="{StaticResource textMargin}"/>-->
+                                        -->
+        <!--<TextBlock Grid.Column="1" Text="{Binding Position.Name, Converter={StaticResource positionNameConverter}}" Style="{StaticResource textMargin}"/>-->
+        <!--
                                         <TextBlock Grid.Column="1" Text="{Binding PositionId}" Style="{StaticResource textMargin}"/>
                                         <TextBlock Grid.Column="2" Text="{Binding Title}" Style="{StaticResource textMargin}"/>
                                         <TextBlock Grid.Column="3" Text="{Binding Reason.Title}" Style="{StaticResource textMargin}"/>
@@ -120,69 +76,74 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
 
-
-        </ListView>
-
+        </ListView>-->
 
 
+        <TreeView ItemsSource="{Binding EntriesTree}" Grid.IsSharedSizeScope="True">
 
-        <!--<ScrollViewer Grid.Row="0" Margin="3 0 0 0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-            <TreeView ItemsSource="{Binding EntriesTree}">
-                <i:Interaction.Behaviors>
-                    <local:TreeViewSelectedItemBehavior SelectedItem="{Binding SelectedItem}" />
-                </i:Interaction.Behaviors>
-                <TreeView.ItemContainerStyle>
-                    <Style TargetType="TreeViewItem">
-                        <Setter Property="IsExpanded" Value="True"/>
-                    </Style>
-                </TreeView.ItemContainerStyle>
-                <TreeView.ItemTemplate>
-                    <HierarchicalDataTemplate ItemsSource="{Binding Children, Mode=OneWay}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
+            <TreeView.ItemTemplate>
+                <DataTemplate>
 
-                            <TextBlock Grid.Column="0" MinWidth="120"
-                               Text="{Binding OccurDateTime, ConverterCulture=ru}"/>
+                    <TreeViewItem ItemsSource="{Binding Children}">
+                        <TreeViewItem.Header>
+                            <Grid Width="1200">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*" SharedSizeGroup="A"/>
+                                    <ColumnDefinition Width="1*" SharedSizeGroup="B"/>
+                                    <ColumnDefinition Width="1*" SharedSizeGroup="C"/>
+                                    <ColumnDefinition Width="1*" SharedSizeGroup="D"/>
+                                    <ColumnDefinition Width="1*" SharedSizeGroup="E"/>
+                                    <ColumnDefinition Width="1*" SharedSizeGroup="F"/>
+                                    <ColumnDefinition Width="1*" SharedSizeGroup="G"/>
+                                    <ColumnDefinition Width="1*" SharedSizeGroup="H"/>
+                                    <ColumnDefinition Width="1*" SharedSizeGroup="I"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="{Binding OccurDateTime, ConverterCulture=ru}" FontWeight="Bold"/>
+                                <TextBlock Grid.Column="1" Text="{Binding Position.Name, Converter={StaticResource positionNameConverter}}" FontWeight="Bold" Style="{StaticResource textMargin}"/>
+                                <TextBlock Grid.Column="2" Text="{Binding Title}" FontWeight="Bold" Style="{StaticResource textMargin}"/>
+                                <TextBlock Grid.Column="3" Text="{Binding Reason.Title}" FontWeight="Bold" Style="{StaticResource textMargin}"/>
+                                <TextBlock Grid.Column="4" Text="{Binding ContinuationCriteria.Title}" FontWeight="Bold" Style="{StaticResource textMargin}"/>
+                                <TextBlock Grid.Column="5" Text="{Binding Priority}" FontWeight="Bold" Style="{StaticResource textMargin}"/>
+                                <TextBlock Grid.Column="6" Text="{Binding PlannedStartDate, ConverterCulture=ru}" FontWeight="Bold" Style="{StaticResource textMargin}"/>
+                                <TextBlock Grid.Column="7" Text="{Binding EstimatedResources}" FontWeight="Bold" Style="{StaticResource textMargin}"/>
+                                <CheckBox Grid.Column="8" VerticalAlignment="Center" HorizontalAlignment="Center" IsEnabled="False" IsChecked="{Binding IsFinal}" Style="{StaticResource textMargin}"/>
+                            </Grid>
+                        </TreeViewItem.Header>
 
-                            <TextBlock Grid.Column="1"
-                               Text="{Binding Position.Name}"/>
+                        <TreeViewItem.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ShowGridLines="True">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*" SharedSizeGroup="A"/>
+                                        <ColumnDefinition Width="1*" SharedSizeGroup="B"/>
+                                        <ColumnDefinition Width="1*" SharedSizeGroup="C"/>
+                                        <ColumnDefinition Width="1*" SharedSizeGroup="D"/>
+                                        <ColumnDefinition Width="1*" SharedSizeGroup="E"/>
+                                        <ColumnDefinition Width="1*" SharedSizeGroup="F"/>
+                                        <ColumnDefinition Width="1*" SharedSizeGroup="G"/>
+                                        <ColumnDefinition Width="1*" SharedSizeGroup="H"/>
+                                        <ColumnDefinition Width="1*" SharedSizeGroup="I"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding OccurDateTime, ConverterCulture=ru}" Style="{StaticResource textMargin}"/>
+                                    <!--<TextBlock Grid.Column="1" Text="{Binding Position.Name, Converter={StaticResource positionNameConverter}}" Style="{StaticResource textMargin}"/>-->
+                                    <TextBlock Grid.Column="1" Text="{Binding PositionId}" Style="{StaticResource textMargin}"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding Title}" Style="{StaticResource textMargin}"/>
+                                    <TextBlock Grid.Column="3" Text="{Binding Reason.Title}" Style="{StaticResource textMargin}"/>
+                                    <TextBlock Grid.Column="4" Text="{Binding ContinuationCriteria.Title}" Style="{StaticResource textMargin}"/>
+                                    <TextBlock Grid.Column="5" Text="{Binding Priority}" Style="{StaticResource textMargin}"/>
+                                    <TextBlock Grid.Column="6" Text="{Binding PlannedStartDate, ConverterCulture=ru}" Style="{StaticResource textMargin}"/>
+                                    <TextBlock Grid.Column="7" Text="{Binding EstimatedResources}" Style="{StaticResource textMargin}"/>
+                                    <CheckBox Grid.Column="8" VerticalAlignment="Center" HorizontalAlignment="Center" IsEnabled="False" IsChecked="{Binding IsFinal}" Style="{StaticResource textMargin}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </TreeViewItem.ItemTemplate>
 
-                            <TextBlock Grid.Column="2" 
-                               Text="{Binding Title}"/>
+                    </TreeViewItem>
 
-                            <TextBlock Grid.Column="3" 
-                               Text="{Binding Reason.Title}"/>
+                </DataTemplate>
+            </TreeView.ItemTemplate>
 
-                            <TextBlock Grid.Column="4" 
-                               Text="{Binding ContinuationCriteria.Title}"/>
-
-                            <TextBlock Grid.Column="5"
-                               Text="{Binding Priority}"/>
-
-                            <TextBlock Grid.Column="6"
-                               Text="{Binding PlannedStartDate, ConverterCulture=ru}"/>
-
-                            <TextBlock Grid.Column="7"
-                               Text="{Binding EstimatedResources}"/>
-
-                            <CheckBox  Grid.Column="8" VerticalAlignment="Center" HorizontalAlignment="Center"
-                               IsEnabled="False"
-                               IsChecked="{Binding IsFinal}"/>
-                        </Grid>
-                    </HierarchicalDataTemplate>
-                </TreeView.ItemTemplate>
-            </TreeView>
-        </ScrollViewer>-->
+        </TreeView>
 
     </ControlTemplate>
 
