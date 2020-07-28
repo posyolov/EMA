@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-                    xmlns:local="clr-namespace:EMA" >
+                    xmlns:local="clr-namespace:EMA" xmlns:system="clr-namespace:System;assembly=System.Runtime">
 
     <ControlTemplate x:Key="EntriesTree">
         <ControlTemplate.Resources>
@@ -20,15 +20,15 @@
                 <ListView.View>
                     <GridView>
                         <GridView.Columns>
-                            <GridViewColumn Header="OccurDateTime" x:Name="OccurDateTimeColW" Width="150"/>
-                            <GridViewColumn Header="Position" x:Name="PositionColW" Width="150"/>
-                            <GridViewColumn Header="Title" x:Name="TitleColW" Width="150"/>
-                            <GridViewColumn Header="Reason" x:Name="ReasonColW" Width="150"/>
-                            <GridViewColumn Header="ContinuationCriteria" x:Name="ContinuationCriteriaColW" Width="150"/>
-                            <GridViewColumn Header="Priority" x:Name="PriorityColW" Width="150"/>
-                            <GridViewColumn Header="PlannedStartDate" x:Name="PlannedStartDateColW" Width="150"/>
-                            <GridViewColumn Header="EstimatedResources" x:Name="EstimatedResourcesColW" Width="150"/>
-                            <GridViewColumn Header="IsFinal" x:Name="IsFinalColW" Width="50"/>
+                            <GridViewColumn Header="OccurDateTime" x:Name="OccurDateTimeColumn" Width="150"/>
+                            <GridViewColumn Header="Position" x:Name="PositionColumn" Width="150"/>
+                            <GridViewColumn Header="Title" x:Name="TitleColumn" Width="150"/>
+                            <GridViewColumn Header="Reason" x:Name="ReasonColumn" Width="150"/>
+                            <GridViewColumn Header="ContinuationCriteria" x:Name="ContinuationCriteriaColumn" Width="150"/>
+                            <GridViewColumn Header="Priority" x:Name="PriorityColumn" Width="150"/>
+                            <GridViewColumn Header="PlannedStartDate" x:Name="PlannedStartDateColumn" Width="150"/>
+                            <GridViewColumn Header="EstimatedResources" x:Name="EstimatedResourcesColumn" Width="150"/>
+                            <GridViewColumn Header="IsFinal" x:Name="IsFinalColumn" Width="50"/>
                         </GridView.Columns>
                     </GridView>
                 </ListView.View>
@@ -38,23 +38,23 @@
                   HorizontalAlignment="Left"
                   Width="1300">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*" Name="OccurDateTimeColW"/>
+                    <ColumnDefinition Width="1*" Name="OccurDateTimeColumn"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="1*" Name="PositionColW"/>
+                    <ColumnDefinition Width="1*" Name="PositionColumn"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="2*" Name="TitleColW"/>
+                    <ColumnDefinition Width="2*" Name="TitleColumn"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="1*" Name="ReasonColW"/>
+                    <ColumnDefinition Width="1*" Name="ReasonColumn"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="1*" Name="ContinuationCriteriaColW"/>
+                    <ColumnDefinition Width="1*" Name="ContinuationCriteriaColumn"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="1*" Name="PriorityColW"/>
+                    <ColumnDefinition Width="1*" Name="PriorityColumn"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="1*" Name="PlannedStartDateColW"/>
+                    <ColumnDefinition Width="1*" Name="PlannedStartDateColumn"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="1*" Name="EstimatedResourcesColW"/>
+                    <ColumnDefinition Width="1*" Name="EstimatedResourcesColumn"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*" Name="IsFinalColW"/>
+                    <ColumnDefinition Width="*" Name="IsFinalColumn"/>
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" Content="OccurDateTime"/>
                 <GridSplitter Grid.Column="1" Width="1" ResizeBehavior="PreviousAndNext" ShowsPreview="False" />
@@ -82,26 +82,55 @@
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Children, Mode=OneWay}">
                         <Grid>
+                            <Grid.Resources>
+                                <Style x:Key="fontStyle">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Children}" Value="{x:Null}">
+                                            <Setter Property="Control.FontSize" Value="10"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Resources>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="{Binding Path=Width, Mode=OneWay, ElementName=OccurDateTimeColW}"/>
-                                <ColumnDefinition Width="{Binding Path=Width, Mode=OneWay, ElementName=PositionColW}"/>
-                                <ColumnDefinition Width="{Binding Path=Width, Mode=OneWay, ElementName=TitleColW}"/>
-                                <ColumnDefinition Width="{Binding Path=Width, Mode=OneWay, ElementName=ReasonColW}"/>
-                                <ColumnDefinition Width="{Binding Path=Width, Mode=OneWay, ElementName=ContinuationCriteriaColW}"/>
-                                <ColumnDefinition Width="{Binding Path=Width, Mode=OneWay, ElementName=PriorityColW}"/>
-                                <ColumnDefinition Width="{Binding Path=Width, Mode=OneWay, ElementName=PlannedStartDateColW}"/>
-                                <ColumnDefinition Width="{Binding Path=Width, Mode=OneWay, ElementName=EstimatedResourcesColW}"/>
-                                <ColumnDefinition Width="{Binding Path=Width, Mode=OneWay, ElementName=IsFinalColW}"/>
+                                <ColumnDefinition Width="{Binding Path=Width, Mode=OneWay, ElementName=OccurDateTimeColumn}"/>
+                                <ColumnDefinition Width="{Binding Path=Width, Mode=OneWay, ElementName=PositionColumn}"/>
+                                <ColumnDefinition Width="{Binding Path=Width, Mode=OneWay, ElementName=TitleColumn}"/>
+                                <ColumnDefinition Width="{Binding Path=Width, Mode=OneWay, ElementName=ReasonColumn}"/>
+                                <ColumnDefinition Width="{Binding Path=Width, Mode=OneWay, ElementName=ContinuationCriteriaColumn}"/>
+                                <ColumnDefinition Width="{Binding Path=Width, Mode=OneWay, ElementName=PriorityColumn}"/>
+                                <ColumnDefinition Width="{Binding Path=Width, Mode=OneWay, ElementName=PlannedStartDateColumn}"/>
+                                <ColumnDefinition Width="{Binding Path=Width, Mode=OneWay, ElementName=EstimatedResourcesColumn}"/>
+                                <ColumnDefinition Width="{Binding Path=Width, Mode=OneWay, ElementName=IsFinalColumn}"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="{Binding OccurDateTime, ConverterCulture=ru}"/>
-                            <TextBlock Grid.Column="1" Text="{Binding Position.Name, Converter={StaticResource positionNameConverter}}" Style="{StaticResource textMargin}"/>
-                            <TextBlock Grid.Column="2" Text="{Binding Title}" Style="{StaticResource textMargin}"/>
-                            <TextBlock Grid.Column="3" Text="{Binding Reason.Title}" Style="{StaticResource textMargin}"/>
-                            <TextBlock Grid.Column="4" Text="{Binding ContinuationCriteria.Title}" Style="{StaticResource textMargin}"/>
-                            <TextBlock Grid.Column="5" Text="{Binding Priority}" Style="{StaticResource textMargin}"/>
-                            <TextBlock Grid.Column="6" Text="{Binding PlannedStartDate, ConverterCulture=ru}" Style="{StaticResource textMargin}"/>
-                            <TextBlock Grid.Column="7" Text="{Binding EstimatedResources}" Style="{StaticResource textMargin}"/>
-                            <CheckBox Grid.Column="8" VerticalAlignment="Center" HorizontalAlignment="Center" IsEnabled="False" IsChecked="{Binding IsFinal}" Style="{StaticResource textMargin}"/>
+                            <TextBlock Grid.Column="0" 
+                                       Text="{Binding OccurDateTime, ConverterCulture=ru}"
+                                       Style="{StaticResource fontStyle}"/>
+                                       <!--FontSize="{Binding Children, Converter={StaticResource objectToFontConverter}}"/>-->
+                            <TextBlock Grid.Column="1" 
+                                       Text="{Binding Position.Name, Converter={StaticResource positionNameConverter}}" 
+                                       Style="{StaticResource fontStyle}"/>
+                            <TextBlock Grid.Column="2" 
+                                       Text="{Binding Title}" 
+                                       Style="{StaticResource fontStyle}"/>
+                            <TextBlock Grid.Column="3" 
+                                       Text="{Binding Reason.Title}" 
+                                       Style="{StaticResource fontStyle}"/>
+                            <TextBlock Grid.Column="4" 
+                                       Text="{Binding ContinuationCriteria.Title}" 
+                                       Style="{StaticResource fontStyle}"/>
+                            <TextBlock Grid.Column="5" 
+                                       Text="{Binding Priority}" 
+                                       Style="{StaticResource fontStyle}"/>
+                            <TextBlock Grid.Column="6" 
+                                       Text="{Binding PlannedStartDate, ConverterCulture=ru}" 
+                                       Style="{StaticResource fontStyle}"/>
+                            <TextBlock Grid.Column="7" 
+                                       Text="{Binding EstimatedResources}" 
+                                       Style="{StaticResource fontStyle}"/>
+                            <CheckBox Grid.Column="8" 
+                                      IsChecked="{Binding IsFinal}"
+                                      Style="{StaticResource fontStyle}"
+                                      VerticalAlignment="Center" HorizontalAlignment="Center" IsEnabled="False"/>
                         </Grid>
                     </HierarchicalDataTemplate>
                 </TreeView.ItemTemplate>
