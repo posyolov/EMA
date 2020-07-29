@@ -83,6 +83,10 @@ namespace EMA
             positionManager.PositionsChanged += mainVM.PositionsTreeVM.UpdateTree;
 
             mainVM.EntriesTreeVM = new EntriesTreeVM(entriesManager.GetEntries, entriesManager.GetEntriesTree);
+            mainVM.EntriesTreeVM.AddEntryRequest += (obj) => CreateEntityEditDialog<Entry, EntryVM, EntryEditWindow>(entriesManager.AddEntry, obj, new object[] { entriesManager.GetEntries(), positionManager.GetPositions(), entriesManager.GetReasons(), entriesManager.GetContinuationCriterias() });
+            mainVM.EntriesTreeVM.AddChildEntryRequest += (obj) => CreateEntityEditDialog<Entry, EntryVM, EntryEditWindow>(entriesManager.AddEntry, obj, new object[] { entriesManager.GetEntries(), positionManager.GetPositions(), entriesManager.GetReasons(), entriesManager.GetContinuationCriterias() });
+            mainVM.EntriesTreeVM.EditEntryRequest += (obj) => CreateEntityEditDialog<Entry, EntryVM, EntryEditWindow>(entriesManager.UpdateEntry, obj, new object[] { entriesManager.GetEntries(), positionManager.GetPositions(), entriesManager.GetReasons(), entriesManager.GetContinuationCriterias() });
+            mainVM.EntriesTreeVM.DeleteEntryRequest += (obj) => CreateEntityEditDialog<Entry, EntryVM, EntryDeleteWindow>(entriesManager.DeleteEntry, obj, null);
             entriesManager.EntriesChanged += mainVM.EntriesTreeVM.UpdateList;
 
             mainWindow = new MainWindow { DataContext = mainVM };

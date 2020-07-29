@@ -41,7 +41,7 @@ namespace ViewModel
             get => selectedItem;
             set
             {
-                selectedItem = getPositionFullDataDelegate?.Invoke(value.Id);
+                selectedItem = value;// getPositionFullDataDelegate?.Invoke(value.Id);
                 AddEntryRequestCommand.RiseCanExecuteChanged();
                 AddPositionRequestCommand.RiseCanExecuteChanged();
                 EditPositionRequestCommand.RiseCanExecuteChanged();
