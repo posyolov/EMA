@@ -38,13 +38,14 @@ namespace ViewModel
 
         public Position SelectedItem
         {
-            get
-            {
-                return selectedItem;
-            }
+            get => selectedItem;
             set
             {
                 selectedItem = getPositionFullDataDelegate?.Invoke(value.Id);
+                AddEntryRequestCommand.RiseCanExecuteChanged();
+                AddPositionRequestCommand.RiseCanExecuteChanged();
+                EditPositionRequestCommand.RiseCanExecuteChanged();
+                DeletePositionRequestCommand.RiseCanExecuteChanged();
                 NotifyPropertyChanged();
             }
         }
@@ -61,7 +62,7 @@ namespace ViewModel
 
             AddPositionRequestCommand = new DelegateCommand<object>(
                 canExecute: (obj) => SelectedItem != null,
-                execute: (obj) => AddPositionRequest?.Invoke(new Position() { ParentId = selectedItem.Id } ));
+                execute: (obj) => AddPositionRequest?.Invoke(new Position() { ParentId = selectedItem.Id })) ;
 
             EditPositionRequestCommand = new DelegateCommand<object>(
                 canExecute: (obj) => SelectedItem != null,

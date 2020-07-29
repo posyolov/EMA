@@ -33,7 +33,7 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-            
+
             <!--<Grid Grid.Row="0" Name="MasterGrid" 
                   HorizontalAlignment="Left"
                   Width="1300">
@@ -79,14 +79,19 @@
                       BorderThickness="0"
                       Grid.Row="1">
 
+                <i:Interaction.Behaviors>
+                    <local:TreeViewSelectedItemBehavior SelectedItem="{Binding SelectedItem}" />
+                </i:Interaction.Behaviors>
+                
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Children, Mode=OneWay}">
                         <Grid>
                             <Grid.Resources>
                                 <Style x:Key="fontStyle">
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Children}" Value="{x:Null}">
-                                            <Setter Property="Control.FontSize" Value="10"/>
+                                        <DataTrigger Binding="{Binding Parent}" Value="{x:Null}">
+                                            <Setter Property="Control.FontWeight" Value="DemiBold"/>
+                                            <Setter Property="Control.Foreground" Value="DarkBlue"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -105,7 +110,7 @@
                             <TextBlock Grid.Column="0" 
                                        Text="{Binding OccurDateTime, ConverterCulture=ru}"
                                        Style="{StaticResource fontStyle}"/>
-                                       <!--FontSize="{Binding Children, Converter={StaticResource objectToFontConverter}}"/>-->
+                            <!--FontSize="{Binding Children, Converter={StaticResource objectToFontConverter}}"/>-->
                             <TextBlock Grid.Column="1" 
                                        Text="{Binding Position.Name, Converter={StaticResource positionNameConverter}}" 
                                        Style="{StaticResource fontStyle}"/>
@@ -135,6 +140,19 @@
                     </HierarchicalDataTemplate>
                 </TreeView.ItemTemplate>
 
+                <TreeView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Create"
+                                  Command="{Binding AddEntryRequestCommand}"/>
+                        <Separator/>
+                        <MenuItem Header="Add child"
+                                  Command="{Binding AddChildEntryRequestCommand}"/>
+                        <MenuItem Header="Edit"
+                                  Command="{Binding EditEntryRequestCommand}"/>
+                        <MenuItem Header="Delete"
+                                  Command="{Binding DeleteEntryRequestCommand}"/>
+                    </ContextMenu>
+                </TreeView.ContextMenu>
             </TreeView>
 
         </Grid>

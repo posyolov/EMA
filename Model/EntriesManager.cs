@@ -28,7 +28,8 @@ namespace Model
 
         public IEnumerable<Entry> GetEntriesTree()
         {
-            return entriesRepository.GetWithInclude(p => p.ParentId == null, ch => ch.Children, p => p.Parent, pos => pos.Position, r => r.Reason, c => c.ContinuationCriteria, u => u.ChangeUser);
+            //return entriesRepository.GetWithInclude(p => p.ParentId == null, ch => ch.Children, p => p.Parent, pos => pos.Position, r => r.Reason, c => c.ContinuationCriteria, u => u.ChangeUser);
+            return entriesRepository.GetWithInclude(pos => pos.Position, r => r.Reason, c => c.ContinuationCriteria, u => u.ChangeUser).Where(p => p.ParentId == null);
         }
 
         public bool AddEntry(Entry entity)

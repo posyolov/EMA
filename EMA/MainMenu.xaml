@@ -17,11 +17,11 @@
             <MenuItem Header="Edit" ></MenuItem>
             <MenuItem Header="View" ></MenuItem>
             <MenuItem Header="Data">
-                <MenuItem Header="Catalog"
-                          Command="{Binding OpenCatalogWindowCommand}">
-                </MenuItem>
                 <MenuItem Header="Vendors"
                           Command="{Binding OpenVendorsWindowCommand}">
+                </MenuItem>
+                <MenuItem Header="Catalog"
+                          Command="{Binding OpenCatalogWindowCommand}">
                 </MenuItem>
                 <MenuItem Header="Positions"
                           Command="{Binding OpenPositionsWindowCommand}">

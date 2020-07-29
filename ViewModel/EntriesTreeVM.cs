@@ -15,6 +15,16 @@ namespace ViewModel
         private ObservableCollection<Entry> entriesTree;
         private Entry selectedItem;
 
+        public event Action<Entry> AddEntryRequest;
+        public event Action<Entry> AddChildEntryRequest;
+        public event Action<Entry> EditEntryRequest;
+        public event Action<Entry> DeleteEntryRequest;
+
+        public DelegateCommand<object> AddEntryRequestCommand { get; }
+        public DelegateCommand<object> AddChildEntryRequestCommand { get; }
+        public DelegateCommand<object> EditEntryRequestCommand { get; }
+        public DelegateCommand<object> DeleteEntryRequestCommand { get; }
+
         public ObservableCollection<Entry> Entries
         {
             get => entries;
@@ -42,6 +52,9 @@ namespace ViewModel
             set
             {
                 selectedItem = value;
+                AddChildEntryRequestCommand.RiseCanExecuteChanged();
+                EditEntryRequestCommand.RiseCanExecuteChanged();
+                DeleteEntryRequestCommand.RiseCanExecuteChanged();
                 NotifyPropertyChanged();
             }
         }
@@ -52,6 +65,21 @@ namespace ViewModel
             this.getTreeDelegate = getTreeDelegate;
             Entries = new ObservableCollection<Entry>(getListDelegate?.Invoke());
             EntriesTree = new ObservableCollection<Entry>(getTreeDelegate?.Invoke());
+
+            AddEntryRequestCommand = new DelegateCommand<object>(
+                execute: (obj) => AddEntryRequest?.Invoke(new Entry()));
+
+            AddChildEntryRequestCommand = new DelegateCommand<object>(
+                canExecute: (obj) => SelectedItem != null,
+                execute: (obj) => AddChildEntryRequest?.Invoke(new Entry() { ParentId = selectedItem.Id }));
+
+            EditEntryRequestCommand = new DelegateCommand<object>(
+                canExecute: (obj) => SelectedItem != null,
+                execute: (obj) => EditEntryRequest?.Invoke(selectedItem));
+
+            DeleteEntryRequestCommand = new DelegateCommand<object>(
+                canExecute: (obj) => SelectedItem != null,
+                execute: (obj) => DeleteEntryRequest?.Invoke(selectedItem));
         }
 
         public void UpdateList()

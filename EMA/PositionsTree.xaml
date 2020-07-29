@@ -20,12 +20,13 @@
         
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="2*"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
 
             <ScrollViewer Grid.Row="0" Margin="3 0 0 0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                
                 <TreeView ItemsSource="{Binding Positions}"
                           BorderThickness="0">
                     
