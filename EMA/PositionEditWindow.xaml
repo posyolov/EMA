@@ -47,9 +47,11 @@
             <TextBlock Grid.Column="0" Grid.Row="1"
                        Text="Parent:"/>
             <ComboBox Grid.Column="1" Grid.Row="1" 
-                       MinWidth="100" Margin="3"
-                       ItemsSource="{Binding RelationData[0]}"
-                       SelectedItem="{Binding EntityViewModel.Parent}">
+                      MinWidth="100" Margin="3"
+                      ItemsSource="{Binding RelationData[0]}"
+                      SelectedItem="{Binding EntityViewModel.Parent}"
+                      SelectedValuePath="Id"
+                      SelectedValue="{Binding EntityViewModel.ParentId}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock>

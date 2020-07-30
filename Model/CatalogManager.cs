@@ -27,7 +27,7 @@ namespace Model
 
         public IEnumerable<Vendor> GetVendors()
         {
-            return vendorRepository.Get();
+            return vendorRepository.Get().OrderBy(n => n.Name);
         }
 
         public bool AddVendor(Vendor entity)
@@ -64,7 +64,7 @@ namespace Model
 
         public IEnumerable<CatalogItem> GetCatalog()
         {
-            return catalogRepository.GetWithInclude(i => i.Vendor);
+            return catalogRepository.GetWithInclude(i => i.Vendor).OrderBy(n => n.Vendor.Name);
         }
 
         public bool AddCatalogItem(CatalogItem entity)

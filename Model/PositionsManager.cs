@@ -26,7 +26,7 @@ namespace Model
 
         public IEnumerable<Position> GetPositions()
         {
-            return positionsRepository.GetWithInclude(p => p.Parent, c => c.CatalogItem, v => v.CatalogItem.Vendor);
+            return positionsRepository.GetWithInclude(p => p.Parent, c => c.CatalogItem, v => v.CatalogItem.Vendor).OrderBy(n => n.Name);
         }
 
         public IEnumerable<Position> GetPositionsTree()

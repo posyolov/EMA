@@ -10,7 +10,6 @@ namespace ViewModel
         const char DELIMITER = ';';
 
         private Position parent;
-        private string name;
 
         public bool IsValid
         {
@@ -20,17 +19,8 @@ namespace ViewModel
             }
         }
 
-        public string Name
-        {
-            get => name;
-            set
-            {
-                name = value;
-                ShortName = ParseShortName(name);
-                NotifyPropertyChanged("ShortName");
-            }
-        }
-        //public int? ParentId { get; set; }
+        public string Name => NamePrefix + ShortName;
+        public int? ParentId { get; set; }
         public string Title { get; set; }
         public int? CatalogItemId { get; set; }
 
@@ -49,22 +39,22 @@ namespace ViewModel
 
         public void ToViewModel(Position model)
         {
-            //ParentId = model.ParentId;
-            Name = model.Name;
+            ParentId = model.ParentId;
+            ShortName = ParseShortName(model.Name);
+            NamePrefix = (model.Parent == null) ? "" : model.Parent.Name + DELIMITER;
+
             Title = model.Title;
             CatalogItemId = model.CatalogItemId;
-
-            Parent = model.Parent;
         }
 
         public void ToModel(Position model)
         {
-            //model.ParentId = ParentId;
-            model.Name = NamePrefix + ShortName;
+            model.ParentId = Parent?.Id;
+            model.Parent = null;
+
+            model.Name = Name;
             model.Title = Title;
             model.CatalogItemId = CatalogItemId;
-
-            model.ParentId = Parent?.Id;
         }
 
         private string ParseShortName(string name)

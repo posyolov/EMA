@@ -71,7 +71,7 @@ namespace ViewModel
 
             AddChildEntryRequestCommand = new DelegateCommand<object>(
                 canExecute: (obj) => SelectedItem != null,
-                execute: (obj) => AddChildEntryRequest?.Invoke(new Entry() { ParentId = selectedItem.Id }));
+                execute: (obj) => AddChildEntryRequest?.Invoke(new Entry() { ParentId = selectedItem.Id, PositionId = selectedItem.PositionId }));
 
             EditEntryRequestCommand = new DelegateCommand<object>(
                 canExecute: (obj) => SelectedItem != null,

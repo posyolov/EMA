@@ -91,7 +91,7 @@
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding Parent}" Value="{x:Null}">
                                             <Setter Property="Control.FontWeight" Value="DemiBold"/>
-                                            <Setter Property="Control.Foreground" Value="DarkBlue"/>
+                                            <!--<Setter Property="Control.Foreground" Value="Navy"/>-->
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>

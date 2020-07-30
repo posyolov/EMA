@@ -62,7 +62,7 @@ namespace ViewModel
 
             AddPositionRequestCommand = new DelegateCommand<object>(
                 canExecute: (obj) => SelectedItem != null,
-                execute: (obj) => AddPositionRequest?.Invoke(new Position() { ParentId = selectedItem.Id })) ;
+                execute: (obj) => AddPositionRequest?.Invoke(new Position() { ParentId = selectedItem.Id, Parent = selectedItem })) ;
 
             EditPositionRequestCommand = new DelegateCommand<object>(
                 canExecute: (obj) => SelectedItem != null,
