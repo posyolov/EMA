@@ -21,9 +21,9 @@
                     <GridView>
                         <GridView.Columns>
                             <GridViewColumn Header="OccurDateTime" x:Name="OccurDateTimeColumn" Width="150"/>
-                            <GridViewColumn Header="Position" x:Name="PositionColumn" Width="150"/>
-                            <GridViewColumn Header="Title" x:Name="TitleColumn" Width="150"/>
-                            <GridViewColumn Header="Reason" x:Name="ReasonColumn" Width="150"/>
+                            <GridViewColumn Header="Position" x:Name="PositionColumn" Width="100"/>
+                            <GridViewColumn Header="Reason" x:Name="ReasonColumn" Width="300"/>
+                            <GridViewColumn Header="Title" x:Name="TitleColumn" Width="300"/>
                             <GridViewColumn Header="ContinuationCriteria" x:Name="ContinuationCriteriaColumn" Width="150"/>
                             <GridViewColumn Header="Priority" x:Name="PriorityColumn" Width="150"/>
                             <GridViewColumn Header="PlannedStartDate" x:Name="PlannedStartDateColumn" Width="150"/>
@@ -115,10 +115,10 @@
                                        Text="{Binding Position.Name, Converter={StaticResource positionNameConverter}}" 
                                        Style="{StaticResource fontStyle}"/>
                             <TextBlock Grid.Column="2" 
-                                       Text="{Binding Title}" 
+                                       Text="{Binding Reason.Title}" 
                                        Style="{StaticResource fontStyle}"/>
                             <TextBlock Grid.Column="3" 
-                                       Text="{Binding Reason.Title}" 
+                                       Text="{Binding Title}" 
                                        Style="{StaticResource fontStyle}"/>
                             <TextBlock Grid.Column="4" 
                                        Text="{Binding ContinuationCriteria.Title}" 

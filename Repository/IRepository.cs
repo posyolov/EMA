@@ -12,6 +12,7 @@ namespace Repository
         IEnumerable<TEntity> Get(Func<TEntity, bool> predicate);
         void Remove(TEntity item);
         void Update(TEntity item);
+        public IEnumerable<TEntity> GetWithInclude(bool ByDescending, Expression<Func<TEntity, object>> orderKey, params Expression<Func<TEntity, object>>[] includeProperties);
         public IEnumerable<TEntity> GetWithInclude(params Expression<Func<TEntity, object>>[] includeProperties);
         public IEnumerable<TEntity> GetWithInclude(Func<TEntity, bool> predicate, params Expression<Func<TEntity, object>>[] includeProperties);
         public bool IsExist(Func<TEntity, bool> predicate);

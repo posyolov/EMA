@@ -53,6 +53,11 @@ namespace Repository.EF
             context.SaveChanges();
         }
 
+        public IEnumerable<TEntity> GetWithInclude(bool ByDescending, Expression<Func<TEntity, object>> orderKey, params Expression<Func<TEntity, object>>[] includeProperties)
+        {
+            using EquipmentContext context = new EquipmentContext();
+            return ByDescending ? Include(context, includeProperties).OrderByDescending(orderKey).ToList() : Include(context, includeProperties).OrderBy(orderKey).ToList();
+        }
 
         public IEnumerable<TEntity> GetWithInclude(params Expression<Func<TEntity, object>>[] includeProperties)
         {

@@ -31,7 +31,7 @@ namespace Model
 
         public IEnumerable<Position> GetPositionsTree()
         {
-            return positionsRepository.GetWithInclude(c => c.CatalogItem, v => v.CatalogItem.Vendor).Where(p => p.ParentId == null);
+            return positionsRepository.GetWithInclude(false, n => n.Name, c => c.CatalogItem, v => v.CatalogItem.Vendor).Where(p => p.ParentId == null);
             //return positionsRepository.Get().Where(p => p.ParentId == null);
         }
 

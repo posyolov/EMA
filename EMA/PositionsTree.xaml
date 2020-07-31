@@ -36,7 +36,10 @@
 
                     <TreeView.ItemTemplate>
                         <HierarchicalDataTemplate ItemsSource="{Binding Children, Mode=OneWay}">
-                            <TextBlock Text="{Binding Name, Converter={StaticResource positionNameConverter}}"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Name, Converter={StaticResource positionNameConverter}}" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding Title}" Opacity="0.6" Margin="10 0 0 0" VerticalAlignment="Center"/>
+                            </StackPanel>
                         </HierarchicalDataTemplate>
                     </TreeView.ItemTemplate>
 
