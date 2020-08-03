@@ -9,7 +9,7 @@ namespace Repository.EF
     {
         public int Id { get; set; }
         public int? ParentId { get; set; }
-        public bool IsFinal { get; set; }
+        public bool IsComplete { get; set; }
         public DateTime OccurDateTime { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }

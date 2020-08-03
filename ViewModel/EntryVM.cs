@@ -14,7 +14,7 @@ namespace ViewModel
         }
 
         public int? ParentId { get; set; }
-        public bool IsFinal { get; set; }
+        public bool IsComplete { get; set; }
         public DateTime OccurDateTime { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
@@ -30,7 +30,7 @@ namespace ViewModel
         public void ToViewModel(Entry model)
         {
             ParentId = model.ParentId;
-            IsFinal = model.IsFinal;
+            IsComplete = model.IsComplete;
             OccurDateTime = model.OccurDateTime != default ? model.OccurDateTime : DateTime.Now;
             Title = model.Title;
             Description = model.Description;
@@ -45,7 +45,7 @@ namespace ViewModel
         public void ToModel(Entry model)
         {
             model.ParentId = ParentId;
-            model.IsFinal = IsFinal;
+            model.IsComplete = IsComplete;
             model.OccurDateTime = OccurDateTime;
             model.Title = Title;
             model.Description = Description;

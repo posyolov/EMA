@@ -28,7 +28,7 @@
                             <GridViewColumn Header="Priority" x:Name="PriorityColumn" Width="150"/>
                             <GridViewColumn Header="PlannedStartDate" x:Name="PlannedStartDateColumn" Width="150"/>
                             <GridViewColumn Header="EstimatedResources" x:Name="EstimatedResourcesColumn" Width="150"/>
-                            <GridViewColumn Header="IsFinal" x:Name="IsFinalColumn" Width="50"/>
+                            <GridViewColumn Header="IsComplete" x:Name="IsCompleteColumn" Width="50"/>
                         </GridView.Columns>
                     </GridView>
                 </ListView.View>
@@ -54,7 +54,7 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="1*" Name="EstimatedResourcesColumn"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*" Name="IsFinalColumn"/>
+                    <ColumnDefinition Width="*" Name="IsCompleteColumn"/>
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" Content="OccurDateTime"/>
                 <GridSplitter Grid.Column="1" Width="1" ResizeBehavior="PreviousAndNext" ShowsPreview="False" />
@@ -72,10 +72,10 @@
                 <GridSplitter Grid.Column="13" Width="1" ResizeBehavior="PreviousAndNext" ShowsPreview="False" />
                 <Button Grid.Column="14" Content="EstimatedResources"/>
                 <GridSplitter Grid.Column="15" Width="1" ResizeBehavior="PreviousAndNext" ShowsPreview="False" />
-                <Button Grid.Column="16" Content="IsFinal"/>
+                <Button Grid.Column="16" Content="IsComplete"/>
             </Grid>-->
 
-            <TreeView ItemsSource="{Binding EntriesTree}"
+            <TreeView ItemsSource="{Binding EntriesTreeFiltered}"
                       BorderThickness="0"
                       Grid.Row="1">
 
@@ -91,7 +91,14 @@
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding Parent}" Value="{x:Null}">
                                             <Setter Property="Control.FontWeight" Value="DemiBold"/>
-                                            <!--<Setter Property="Control.Foreground" Value="Navy"/>-->
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                                <Style x:Key="childrenVisibility" TargetType="CheckBox">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Parent}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Visible"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -105,7 +112,7 @@
                                 <ColumnDefinition Width="{Binding Path=Width, Mode=OneWay, ElementName=PriorityColumn}"/>
                                 <ColumnDefinition Width="{Binding Path=Width, Mode=OneWay, ElementName=PlannedStartDateColumn}"/>
                                 <ColumnDefinition Width="{Binding Path=Width, Mode=OneWay, ElementName=EstimatedResourcesColumn}"/>
-                                <ColumnDefinition Width="{Binding Path=Width, Mode=OneWay, ElementName=IsFinalColumn}"/>
+                                <ColumnDefinition Width="{Binding Path=Width, Mode=OneWay, ElementName=IsCompleteColumn}"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" 
                                        Text="{Binding OccurDateTime, ConverterCulture=ru}"
@@ -133,8 +140,8 @@
                                        Text="{Binding EstimatedResources}" 
                                        Style="{StaticResource fontStyle}"/>
                             <CheckBox Grid.Column="8" 
-                                      IsChecked="{Binding IsFinal}"
-                                      Style="{StaticResource fontStyle}"
+                                      IsChecked="{Binding IsComplete}"
+                                      Style="{StaticResource childrenVisibility}"
                                       VerticalAlignment="Center" HorizontalAlignment="Center" IsEnabled="False"/>
                         </Grid>
                     </HierarchicalDataTemplate>

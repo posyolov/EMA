@@ -46,8 +46,8 @@
                             </GridViewColumn.DisplayMemberBinding>
                         </GridViewColumn>
 
-                        <GridViewColumn Header="IsFinal" 
-                                    DisplayMemberBinding="{Binding IsFinal}">
+                        <GridViewColumn Header="IsComplete" 
+                                    DisplayMemberBinding="{Binding IsComplete}">
                         </GridViewColumn>
 
                         <GridViewColumn Header="OccurDateTime" 

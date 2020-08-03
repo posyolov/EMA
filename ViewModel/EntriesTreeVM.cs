@@ -13,6 +13,7 @@ namespace ViewModel
 
         private ObservableCollection<Entry> entries;
         private ObservableCollection<Entry> entriesTree;
+        private ObservableCollection<Entry> entriesTreeFiltered;
         private Entry selectedItem;
 
         public event Action<Entry> AddEntryRequest;
@@ -42,9 +43,19 @@ namespace ViewModel
             { 
                 entriesTree = value;
                 NotifyPropertyChanged();
+                FilterEntriesTree();
             }
         }
 
+        public ObservableCollection<Entry> EntriesTreeFiltered
+        {
+            get => entriesTreeFiltered;
+            set
+            {
+                entriesTreeFiltered = value;
+                NotifyPropertyChanged();
+            }
+        }
 
         public Entry SelectedItem
         {
@@ -86,6 +97,11 @@ namespace ViewModel
         {
             Entries = new ObservableCollection<Entry>(getListDelegate?.Invoke());
             EntriesTree = new ObservableCollection<Entry>(getTreeDelegate?.Invoke());
+        }
+
+        private void FilterEntriesTree()
+        {
+            EntriesTreeFiltered = new ObservableCollection<Entry>(entriesTree.Where(p => p.Position.Name.Contains("01")));
         }
     }
 }

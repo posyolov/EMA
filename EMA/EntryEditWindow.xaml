@@ -136,10 +136,10 @@
                 </ComboBox>
             </StackPanel>
             <StackPanel Grid.Column="1">
-                <TextBlock Text="IsFinal:"
+                <TextBlock Text="IsComplete:"
                            TextAlignment="Center"/>
                 <CheckBox HorizontalAlignment="Center"
-                       IsChecked="{Binding EntityViewModel.IsFinal}"/>
+                       IsChecked="{Binding EntityViewModel.IsComplete}"/>
             </StackPanel>
         </Grid>
 
