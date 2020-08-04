@@ -30,7 +30,20 @@ namespace EMA
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            string str = System.Convert.ToString(value);
+
+            char[] chars = str.ToCharArray();
+
+            for (int i = 0; i < chars.Length; i++)
+            {
+                for (int j = 0; j < symbols.Length; j++)
+                {
+                    if (chars[i] == symbols[j])
+                        chars[i] = DELIMITER;
+                }
+            }
+
+            return new string(chars);
         }
     }
 }

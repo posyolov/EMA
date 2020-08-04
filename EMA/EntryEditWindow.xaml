@@ -54,9 +54,9 @@
             <StackPanel Grid.Column="2">
                 <TextBlock Text="Reason:"/>
                 <ComboBox ItemsSource="{Binding RelationData[2]}"
-                       DisplayMemberPath="Title"
-                       SelectedValuePath="Id"
-                       SelectedValue="{Binding EntityViewModel.ReasonId}"/>
+                          DisplayMemberPath="Title"
+                          SelectedValuePath="Id"
+                          SelectedValue="{Binding EntityViewModel.ReasonId}"/>
             </StackPanel>
         </Grid>
 
@@ -85,16 +85,19 @@
                 <TextBlock 
                        Text="ContinuationCriteria:"/>
                 <ComboBox ItemsSource="{Binding RelationData[3]}"
-                       DisplayMemberPath="Title"
-                       SelectedValuePath="Id"
-                       SelectedValue="{Binding EntityViewModel.ContinuationCriteriaId}"/>
+                          DisplayMemberPath="Title"
+                          SelectedValuePath="Id"
+                          SelectedValue="{Binding EntityViewModel.ContinuationCriteriaId}"
+                          IsEditable="True"
+                          IsReadOnly="True"
+                          Text="-None-"/>
             </StackPanel>
             <StackPanel Grid.Column="1">
                 <TextBlock Text="Priority:"/>
                 <TextBox Text="{Binding EntityViewModel.Priority}"/>
             </StackPanel>
         </Grid>
-        
+
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>

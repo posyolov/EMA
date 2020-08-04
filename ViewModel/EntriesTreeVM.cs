@@ -15,6 +15,8 @@ namespace ViewModel
         private ObservableCollection<Entry> entriesTree;
         private ObservableCollection<Entry> entriesTreeFiltered;
         private Entry selectedItem;
+        private string filterPosition;
+        private bool enableFilterPosition;
 
         public event Action<Entry> AddEntryRequest;
         public event Action<Entry> AddChildEntryRequest;
@@ -40,7 +42,7 @@ namespace ViewModel
         {
             get => entriesTree;
             set
-            { 
+            {
                 entriesTree = value;
                 NotifyPropertyChanged();
                 FilterEntriesTree();
@@ -67,6 +69,25 @@ namespace ViewModel
                 EditEntryRequestCommand.RiseCanExecuteChanged();
                 DeleteEntryRequestCommand.RiseCanExecuteChanged();
                 NotifyPropertyChanged();
+            }
+        }
+
+        public string FilterPosition
+        {
+            get => filterPosition;
+            set
+            {
+                filterPosition = value;
+                FilterEntriesTree();
+            }
+        }
+        public bool EnableFilterPosition
+        {
+            get => enableFilterPosition;
+            set
+            {
+                enableFilterPosition = value;
+                FilterEntriesTree();
             }
         }
 
@@ -101,7 +122,10 @@ namespace ViewModel
 
         private void FilterEntriesTree()
         {
-            EntriesTreeFiltered = new ObservableCollection<Entry>(entriesTree.Where(p => p.Position.Name.Contains("01")));
+            if (EnableFilterPosition && !String.IsNullOrEmpty(FilterPosition))
+                EntriesTreeFiltered = new ObservableCollection<Entry>(entriesTree.Where(p => p.Position.Name.Contains(FilterPosition, StringComparison.InvariantCultureIgnoreCase)));
+            else
+                EntriesTreeFiltered = entriesTree;
         }
     }
 }

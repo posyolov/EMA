@@ -13,10 +13,17 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <ListView BorderThickness="0" Grid.Row="0">
+            <StackPanel Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding EnableFilterPosition}"/>
+                <TextBox Text="{Binding FilterPosition, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource positionNameConverter}}" MinWidth="50"/>
+            </StackPanel>
+            
+            
+            <ListView BorderThickness="0" Grid.Row="1">
                 <ListView.View>
                     <GridView>
                         <GridView.Columns>
@@ -77,8 +84,14 @@
 
             <TreeView ItemsSource="{Binding EntriesTreeFiltered}"
                       BorderThickness="0"
-                      Grid.Row="1">
-
+                      Grid.Row="2">
+                
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="{x:Type TreeViewItem}">
+                        <Setter Property="IsExpanded" Value="True" />
+                    </Style>
+                </TreeView.ItemContainerStyle>
+                
                 <i:Interaction.Behaviors>
                     <local:TreeViewSelectedItemBehavior SelectedItem="{Binding SelectedItem}" />
                 </i:Interaction.Behaviors>
