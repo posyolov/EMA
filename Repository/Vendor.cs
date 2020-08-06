@@ -1,4 +1,4 @@
-﻿namespace Repository.EF
+﻿namespace Repository
 {
     public class Vendor
     {

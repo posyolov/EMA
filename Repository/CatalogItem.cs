@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Repository.EF
+namespace Repository
 {
     public class CatalogItem
     {

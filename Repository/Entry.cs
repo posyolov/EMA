@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
-namespace Repository.EF
+namespace Repository
 {
     public class Entry
     {

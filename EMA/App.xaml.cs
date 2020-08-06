@@ -1,9 +1,8 @@
 ﻿using System.Windows;
 using ViewModel;
 using Model;
-using Repository.EF;
+using Repository;
 using System;
-using System.Collections.Generic;
 
 namespace EMA
 {

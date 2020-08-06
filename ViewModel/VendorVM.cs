@@ -1,4 +1,4 @@
-﻿using Repository.EF;
+﻿using Repository;
 
 namespace ViewModel
 {
