@@ -2,18 +2,13 @@
 
 namespace ViewModel
 {
-    public abstract class DialogVM<TEntity>
+    public abstract class DialogVM
     {
-        protected readonly Func<TEntity, bool> executeDelegate;
-        protected readonly Action closeDialogDelegate;
-        public DelegateCommand<TEntity> OkCommand { get; }
+        public DelegateCommand<object> OkCommand { get; }
 
-        protected DialogVM(Func<TEntity, bool> executeDialogDelegate, Action closeDialogDelegate)
+        protected DialogVM()
         {
-            this.executeDelegate = executeDialogDelegate;
-            this.closeDialogDelegate = closeDialogDelegate;
-
-            OkCommand = new DelegateCommand<TEntity>((obj) => OnOk());
+            OkCommand = new DelegateCommand<object>((obj) => OnOk());
         }
 
         protected abstract void OnOk();

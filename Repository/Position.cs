@@ -14,5 +14,10 @@ namespace Repository
         public virtual Position Parent { get; set; }
         public virtual ICollection<Position> Children { get; set; }
         public virtual CatalogItem CatalogItem { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

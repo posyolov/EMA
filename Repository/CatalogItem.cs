@@ -12,5 +12,9 @@ namespace Repository
 
         public virtual Vendor Vendor { get; set; }
 
+        public override string ToString()
+        {
+            return Title;
+        }
     }
 }
