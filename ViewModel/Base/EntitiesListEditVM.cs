@@ -61,14 +61,6 @@ namespace ViewModel
                 execute: (obj) => DeleteItemRequest?.Invoke(selectedItem));
         }
 
-        public EntitiesListEditVM(Func<IEnumerable<TEntity>> getListDelegate, Action<TEntity> addDelegate, Action<TEntity> editDelegate, Action<TEntity> deleteDelegate)
-            : this(getListDelegate)
-        {
-            AddItemRequest += addDelegate;
-            EditItemRequest += editDelegate;
-            DeleteItemRequest += deleteDelegate;
-        }
-
         public void UpdateList()
         {
             Items = new ObservableCollection<TEntity>(getListDelegate());
