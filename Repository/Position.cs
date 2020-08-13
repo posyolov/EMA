@@ -17,7 +17,7 @@ namespace Repository
 
         public override string ToString()
         {
-            return Name;
+            return Name + " " + Title;
         }
     }
 }

@@ -12,14 +12,14 @@ namespace ViewModel
         public IEntityVM<TEntity> EntityViewModel { get; set; }
         public object RelationData { get; set; }
 
-        public EntityEditVM(Func<TEntity, bool> executeDelegate, Action closeDialogDelegate, TEntity entity, object relationData = null)
+        public EntityEditVM(TEntity entity, Func<TEntity, bool> executeDelegate, Action closeDialogDelegate, object relationData = null)
         {
-            this.executeDelegate = executeDelegate;
-            this.closeDialogDelegate = closeDialogDelegate;
-
             entityModel = entity;
             EntityViewModel = new TEntityVM();
             EntityViewModel.ToViewModel(entityModel);
+
+            this.executeDelegate = executeDelegate;
+            this.closeDialogDelegate = closeDialogDelegate;
 
             RelationData = relationData;
         }
