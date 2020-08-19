@@ -28,7 +28,7 @@ namespace EMA
             mainVM = new MainVM();
 
             mainVM.MainMenuVM = new MainMenuVM();
-            mainVM.MainMenuVM.VendorsRequest += () => ShowEntitiesListWindow<Vendor, VendorVM, VendorEditWindow, VendorsWindow>(catalogManager.GetVendors, catalogManager.AddVendor, catalogManager.UpdateVendor, catalogManager.DeleteVendor);
+            mainVM.MainMenuVM.VendorsRequest += () => ShowEntitiesListWindow<Vendor, VendorVM, VendorEditWindow, VendorsWindow>(catalogManager.GetVendors, catalogManager.AddVendor, catalogManager.UpdateVendor, catalogManager.DeleteVendor, catalogManager.VendorsChanged);
             mainVM.MainMenuVM.CatalogRequest += () => ShowEntitiesListWindow<CatalogItem, CatalogItemVM, CatalogItemEditWindow, CatalogWindow>(catalogManager.GetCatalog, catalogManager.AddCatalogItem, catalogManager.UpdateCatalogItem, catalogManager.DeleteCatalogItem, catalogManager.GetVendors());
             mainVM.MainMenuVM.PositionsRequest += () => ShowEntitiesListWindow<Position, PositionVM, PositionEditWindow, PositionsListWindow>(positionManager.GetPositions, positionManager.AddPosition, positionManager.UpdatePosition, positionManager.DeletePosition, GetPositionRelationData());
             mainVM.MainMenuVM.EntriesRequest += () => ShowEntitiesListWindow<Entry, EntryVM, EntryEditWindow, EntriesListWindow>(entriesManager.GetEntries, entriesManager.AddEntry, entriesManager.UpdateEntry, entriesManager.DeleteEntry, GetEntryRelationData());
@@ -52,13 +52,13 @@ namespace EMA
         }
 
 
-        private void ShowEntitiesListWindow<TEntity, TEntityVM, TEntityV, TEntitiesListV>(Func<IEnumerable<TEntity>> getListDelegate, Func<TEntity, bool> addDelegate, Func<TEntity, bool> updateDelegate, Func<TEntity, bool> deleteDelegate, object relationData = null) where TEntity : new() where TEntityV : Window, new() where TEntityVM : IEntityVM<TEntity>, new() where TEntitiesListV : Window, new()
+        private void ShowEntitiesListWindow<TEntity, TEntityVM, TEntityV, TEntitiesListV>(Func<IEnumerable<TEntity>> getListDelegate, Func<TEntity, bool> addDelegate, Func<TEntity, bool> updateDelegate, Func<TEntity, bool> deleteDelegate, Action listChanged, object relationData = null) where TEntity : new() where TEntityV : Window, new() where TEntityVM : IEntityVM<TEntity>, new() where TEntitiesListV : Window, new()
         {
             var vm = new EntitiesListEditVM<TEntity>(getListDelegate);
             vm.AddItemRequest += (obj) => ShowEntityEditDialog<TEntity, TEntityVM, TEntityV>(obj, addDelegate, relationData);
             vm.EditItemRequest += (obj) => ShowEntityEditDialog<TEntity, TEntityVM, TEntityV>(obj, updateDelegate, relationData);
             vm.DeleteItemRequest += (obj) => ShowEntityDeleteDialog<TEntity>(obj, deleteDelegate);
-            entriesManager.EntriesChanged += vm.UpdateList;
+            listChanged += vm.UpdateList;
             var win = new TEntitiesListV { DataContext = vm, Owner = mainWindow };
             win.Show();
         }

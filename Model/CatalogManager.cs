@@ -94,6 +94,5 @@ namespace Model
             CatalogChanged?.Invoke();
             return true;
         }
-
     }
 }
