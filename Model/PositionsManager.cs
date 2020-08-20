@@ -6,46 +6,31 @@ using System.Linq;
 
 namespace Model
 {
-    public class PositionsManager
+    public class PositionsManager : IEntityManager<Position>
     {
         const char DELIMITER = ';';
-        IRepository<Position> positionsRepository;
 
-        public event Action PositionsChanged;
+        readonly IRepository<Position> positionsRepository = new RepositoryEF<Position>();
 
-        public PositionsManager()
-        {
-            positionsRepository = new RepositoryEF<Position>();
-        }
+        public event Action EntitiesChanged;
 
-        public Position GetPositionFullData(int id)
-        {
-            return positionsRepository.GetWithInclude(p => p.Parent, c => c.CatalogItem, v => v.CatalogItem.Vendor, ch => ch.Children).FirstOrDefault(e => e.Id == id);
-        }
-
-        public IEnumerable<Position> GetPositions()
+        public IEnumerable<Position> Get()
         {
             return positionsRepository.GetWithInclude(p => p.Parent, c => c.CatalogItem, v => v.CatalogItem.Vendor).OrderBy(n => n.Name);
         }
 
-        public IEnumerable<Position> GetPositionsTree()
-        {
-            return positionsRepository.GetWithInclude(false, n => n.Name, c => c.CatalogItem, v => v.CatalogItem.Vendor).Where(p => p.ParentId == null);
-            //return positionsRepository.Get().Where(p => p.ParentId == null);
-        }
-
-        public bool AddPosition(Position entity)
+        public bool Add(Position entity)
         {
             if (!String.IsNullOrWhiteSpace(entity.Name))
             {
                 positionsRepository.Create(entity);
-                PositionsChanged?.Invoke();
+                EntitiesChanged?.Invoke();
                 return true;
             }
             return false;
         }
 
-        public bool UpdatePosition(Position entity)
+        public bool Update(Position entity)
         {
             if (!String.IsNullOrWhiteSpace(entity.Name))
             {
@@ -64,17 +49,28 @@ namespace Model
                     }
                 }
 
-                PositionsChanged?.Invoke();
+                EntitiesChanged?.Invoke();
                 return true;
             }
             return false;
         }
 
-        public bool DeletePosition(Position entity)
+        public bool Delete(Position entity)
         {
             positionsRepository.Remove(entity);
-            PositionsChanged?.Invoke();
+            EntitiesChanged?.Invoke();
             return true;
+        }
+
+        public Position GetPositionFullData(int id)
+        {
+            return positionsRepository.GetWithInclude(p => p.Parent, c => c.CatalogItem, v => v.CatalogItem.Vendor, ch => ch.Children).FirstOrDefault(e => e.Id == id);
+        }
+
+        public IEnumerable<Position> GetPositionsTree()
+        {
+            return positionsRepository.GetWithInclude(false, n => n.Name, c => c.CatalogItem, v => v.CatalogItem.Vendor).Where(p => p.ParentId == null);
+            //return positionsRepository.Get().Where(p => p.ParentId == null);
         }
 
     }

@@ -6,22 +6,13 @@ using System.Linq;
 
 namespace Model
 {
-    public class EntriesManager
+    public class EntriesManager : IEntityManager<Entry>
     {
-        IRepository<Entry> entriesRepository;
-        IRepository<EntryReason> reasonsRepository;
-        IRepository<EntryContinuationCriteria> continuationCriteriasRepository;
+        readonly IRepository<Entry> entriesRepository = new RepositoryEF<Entry>();
 
-        public event Action EntriesChanged;
+        public event Action EntitiesChanged;
 
-        public EntriesManager()
-        {
-            entriesRepository = new RepositoryEF<Entry>();
-            reasonsRepository = new RepositoryEF<EntryReason>();
-            continuationCriteriasRepository = new RepositoryEF<EntryContinuationCriteria>();
-        }
-
-        public IEnumerable<Entry> GetEntries()
+        public IEnumerable<Entry> Get()
         {
             return entriesRepository.GetWithInclude(par => par.Parent, pos => pos.Position, ps => ps.Parent.Position, r => r.Reason, c => c.ContinuationCriteria, u => u.ChangeUser).OrderBy(d => d.OccurDateTime);
         }
@@ -32,43 +23,33 @@ namespace Model
             return entriesRepository.GetWithInclude(false, d => d.OccurDateTime, pos => pos.Position, r => r.Reason, c => c.ContinuationCriteria, u => u.ChangeUser).Where(p => p.ParentId == null);
         }
 
-        public bool AddEntry(Entry entity)
+        public bool Add(Entry entity)
         {
             if (!String.IsNullOrWhiteSpace(entity.Title))
             {
                 entriesRepository.Create(entity);
-                EntriesChanged?.Invoke();
+                EntitiesChanged?.Invoke();
                 return true;
             }
             return false;
         }
 
-        public bool UpdateEntry(Entry entity)
+        public bool Update(Entry entity)
         {
             if (!String.IsNullOrWhiteSpace(entity.Title))
             {
                 entriesRepository.Update(entity);
-                EntriesChanged?.Invoke();
+                EntitiesChanged?.Invoke();
                 return true;
             }
             return false;
         }
 
-        public bool DeleteEntry(Entry entity)
+        public bool Delete(Entry entity)
         {
             entriesRepository.Remove(entity);
-            EntriesChanged?.Invoke();
+            EntitiesChanged?.Invoke();
             return true;
-        }
-
-        public IEnumerable<EntryReason> GetReasons()
-        {
-            return reasonsRepository.Get().OrderBy(e => e.Title);
-        }
-
-        public IEnumerable<EntryContinuationCriteria> GetContinuationCriterias()
-        {
-            return continuationCriteriasRepository.Get().OrderBy(e => e.Title);
         }
     }
 }

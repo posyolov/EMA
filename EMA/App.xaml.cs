@@ -12,53 +12,59 @@ namespace EMA
     /// </summary>
     public partial class App : Application
     {
+        VendorsManager vendorsManager;
         CatalogManager catalogManager;
         PositionsManager positionManager;
         EntriesManager entriesManager;
+        EntryReasonsManager entryReasonsManager;
+        EntryContinuationCriteriaManager entryContinuationCriteriaManager;
 
         MainVM mainVM;
         MainWindow mainWindow;
 
         private void OnStartup(object sender, StartupEventArgs e)
         {
+            vendorsManager = new VendorsManager();
             catalogManager = new CatalogManager();
             positionManager = new PositionsManager();
             entriesManager = new EntriesManager();
+            entryReasonsManager = new EntryReasonsManager();
+            entryContinuationCriteriaManager = new EntryContinuationCriteriaManager();
 
             mainVM = new MainVM();
 
             mainVM.MainMenuVM = new MainMenuVM();
-            mainVM.MainMenuVM.VendorsRequest += () => ShowEntitiesListWindow<Vendor, VendorVM, VendorEditWindow, VendorsWindow>(catalogManager.GetVendors, catalogManager.AddVendor, catalogManager.UpdateVendor, catalogManager.DeleteVendor, catalogManager.VendorsChanged);
-            mainVM.MainMenuVM.CatalogRequest += () => ShowEntitiesListWindow<CatalogItem, CatalogItemVM, CatalogItemEditWindow, CatalogWindow>(catalogManager.GetCatalog, catalogManager.AddCatalogItem, catalogManager.UpdateCatalogItem, catalogManager.DeleteCatalogItem, catalogManager.GetVendors());
-            mainVM.MainMenuVM.PositionsRequest += () => ShowEntitiesListWindow<Position, PositionVM, PositionEditWindow, PositionsListWindow>(positionManager.GetPositions, positionManager.AddPosition, positionManager.UpdatePosition, positionManager.DeletePosition, GetPositionRelationData());
-            mainVM.MainMenuVM.EntriesRequest += () => ShowEntitiesListWindow<Entry, EntryVM, EntryEditWindow, EntriesListWindow>(entriesManager.GetEntries, entriesManager.AddEntry, entriesManager.UpdateEntry, entriesManager.DeleteEntry, GetEntryRelationData());
+            mainVM.MainMenuVM.VendorsRequest += () => ShowEntitiesListWindow<Vendor, VendorVM, VendorEditWindow, VendorsWindow>(vendorsManager);
+            mainVM.MainMenuVM.CatalogRequest += () => ShowEntitiesListWindow<CatalogItem, CatalogItemVM, CatalogItemEditWindow, CatalogWindow>(catalogManager, vendorsManager.Get());
+            mainVM.MainMenuVM.PositionsRequest += () => ShowEntitiesListWindow<Position, PositionVM, PositionEditWindow, PositionsListWindow>(positionManager, GetPositionRelationData());
+            mainVM.MainMenuVM.EntriesRequest += () => ShowEntitiesListWindow<Entry, EntryVM, EntryEditWindow, EntriesListWindow>(entriesManager, GetEntryRelationData());
 
             mainVM.PositionsTreeVM = new PositionsTreeVM(positionManager.GetPositionsTree, positionManager.GetPositionFullData);
-            mainVM.PositionsTreeVM.AddEntryRequest += (obj) => ShowEntityEditDialog<Entry, EntryVM, EntryEditWindow>(new Entry { PositionId = obj }, entriesManager.AddEntry, GetEntryRelationData());
-            mainVM.PositionsTreeVM.AddPositionRequest += (obj) => ShowEntityEditDialog<Position, PositionVM, PositionEditWindow>(obj, positionManager.AddPosition, GetPositionRelationData());
-            mainVM.PositionsTreeVM.EditPositionRequest += (obj) => ShowEntityEditDialog<Position, PositionVM, PositionEditWindow>(obj, positionManager.UpdatePosition, GetPositionRelationData());
-            mainVM.PositionsTreeVM.DeletePositionRequest += (obj) => ShowEntityDeleteDialog<Position>(obj, positionManager.DeletePosition);
-            positionManager.PositionsChanged += mainVM.PositionsTreeVM.UpdateTree;
+            mainVM.PositionsTreeVM.AddEntryRequest += (obj) => ShowEntityEditDialog<Entry, EntryVM, EntryEditWindow>(new Entry { PositionId = obj }, entriesManager.Add, GetEntryRelationData());
+            mainVM.PositionsTreeVM.AddPositionRequest += (obj) => ShowEntityEditDialog<Position, PositionVM, PositionEditWindow>(obj, positionManager.Add, GetPositionRelationData());
+            mainVM.PositionsTreeVM.EditPositionRequest += (obj) => ShowEntityEditDialog<Position, PositionVM, PositionEditWindow>(obj, positionManager.Update, GetPositionRelationData());
+            mainVM.PositionsTreeVM.DeletePositionRequest += (obj) => ShowEntityDeleteDialog<Position>(obj, positionManager.Delete);
+            positionManager.EntitiesChanged += mainVM.PositionsTreeVM.UpdateTree;
 
-            mainVM.EntriesTreeVM = new EntriesTreeVM(entriesManager.GetEntries, entriesManager.GetEntriesTree);
-            mainVM.EntriesTreeVM.AddEntryRequest += (obj) => ShowEntityEditDialog<Entry, EntryVM, EntryEditWindow>(obj, entriesManager.AddEntry, GetEntryRelationData());
-            mainVM.EntriesTreeVM.AddChildEntryRequest += (obj) => ShowEntityEditDialog<Entry, EntryVM, EntryEditWindow>(obj, entriesManager.AddEntry, GetEntryRelationData());
-            mainVM.EntriesTreeVM.EditEntryRequest += (obj) => ShowEntityEditDialog<Entry, EntryVM, EntryEditWindow>(obj, entriesManager.UpdateEntry, GetEntryRelationData());
-            mainVM.EntriesTreeVM.DeleteEntryRequest += (obj) => ShowEntityDeleteDialog<Entry>(obj, entriesManager.DeleteEntry);
-            entriesManager.EntriesChanged += mainVM.EntriesTreeVM.UpdateList;
+            mainVM.EntriesTreeVM = new EntriesTreeVM(entriesManager.Get, entriesManager.GetEntriesTree);
+            mainVM.EntriesTreeVM.AddEntryRequest += (obj) => ShowEntityEditDialog<Entry, EntryVM, EntryEditWindow>(obj, entriesManager.Add, GetEntryRelationData());
+            mainVM.EntriesTreeVM.AddChildEntryRequest += (obj) => ShowEntityEditDialog<Entry, EntryVM, EntryEditWindow>(obj, entriesManager.Add, GetEntryRelationData());
+            mainVM.EntriesTreeVM.EditEntryRequest += (obj) => ShowEntityEditDialog<Entry, EntryVM, EntryEditWindow>(obj, entriesManager.Update, GetEntryRelationData());
+            mainVM.EntriesTreeVM.DeleteEntryRequest += (obj) => ShowEntityDeleteDialog<Entry>(obj, entriesManager.Delete);
+            entriesManager.EntitiesChanged += mainVM.EntriesTreeVM.UpdateList;
 
             mainWindow = new MainWindow { DataContext = mainVM };
             mainWindow.Show();
         }
 
 
-        private void ShowEntitiesListWindow<TEntity, TEntityVM, TEntityV, TEntitiesListV>(Func<IEnumerable<TEntity>> getListDelegate, Func<TEntity, bool> addDelegate, Func<TEntity, bool> updateDelegate, Func<TEntity, bool> deleteDelegate, Action listChanged, object relationData = null) where TEntity : new() where TEntityV : Window, new() where TEntityVM : IEntityVM<TEntity>, new() where TEntitiesListV : Window, new()
+        private void ShowEntitiesListWindow<TEntity, TEntityVM, TEntityV, TEntitiesListV>(IEntityManager<TEntity> entityManager, object relationData = null) where TEntity : class, new() where TEntityV : Window, new() where TEntityVM : IEntityVM<TEntity>, new() where TEntitiesListV : Window, new()
         {
-            var vm = new EntitiesListEditVM<TEntity>(getListDelegate);
-            vm.AddItemRequest += (obj) => ShowEntityEditDialog<TEntity, TEntityVM, TEntityV>(obj, addDelegate, relationData);
-            vm.EditItemRequest += (obj) => ShowEntityEditDialog<TEntity, TEntityVM, TEntityV>(obj, updateDelegate, relationData);
-            vm.DeleteItemRequest += (obj) => ShowEntityDeleteDialog<TEntity>(obj, deleteDelegate);
-            listChanged += vm.UpdateList;
+            var vm = new EntitiesListEditVM<TEntity>(entityManager.Get);
+            vm.AddItemRequest += (obj) => ShowEntityEditDialog<TEntity, TEntityVM, TEntityV>(obj, entityManager.Add, relationData);
+            vm.EditItemRequest += (obj) => ShowEntityEditDialog<TEntity, TEntityVM, TEntityV>(obj, entityManager.Update, relationData);
+            vm.DeleteItemRequest += (obj) => ShowEntityDeleteDialog<TEntity>(obj, entityManager.Delete);
+            entityManager.EntitiesChanged += vm.UpdateList;
             var win = new TEntitiesListV { DataContext = vm, Owner = mainWindow };
             win.Show();
         }
@@ -81,12 +87,12 @@ namespace EMA
 
         private object[] GetPositionRelationData()
         {
-            return new object[] { positionManager.GetPositions(), catalogManager.GetCatalog() };
+            return new object[] { positionManager.Get(), catalogManager.Get() };
         }
 
         private object[] GetEntryRelationData()
         {
-            return new object[] { entriesManager.GetEntries(), positionManager.GetPositions(), entriesManager.GetReasons(), entriesManager.GetContinuationCriterias() };
+            return new object[] { entriesManager.Get(), positionManager.Get(), entryReasonsManager.Get(), entryContinuationCriteriaManager.Get() };
         }
     }
 }

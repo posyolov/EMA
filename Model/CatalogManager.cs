@@ -6,92 +6,43 @@ using System.Linq;
 
 namespace Model
 {
-    public class CatalogManager
+    public class CatalogManager : IEntityManager<CatalogItem>
     {
-        //EquipmentContext _dbContext;
+        readonly IRepository<CatalogItem> catalogRepository = new RepositoryEF<CatalogItem>();
 
-        IRepository<Vendor> vendorRepository;
-        IRepository<CatalogItem> catalogRepository;
+        public event Action EntitiesChanged;
 
-        public event Action CatalogChanged;
-        public event Action VendorsChanged;
-
-        public CatalogManager()
-        {
-            //_dbContext = new EquipmentContext();
-
-            vendorRepository = new RepositoryEF<Vendor>(/*_dbContext*/);
-            catalogRepository = new RepositoryEF<CatalogItem>(/*_dbContext*/);
-        }
-
-        public IEnumerable<Vendor> GetVendors()
-        {
-            return vendorRepository.Get().OrderBy(n => n.Name);
-        }
-
-        public bool AddVendor(Vendor entity)
-        {
-            if (!vendorRepository.IsExist(e => e.Name == entity.Name) &&
-                !String.IsNullOrWhiteSpace(entity.Name))
-            {
-                vendorRepository.Create(entity);
-                VendorsChanged?.Invoke();
-                return true;
-            }
-            return false;
-        }
-
-        public bool UpdateVendor(Vendor entity)
-        {
-            if (!vendorRepository.IsExist(e => e.Name == entity.Name) &&
-                !String.IsNullOrWhiteSpace(entity.Name))
-            {
-                vendorRepository.Update(entity);
-                VendorsChanged?.Invoke();
-                return true;
-            }
-            return false;
-        }
-
-        public bool DeleteVendor(Vendor entity)
-        {
-            vendorRepository.Remove(entity);
-            VendorsChanged?.Invoke();
-            return true;
-        }
-
-
-        public IEnumerable<CatalogItem> GetCatalog()
+        public IEnumerable<CatalogItem> Get()
         {
             return catalogRepository.GetWithInclude(i => i.Vendor).OrderBy(n => n.Vendor.Name);
         }
 
-        public bool AddCatalogItem(CatalogItem entity)
+        public bool Add(CatalogItem entity)
         {
             if (!String.IsNullOrWhiteSpace(entity.Title))
             {
                 catalogRepository.Create(entity);
-                CatalogChanged?.Invoke();
+                EntitiesChanged?.Invoke();
                 return true;
             }
             return false;
         }
 
-        public bool UpdateCatalogItem(CatalogItem entity)
+        public bool Update(CatalogItem entity)
         {
             if (!String.IsNullOrWhiteSpace(entity.Title))
             {
                 catalogRepository.Update(entity);
-                CatalogChanged?.Invoke();
+                EntitiesChanged?.Invoke();
                 return true;
             }
             return false;
         }
 
-        public bool DeleteCatalogItem(CatalogItem entity)
+        public bool Delete(CatalogItem entity)
         {
             catalogRepository.Remove(entity);
-            CatalogChanged?.Invoke();
+            EntitiesChanged?.Invoke();
             return true;
         }
     }
