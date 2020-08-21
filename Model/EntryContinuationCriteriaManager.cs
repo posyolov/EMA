@@ -12,6 +12,8 @@ namespace Model
 
         public event Action EntitiesChanged;
 
+        public object[] RelationEntities { get; set; }
+
         public IEnumerable<EntryContinuationCriteria> Get()
         {
             return continuationCriteriasRepository.Get().OrderBy(e => e.Title);

@@ -4,30 +4,30 @@ namespace ViewModel
 {
     public class MainMenuVM
     {
-        public event Action CatalogRequest;
-        public event Action VendorsRequest;
-        public event Action PositionsRequest;
-        public event Action EntriesRequest;
+        public event Action ShowVendorsRequest;
+        public event Action ShowCatalogRequest;
+        public event Action ShowPositionsRequest;
+        public event Action ShowEntriesRequest;
 
-        public DelegateCommand<object> OpenCatalogWindowCommand { get; }
-        public DelegateCommand<object> OpenVendorsWindowCommand { get; }
-        public DelegateCommand<object> OpenPositionsWindowCommand { get; }
-        public DelegateCommand<object> OpenEntriesWindowCommand { get; }
+        public DelegateCommand<object> ShowVendorsCommand { get; }
+        public DelegateCommand<object> ShowCatalogCommand { get; }
+        public DelegateCommand<object> ShowPositionsCommand { get; }
+        public DelegateCommand<object> ShowEntriesCommand { get; }
 
 
         public MainMenuVM()
         {
-            OpenCatalogWindowCommand = new DelegateCommand<object>(
-                (obj) => CatalogRequest?.Invoke());
+            ShowVendorsCommand = new DelegateCommand<object>(
+                (obj) => ShowVendorsRequest?.Invoke());
 
-            OpenVendorsWindowCommand = new DelegateCommand<object>(
-                (obj) => VendorsRequest?.Invoke());
+            ShowCatalogCommand = new DelegateCommand<object>(
+                (obj) => ShowCatalogRequest?.Invoke());
 
-            OpenPositionsWindowCommand = new DelegateCommand<object>(
-                (obj) => PositionsRequest?.Invoke());
+            ShowPositionsCommand = new DelegateCommand<object>(
+                (obj) => ShowPositionsRequest?.Invoke());
 
-            OpenEntriesWindowCommand = new DelegateCommand<object>(
-                (obj) => EntriesRequest?.Invoke());
+            ShowEntriesCommand = new DelegateCommand<object>(
+                (obj) => ShowEntriesRequest?.Invoke());
         }
 
     }

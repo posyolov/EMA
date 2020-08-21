@@ -18,16 +18,16 @@
             <MenuItem Header="View" ></MenuItem>
             <MenuItem Header="Data">
                 <MenuItem Header="Vendors"
-                          Command="{Binding OpenVendorsWindowCommand}">
+                          Command="{Binding ShowVendorsCommand}">
                 </MenuItem>
                 <MenuItem Header="Catalog"
-                          Command="{Binding OpenCatalogWindowCommand}">
+                          Command="{Binding ShowCatalogCommand}">
                 </MenuItem>
                 <MenuItem Header="Positions"
-                          Command="{Binding OpenPositionsWindowCommand}">
+                          Command="{Binding ShowPositionsCommand}">
                 </MenuItem>
                 <MenuItem Header="Entries"
-                          Command="{Binding OpenEntriesWindowCommand}">
+                          Command="{Binding ShowEntriesCommand}">
                 </MenuItem>
             </MenuItem>
         </Menu>

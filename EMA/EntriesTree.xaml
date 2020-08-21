@@ -163,14 +163,14 @@
                 <TreeView.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Create"
-                                  Command="{Binding AddEntryRequestCommand}"/>
+                                  Command="{Binding ShowAddEntryCommand}"/>
                         <Separator/>
                         <MenuItem Header="Add child"
-                                  Command="{Binding AddChildEntryRequestCommand}"/>
+                                  Command="{Binding ShowAddChildEntryCommand}"/>
                         <MenuItem Header="Edit"
-                                  Command="{Binding EditEntryRequestCommand}"/>
+                                  Command="{Binding ShowEditEntryCommand}"/>
                         <MenuItem Header="Delete"
-                                  Command="{Binding DeleteEntryRequestCommand}"/>
+                                  Command="{Binding ShowDeleteEntryCommand}"/>
                     </ContextMenu>
                 </TreeView.ContextMenu>
             </TreeView>

@@ -45,7 +45,7 @@
 
                     <TreeView.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Command="{Binding AddEntryRequestCommand}">
+                            <MenuItem Command="{Binding ShowAddEntryByPositionCommand}">
                                 <MenuItem.Header>
                                     Create entry
                                     <!--<StackPanel Orientation="Horizontal">
@@ -57,7 +57,7 @@
 
                             <Separator/>
 
-                            <MenuItem Command="{Binding AddPositionRequestCommand}">
+                            <MenuItem Command="{Binding ShowAddChildPositionCommand}">
                                 <MenuItem.Header>
                                     Add child position
                                     <!--<StackPanel Orientation="Horizontal">
@@ -67,7 +67,7 @@
                                 </MenuItem.Header>
                             </MenuItem>
 
-                            <MenuItem Command="{Binding EditPositionRequestCommand}">
+                            <MenuItem Command="{Binding ShowEditPositionCommand}">
                                 <MenuItem.Header>
                                     Edit position
                                     <!--<StackPanel Orientation="Horizontal">
@@ -77,7 +77,7 @@
                                 </MenuItem.Header>
                             </MenuItem>
 
-                            <MenuItem Command="{Binding DeletePositionRequestCommand}">
+                            <MenuItem Command="{Binding ShowDeletePositionCommand}">
                                 <MenuItem.Header>
                                     Delete position
                                     <!--<StackPanel Orientation="Horizontal">

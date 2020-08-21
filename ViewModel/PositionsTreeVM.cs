@@ -13,15 +13,15 @@ namespace ViewModel
         private ObservableCollection<Position> positions;
         private Position selectedItem;
 
-        public event Action<int> AddEntryRequest;
-        public event Action<Position> AddPositionRequest;
-        public event Action<Position> EditPositionRequest;
-        public event Action<Position> DeletePositionRequest;
+        public event Action<Entry> ShowAddEntryByPositionRequest;
+        public event Action<Position> ShowAddChildPositionRequest;
+        public event Action<Position> ShowEditPositionRequest;
+        public event Action<Position> ShowDeletePositionRequest;
 
-        public DelegateCommand<object> AddEntryRequestCommand { get; }
-        public DelegateCommand<object> AddPositionRequestCommand { get; }
-        public DelegateCommand<object> EditPositionRequestCommand { get; }
-        public DelegateCommand<object> DeletePositionRequestCommand { get; }
+        public DelegateCommand<object> ShowAddEntryByPositionCommand { get; }
+        public DelegateCommand<object> ShowAddChildPositionCommand { get; }
+        public DelegateCommand<object> ShowEditPositionCommand { get; }
+        public DelegateCommand<object> ShowDeletePositionCommand { get; }
 
         public ObservableCollection<Position> Positions
         {
@@ -42,10 +42,10 @@ namespace ViewModel
             set
             {
                 selectedItem = value;// getPositionFullDataDelegate?.Invoke(value.Id);
-                AddEntryRequestCommand.RiseCanExecuteChanged();
-                AddPositionRequestCommand.RiseCanExecuteChanged();
-                EditPositionRequestCommand.RiseCanExecuteChanged();
-                DeletePositionRequestCommand.RiseCanExecuteChanged();
+                ShowAddEntryByPositionCommand.RiseCanExecuteChanged();
+                ShowAddChildPositionCommand.RiseCanExecuteChanged();
+                ShowEditPositionCommand.RiseCanExecuteChanged();
+                ShowDeletePositionCommand.RiseCanExecuteChanged();
                 NotifyPropertyChanged();
             }
         }
@@ -56,21 +56,21 @@ namespace ViewModel
             this.getPositionFullDataDelegate = getPositionFullDataDelegate;
             Positions = new ObservableCollection<Position>(getTreeDelegate?.Invoke());
 
-            AddEntryRequestCommand = new DelegateCommand<object>(
+            ShowAddEntryByPositionCommand = new DelegateCommand<object>(
                 canExecute: (obj) => SelectedItem != null,
-                execute: (obj) => AddEntryRequest?.Invoke(selectedItem.Id));
+                execute: (obj) => ShowAddEntryByPositionRequest?.Invoke(new Entry { PositionId = selectedItem.Id }));
 
-            AddPositionRequestCommand = new DelegateCommand<object>(
+            ShowAddChildPositionCommand = new DelegateCommand<object>(
                 canExecute: (obj) => SelectedItem != null,
-                execute: (obj) => AddPositionRequest?.Invoke(new Position() { ParentId = selectedItem.Id, Parent = selectedItem })) ;
+                execute: (obj) => ShowAddChildPositionRequest?.Invoke(new Position() { ParentId = selectedItem.Id, Parent = selectedItem }));
 
-            EditPositionRequestCommand = new DelegateCommand<object>(
+            ShowEditPositionCommand = new DelegateCommand<object>(
                 canExecute: (obj) => SelectedItem != null,
-                execute: (obj) => EditPositionRequest?.Invoke(selectedItem));
+                execute: (obj) => ShowEditPositionRequest?.Invoke(selectedItem));
 
-            DeletePositionRequestCommand = new DelegateCommand<object>(
+            ShowDeletePositionCommand = new DelegateCommand<object>(
                 canExecute: (obj) => SelectedItem != null,
-                execute: (obj) => DeletePositionRequest?.Invoke(selectedItem));
+                execute: (obj) => ShowDeletePositionRequest?.Invoke(selectedItem));
         }
 
         public void UpdateTree()

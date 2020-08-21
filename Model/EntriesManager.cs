@@ -12,6 +12,8 @@ namespace Model
 
         public event Action EntitiesChanged;
 
+        public object[] RelationEntities { get; set; }
+
         public IEnumerable<Entry> Get()
         {
             return entriesRepository.GetWithInclude(par => par.Parent, pos => pos.Position, ps => ps.Parent.Position, r => r.Reason, c => c.ContinuationCriteria, u => u.ChangeUser).OrderBy(d => d.OccurDateTime);

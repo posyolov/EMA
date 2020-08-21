@@ -18,15 +18,15 @@ namespace ViewModel
         private string filterPosition;
         private bool enableFilterPosition;
 
-        public event Action<Entry> AddEntryRequest;
-        public event Action<Entry> AddChildEntryRequest;
-        public event Action<Entry> EditEntryRequest;
-        public event Action<Entry> DeleteEntryRequest;
+        public event Action<Entry> ShowAddEntryRequest;
+        public event Action<Entry> ShowAddChildEntryRequest;
+        public event Action<Entry> ShowEditEntryRequest;
+        public event Action<Entry> ShowDeleteEntryRequest;
 
-        public DelegateCommand<object> AddEntryRequestCommand { get; }
-        public DelegateCommand<object> AddChildEntryRequestCommand { get; }
-        public DelegateCommand<object> EditEntryRequestCommand { get; }
-        public DelegateCommand<object> DeleteEntryRequestCommand { get; }
+        public DelegateCommand<object> ShowAddEntryCommand { get; }
+        public DelegateCommand<object> ShowAddChildEntryCommand { get; }
+        public DelegateCommand<object> ShowEditEntryCommand { get; }
+        public DelegateCommand<object> ShowDeleteEntryCommand { get; }
 
         public ObservableCollection<Entry> Entries
         {
@@ -65,9 +65,9 @@ namespace ViewModel
             set
             {
                 selectedItem = value;
-                AddChildEntryRequestCommand.RiseCanExecuteChanged();
-                EditEntryRequestCommand.RiseCanExecuteChanged();
-                DeleteEntryRequestCommand.RiseCanExecuteChanged();
+                ShowAddChildEntryCommand.RiseCanExecuteChanged();
+                ShowEditEntryCommand.RiseCanExecuteChanged();
+                ShowDeleteEntryCommand.RiseCanExecuteChanged();
                 NotifyPropertyChanged();
             }
         }
@@ -98,20 +98,20 @@ namespace ViewModel
             Entries = new ObservableCollection<Entry>(getListDelegate?.Invoke());
             EntriesTree = new ObservableCollection<Entry>(getTreeDelegate?.Invoke());
 
-            AddEntryRequestCommand = new DelegateCommand<object>(
-                execute: (obj) => AddEntryRequest?.Invoke(new Entry()));
+            ShowAddEntryCommand = new DelegateCommand<object>(
+                execute: (obj) => ShowAddEntryRequest?.Invoke(new Entry()));
 
-            AddChildEntryRequestCommand = new DelegateCommand<object>(
+            ShowAddChildEntryCommand = new DelegateCommand<object>(
                 canExecute: (obj) => SelectedItem != null,
-                execute: (obj) => AddChildEntryRequest?.Invoke(new Entry() { ParentId = selectedItem.Id, PositionId = selectedItem.PositionId }));
+                execute: (obj) => ShowAddChildEntryRequest?.Invoke(new Entry() { ParentId = selectedItem.Id, PositionId = selectedItem.PositionId }));
 
-            EditEntryRequestCommand = new DelegateCommand<object>(
+            ShowEditEntryCommand = new DelegateCommand<object>(
                 canExecute: (obj) => SelectedItem != null,
-                execute: (obj) => EditEntryRequest?.Invoke(selectedItem));
+                execute: (obj) => ShowEditEntryRequest?.Invoke(selectedItem));
 
-            DeleteEntryRequestCommand = new DelegateCommand<object>(
+            ShowDeleteEntryCommand = new DelegateCommand<object>(
                 canExecute: (obj) => SelectedItem != null,
-                execute: (obj) => DeleteEntryRequest?.Invoke(selectedItem));
+                execute: (obj) => ShowDeleteEntryRequest?.Invoke(selectedItem));
         }
 
         public void UpdateList()

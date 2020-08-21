@@ -12,6 +12,8 @@ namespace Model
 
         public event Action EntitiesChanged;
 
+        public object[] RelationEntities { get; set; }
+
         public IEnumerable<Vendor> Get()
         {
             return vendorRepository.Get().OrderBy(n => n.Name);

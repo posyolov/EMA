@@ -12,6 +12,8 @@ namespace Model
 
         public event Action EntitiesChanged;
 
+        public object[] RelationEntities { get; set; }
+
         public IEnumerable<CatalogItem> Get()
         {
             return catalogRepository.GetWithInclude(i => i.Vendor).OrderBy(n => n.Vendor.Name);

@@ -7,6 +7,7 @@ namespace Model
     public interface IEntityManager<TEntity> where TEntity : class
     {
         public event Action EntitiesChanged;
+        public object[] RelationEntities { get; set; }
         public IEnumerable<TEntity> Get();
         public bool Add(TEntity entity);
         public bool Update(TEntity entity);
