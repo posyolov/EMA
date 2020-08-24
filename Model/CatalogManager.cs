@@ -9,10 +9,19 @@ namespace Model
     public class CatalogManager : IEntityManager<CatalogItem>
     {
         readonly IRepository<CatalogItem> catalogRepository = new RepositoryEF<CatalogItem>();
+        private readonly IEntityManager<Vendor> vendorsManager;
+
+        public CatalogManager(IEntityManager<Vendor> vendorsManager)
+        {
+            this.vendorsManager = vendorsManager;
+        }
 
         public event Action EntitiesChanged;
 
-        public object[] RelationEntities { get; set; }
+        public object[] RelationEntities 
+        {
+            get => new object[] { vendorsManager.Get() };
+        }
 
         public IEnumerable<CatalogItem> Get()
         {

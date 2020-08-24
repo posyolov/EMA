@@ -41,7 +41,7 @@
             </StackPanel>
             <StackPanel Grid.Column="1">
                 <TextBlock Text="Position:"/>
-                <ComboBox ItemsSource="{Binding RelationData[1]}"
+                <ComboBox ItemsSource="{Binding RelationEntities[1]}"
                        SelectedValuePath="Id"
                        SelectedValue="{Binding EntityViewModel.PositionId}">
                     <ComboBox.ItemTemplate>
@@ -53,7 +53,7 @@
             </StackPanel>
             <StackPanel Grid.Column="2">
                 <TextBlock Text="Reason:"/>
-                <ComboBox ItemsSource="{Binding RelationData[2]}"
+                <ComboBox ItemsSource="{Binding RelationEntities[2]}"
                           DisplayMemberPath="Title"
                           SelectedValuePath="Id"
                           SelectedValue="{Binding EntityViewModel.ReasonId}"/>
@@ -84,7 +84,7 @@
             <StackPanel Grid.Column="0">
                 <TextBlock 
                        Text="ContinuationCriteria:"/>
-                <ComboBox ItemsSource="{Binding RelationData[3]}"
+                <ComboBox ItemsSource="{Binding RelationEntities[3]}"
                           DisplayMemberPath="Title"
                           SelectedValuePath="Id"
                           SelectedValue="{Binding EntityViewModel.ContinuationCriteriaId}"/>
@@ -118,7 +118,7 @@
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0">
                 <TextBlock Text="Parent:"/>
-                <ComboBox ItemsSource="{Binding RelationData[0]}"
+                <ComboBox ItemsSource="{Binding RelationEntities[0]}"
                       SelectedValuePath="Id"
                       SelectedValue="{Binding EntityViewModel.ParentId}">
                     <ComboBox.ItemTemplate>

@@ -48,7 +48,7 @@
                        Text="Parent:"/>
             <ComboBox Grid.Column="1" Grid.Row="1" 
                       MinWidth="100" Margin="3"
-                      ItemsSource="{Binding RelationData[0]}"
+                      ItemsSource="{Binding RelationEntities[0]}"
                       SelectedItem="{Binding EntityViewModel.Parent}"
                       SelectedValuePath="Id"
                       SelectedValue="{Binding EntityViewModel.ParentId}">
@@ -76,7 +76,7 @@
                        Text="CatalogItem:"/>
             <ComboBox Grid.Column="1" Grid.Row="3" 
                        MinWidth="100" Margin="3"
-                       ItemsSource="{Binding RelationData[1]}"
+                       ItemsSource="{Binding RelationEntities[1]}"
                        SelectedValuePath="Id"
                        SelectedValue="{Binding EntityViewModel.CatalogItemId}">
                 <ComboBox.ItemTemplate>

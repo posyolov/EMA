@@ -11,10 +11,19 @@ namespace Model
         const char DELIMITER = ';';
 
         readonly IRepository<Position> positionsRepository = new RepositoryEF<Position>();
+        private readonly IEntityManager<CatalogItem> catalogManager;
+
+        public PositionsManager(IEntityManager<CatalogItem> catalogManager)
+        {
+            this.catalogManager = catalogManager;
+        }
 
         public event Action EntitiesChanged;
 
-        public object[] RelationEntities { get; set; }
+        public object[] RelationEntities
+        {
+            get => new object[] { Get(), catalogManager.Get() };
+        }
 
         public IEnumerable<Position> Get()
         {

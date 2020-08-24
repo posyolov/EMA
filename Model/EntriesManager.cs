@@ -9,10 +9,23 @@ namespace Model
     public class EntriesManager : IEntityManager<Entry>
     {
         readonly IRepository<Entry> entriesRepository = new RepositoryEF<Entry>();
+        private readonly IEntityManager<Position> positionsManager;
+        private readonly IEntityManager<EntryReason> entryReasonsManager;
+        private readonly IEntityManager<EntryContinuationCriteria> entryContinuationCriteriaManager;
+
+        public EntriesManager(IEntityManager<Position> positionsManager, IEntityManager<EntryReason> entryReasonsManager, IEntityManager<EntryContinuationCriteria> entryContinuationCriteriaManager)
+        {
+            this.positionsManager = positionsManager;
+            this.entryReasonsManager = entryReasonsManager;
+            this.entryContinuationCriteriaManager = entryContinuationCriteriaManager;
+        }
 
         public event Action EntitiesChanged;
 
-        public object[] RelationEntities { get; set; }
+        public object[] RelationEntities
+        {
+            get => new object[] { Get(), positionsManager.Get(), entryReasonsManager.Get(), entryContinuationCriteriaManager.Get() };
+        }
 
         public IEnumerable<Entry> Get()
         {

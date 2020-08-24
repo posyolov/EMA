@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Model;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace ViewModel
 {
-    public class EntitiesListEditVM<TEntity> : NotifyViewModel where TEntity : new()
+    public class EntitiesListEditVM<TEntity> : NotifyViewModel where TEntity : class, new()
     {
         public event Action<TEntity> AddItemRequest;
         public event Action<TEntity> EditItemRequest;
@@ -16,7 +17,6 @@ namespace ViewModel
 
         private TEntity selectedItem;
         private ObservableCollection<TEntity> items;
-        private readonly Func<IEnumerable<TEntity>> getListDelegate;
 
         public ObservableCollection<TEntity> Items
         {
@@ -43,11 +43,11 @@ namespace ViewModel
         }
 
 
-        public EntitiesListEditVM(Func<IEnumerable<TEntity>> getListDelegate)
+        public EntitiesListEditVM(IEntityManager<TEntity> entityManager)
         {
-            this.getListDelegate = getListDelegate;
+            Items = new ObservableCollection<TEntity>(entityManager.Get());
 
-            Items = new ObservableCollection<TEntity>(getListDelegate());
+            entityManager.EntitiesChanged += () => { Items = new ObservableCollection<TEntity>(entityManager.Get()); };
 
             AddItemRequestCommand = new DelegateCommand<object>(
                 (obj) => AddItemRequest?.Invoke(new TEntity()));
@@ -59,11 +59,6 @@ namespace ViewModel
             DeleteItemRequestCommand = new DelegateCommand<object>(
                 canExecute: (obj) => SelectedItem != null,
                 execute: (obj) => DeleteItemRequest?.Invoke(selectedItem));
-        }
-
-        public void UpdateList()
-        {
-            Items = new ObservableCollection<TEntity>(getListDelegate());
         }
     }
 }

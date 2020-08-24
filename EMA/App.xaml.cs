@@ -15,9 +15,9 @@ namespace EMA
         VendorsManager vendorsManager;
         CatalogManager catalogManager;
         PositionsManager positionManager;
-        EntriesManager entriesManager;
         EntryReasonsManager entryReasonsManager;
         EntryContinuationCriteriaManager entryContinuationCriteriaManager;
+        EntriesManager entriesManager;
 
         MainVM mainVM;
         MainWindow mainWindow;
@@ -25,46 +25,43 @@ namespace EMA
         private void OnStartup(object sender, StartupEventArgs e)
         {
             vendorsManager = new VendorsManager();
-            catalogManager = new CatalogManager();
-            positionManager = new PositionsManager();
-            entriesManager = new EntriesManager();
+            catalogManager = new CatalogManager(vendorsManager);
+            positionManager = new PositionsManager(catalogManager);
             entryReasonsManager = new EntryReasonsManager();
             entryContinuationCriteriaManager = new EntryContinuationCriteriaManager();
+            entriesManager = new EntriesManager(positionManager, entryReasonsManager, entryContinuationCriteriaManager);
 
             mainVM = new MainVM();
 
             mainVM.MainMenuVM = new MainMenuVM();
             mainVM.MainMenuVM.ShowVendorsRequest += () => ShowEntitiesListWindow<Vendor, VendorVM, VendorEditWindow, VendorsWindow>(vendorsManager);
-            mainVM.MainMenuVM.ShowCatalogRequest += () => ShowEntitiesListWindow<CatalogItem, CatalogItemVM, CatalogItemEditWindow, CatalogWindow>(catalogManager, vendorsManager.Get());
-            mainVM.MainMenuVM.ShowPositionsRequest += () => ShowEntitiesListWindow<Position, PositionVM, PositionEditWindow, PositionsListWindow>(positionManager, GetPositionRelationData());
-            mainVM.MainMenuVM.ShowEntriesRequest += () => ShowEntitiesListWindow<Entry, EntryVM, EntryEditWindow, EntriesListWindow>(entriesManager, GetEntryRelationData());
+            mainVM.MainMenuVM.ShowCatalogRequest += () => ShowEntitiesListWindow<CatalogItem, CatalogItemVM, CatalogItemEditWindow, CatalogWindow>(catalogManager);
+            mainVM.MainMenuVM.ShowPositionsRequest += () => ShowEntitiesListWindow<Position, PositionVM, PositionEditWindow, PositionsListWindow>(positionManager);
+            mainVM.MainMenuVM.ShowEntriesRequest += () => ShowEntitiesListWindow<Entry, EntryVM, EntryEditWindow, EntriesListWindow>(entriesManager);
 
-            mainVM.PositionsTreeVM = new PositionsTreeVM(positionManager.GetPositionsTree, positionManager.GetPositionFullData);
-            mainVM.PositionsTreeVM.ShowAddEntryByPositionRequest += (obj) => ShowEntityEditDialog<Entry, EntryVM, EntryEditWindow>(obj, entriesManager.Add, GetEntryRelationData());
-            mainVM.PositionsTreeVM.ShowAddChildPositionRequest += (obj) => ShowEntityEditDialog<Position, PositionVM, PositionEditWindow>(obj, positionManager.Add, GetPositionRelationData());
-            mainVM.PositionsTreeVM.ShowEditPositionRequest += (obj) => ShowEntityEditDialog<Position, PositionVM, PositionEditWindow>(obj, positionManager.Update, GetPositionRelationData());
+            mainVM.PositionsTreeVM = new PositionsTreeVM(positionManager);
+            mainVM.PositionsTreeVM.ShowAddEntryByPositionRequest += (obj) => ShowEntityEditDialog<Entry, EntryVM, EntryEditWindow>(obj, entriesManager.Add, entriesManager.RelationEntities);
+            mainVM.PositionsTreeVM.ShowAddChildPositionRequest += (obj) => ShowEntityEditDialog<Position, PositionVM, PositionEditWindow>(obj, positionManager.Add, positionManager.RelationEntities);
+            mainVM.PositionsTreeVM.ShowEditPositionRequest += (obj) => ShowEntityEditDialog<Position, PositionVM, PositionEditWindow>(obj, positionManager.Update, positionManager.RelationEntities);
             mainVM.PositionsTreeVM.ShowDeletePositionRequest += (obj) => ShowEntityDeleteDialog<Position>(obj, positionManager.Delete);
-            positionManager.EntitiesChanged += mainVM.PositionsTreeVM.UpdateTree;
 
-            mainVM.EntriesTreeVM = new EntriesTreeVM(entriesManager.Get, entriesManager.GetEntriesTree);
-            mainVM.EntriesTreeVM.ShowAddEntryRequest += (obj) => ShowEntityEditDialog<Entry, EntryVM, EntryEditWindow>(obj, entriesManager.Add, GetEntryRelationData());
-            mainVM.EntriesTreeVM.ShowAddChildEntryRequest += (obj) => ShowEntityEditDialog<Entry, EntryVM, EntryEditWindow>(obj, entriesManager.Add, GetEntryRelationData());
-            mainVM.EntriesTreeVM.ShowEditEntryRequest += (obj) => ShowEntityEditDialog<Entry, EntryVM, EntryEditWindow>(obj, entriesManager.Update, GetEntryRelationData());
+            mainVM.EntriesTreeVM = new EntriesTreeVM(entriesManager);
+            mainVM.EntriesTreeVM.ShowAddEntryRequest += (obj) => ShowEntityEditDialog<Entry, EntryVM, EntryEditWindow>(obj, entriesManager.Add, entriesManager.RelationEntities);
+            mainVM.EntriesTreeVM.ShowAddChildEntryRequest += (obj) => ShowEntityEditDialog<Entry, EntryVM, EntryEditWindow>(obj, entriesManager.Add, entriesManager.RelationEntities);
+            mainVM.EntriesTreeVM.ShowEditEntryRequest += (obj) => ShowEntityEditDialog<Entry, EntryVM, EntryEditWindow>(obj, entriesManager.Update, entriesManager.RelationEntities);
             mainVM.EntriesTreeVM.ShowDeleteEntryRequest += (obj) => ShowEntityDeleteDialog<Entry>(obj, entriesManager.Delete);
-            entriesManager.EntitiesChanged += mainVM.EntriesTreeVM.UpdateList;
 
             mainWindow = new MainWindow { DataContext = mainVM };
             mainWindow.Show();
         }
 
 
-        private void ShowEntitiesListWindow<TEntity, TEntityVM, TEntityV, TEntitiesListV>(IEntityManager<TEntity> entityManager, object relationEntities = null) where TEntity : class, new() where TEntityV : Window, new() where TEntityVM : IEntityVM<TEntity>, new() where TEntitiesListV : Window, new()
+        private void ShowEntitiesListWindow<TEntity, TEntityVM, TEntityV, TEntitiesListV>(IEntityManager<TEntity> entityManager) where TEntity : class, new() where TEntityV : Window, new() where TEntityVM : IEntityVM<TEntity>, new() where TEntitiesListV : Window, new()
         {
-            var vm = new EntitiesListEditVM<TEntity>(entityManager.Get);
-            vm.AddItemRequest += (obj) => ShowEntityEditDialog<TEntity, TEntityVM, TEntityV>(obj, entityManager.Add, relationEntities);
-            vm.EditItemRequest += (obj) => ShowEntityEditDialog<TEntity, TEntityVM, TEntityV>(obj, entityManager.Update, relationEntities);
+            var vm = new EntitiesListEditVM<TEntity>(entityManager);
+            vm.AddItemRequest += (obj) => ShowEntityEditDialog<TEntity, TEntityVM, TEntityV>(obj, entityManager.Add, entityManager.RelationEntities);
+            vm.EditItemRequest += (obj) => ShowEntityEditDialog<TEntity, TEntityVM, TEntityV>(obj, entityManager.Update, entityManager.RelationEntities);
             vm.DeleteItemRequest += (obj) => ShowEntityDeleteDialog<TEntity>(obj, entityManager.Delete);
-            entityManager.EntitiesChanged += vm.UpdateList;
             var win = new TEntitiesListV();
             win.DataContext = vm;
             win.Owner = mainWindow;
@@ -87,14 +84,5 @@ namespace EMA
             win.ShowDialog();
         }
 
-        private object[] GetPositionRelationData()
-        {
-            return new object[] { positionManager.Get(), catalogManager.Get() };
-        }
-
-        private object[] GetEntryRelationData()
-        {
-            return new object[] { entriesManager.Get(), positionManager.Get(), entryReasonsManager.Get(), entryContinuationCriteriaManager.Get() };
-        }
     }
 }

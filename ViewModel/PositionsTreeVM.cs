@@ -1,4 +1,5 @@
-﻿using Repository;
+﻿using Model;
+using Repository;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,9 +8,6 @@ namespace ViewModel
 {
     public class PositionsTreeVM : NotifyViewModel
     {
-        private readonly Func<IEnumerable<Position>> getTreeDelegate;
-        private readonly Func<int, Position> getPositionFullDataDelegate;
-
         private ObservableCollection<Position> positions;
         private Position selectedItem;
 
@@ -41,7 +39,7 @@ namespace ViewModel
             get => selectedItem;
             set
             {
-                selectedItem = value;// getPositionFullDataDelegate?.Invoke(value.Id);
+                selectedItem = value;
                 ShowAddEntryByPositionCommand.RiseCanExecuteChanged();
                 ShowAddChildPositionCommand.RiseCanExecuteChanged();
                 ShowEditPositionCommand.RiseCanExecuteChanged();
@@ -50,11 +48,11 @@ namespace ViewModel
             }
         }
 
-        public PositionsTreeVM(Func<IEnumerable<Position>> getTreeDelegate, Func<int, Position> getPositionFullDataDelegate)
+        public PositionsTreeVM(PositionsManager positionManager)
         {
-            this.getTreeDelegate = getTreeDelegate;
-            this.getPositionFullDataDelegate = getPositionFullDataDelegate;
-            Positions = new ObservableCollection<Position>(getTreeDelegate?.Invoke());
+            Positions = new ObservableCollection<Position>(positionManager.GetPositionsTree());
+
+            positionManager.EntitiesChanged += () => { Positions = new ObservableCollection<Position>(positionManager.GetPositionsTree()); };
 
             ShowAddEntryByPositionCommand = new DelegateCommand<object>(
                 canExecute: (obj) => SelectedItem != null,
@@ -71,11 +69,6 @@ namespace ViewModel
             ShowDeletePositionCommand = new DelegateCommand<object>(
                 canExecute: (obj) => SelectedItem != null,
                 execute: (obj) => ShowDeletePositionRequest?.Invoke(selectedItem));
-        }
-
-        public void UpdateTree()
-        {
-            Positions = new ObservableCollection<Position>(getTreeDelegate?.Invoke());
         }
     }
 }

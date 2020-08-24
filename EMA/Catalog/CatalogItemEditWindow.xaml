@@ -49,7 +49,7 @@
                        Text="Vendor:"/>
             <ComboBox Grid.Column="1" Grid.Row="2" 
                        MinWidth="100" Margin="3"
-                       ItemsSource="{Binding RelationData}"
+                       ItemsSource="{Binding RelationEntities[0]}"
                        DisplayMemberPath="Name"
                        SelectedValuePath="Id"
                        SelectedValue="{Binding EntityViewModel.VendorId}"/>

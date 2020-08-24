@@ -1,4 +1,5 @@
-﻿using Repository;
+﻿using Model;
+using Repository;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,9 +9,6 @@ namespace ViewModel
 {
     public class EntriesTreeVM : NotifyViewModel
     {
-        private readonly Func<IEnumerable<Entry>> getListDelegate;
-        private readonly Func<IEnumerable<Entry>> getTreeDelegate;
-
         private ObservableCollection<Entry> entries;
         private ObservableCollection<Entry> entriesTree;
         private ObservableCollection<Entry> entriesTreeFiltered;
@@ -91,12 +89,16 @@ namespace ViewModel
             }
         }
 
-        public EntriesTreeVM(Func<IEnumerable<Entry>> getListDelegate, Func<IEnumerable<Entry>> getTreeDelegate)
+        public EntriesTreeVM(EntriesManager entriesManager/*Func<IEnumerable<Entry>> getListDelegate, Func<IEnumerable<Entry>> getTreeDelegate*/)
         {
-            this.getListDelegate = getListDelegate;
-            this.getTreeDelegate = getTreeDelegate;
-            Entries = new ObservableCollection<Entry>(getListDelegate?.Invoke());
-            EntriesTree = new ObservableCollection<Entry>(getTreeDelegate?.Invoke());
+            Entries = new ObservableCollection<Entry>(entriesManager.Get());
+            EntriesTree = new ObservableCollection<Entry>(entriesManager.GetEntriesTree());
+
+            entriesManager.EntitiesChanged += () =>
+            {
+                Entries = new ObservableCollection<Entry>(entriesManager.Get());
+                EntriesTree = new ObservableCollection<Entry>(entriesManager.GetEntriesTree());
+            };
 
             ShowAddEntryCommand = new DelegateCommand<object>(
                 execute: (obj) => ShowAddEntryRequest?.Invoke(new Entry()));
@@ -112,12 +114,6 @@ namespace ViewModel
             ShowDeleteEntryCommand = new DelegateCommand<object>(
                 canExecute: (obj) => SelectedItem != null,
                 execute: (obj) => ShowDeleteEntryRequest?.Invoke(selectedItem));
-        }
-
-        public void UpdateList()
-        {
-            Entries = new ObservableCollection<Entry>(getListDelegate?.Invoke());
-            EntriesTree = new ObservableCollection<Entry>(getTreeDelegate?.Invoke());
         }
 
         private void FilterEntriesTree()

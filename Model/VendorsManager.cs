@@ -12,7 +12,10 @@ namespace Model
 
         public event Action EntitiesChanged;
 
-        public object[] RelationEntities { get; set; }
+        public object[] RelationEntities
+        {
+            get;
+        }
 
         public IEnumerable<Vendor> Get()
         {

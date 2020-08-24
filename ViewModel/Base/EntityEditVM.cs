@@ -10,9 +10,9 @@ namespace ViewModel
         private readonly TEntity entityModel;
 
         public IEntityVM<TEntity> EntityViewModel { get; set; }
-        public object RelationData { get; set; }
+        public object RelationEntities { get; set; }
 
-        public EntityEditVM(TEntity entity, Func<TEntity, bool> executeDelegate, Action closeDialogDelegate, object relationData = null)
+        public EntityEditVM(TEntity entity, Func<TEntity, bool> executeDelegate, Action closeDialogDelegate, object relationEntities = null)
         {
             entityModel = entity;
             EntityViewModel = new TEntityVM();
@@ -21,7 +21,7 @@ namespace ViewModel
             this.executeDelegate = executeDelegate;
             this.closeDialogDelegate = closeDialogDelegate;
 
-            RelationData = relationData;
+            RelationEntities = relationEntities;
         }
 
         protected override void OnOk()
