@@ -27,21 +27,39 @@ namespace EMA
 
         private void OnStartup(object sender, StartupEventArgs e)
         {
+            mainVM = new MainVM();
+            mainWindow = new MainWindow();
+
+            ConfigureEntitiesManagers();
+
+            ConfigureEntityWindowsCreators();
+
+            ConfigureMainVM();
+
+            mainWindow.DataContext = mainVM;
+            mainWindow.Show();
+        }
+
+        private void ConfigureEntitiesManagers()
+        {
             vendorsManager = new VendorsManager();
             catalogManager = new CatalogManager(vendorsManager);
             positionsManager = new PositionsManager(catalogManager);
             entryReasonsManager = new EntryReasonsManager();
             entryContinuationCriteriaManager = new EntryContinuationCriteriaManager();
             entriesManager = new EntriesManager(positionsManager, entryReasonsManager, entryContinuationCriteriaManager);
+        }
 
-            mainVM = new MainVM();
-            mainWindow = new MainWindow();
-
+        private void ConfigureEntityWindowsCreators()
+        {
             vendorsWindowsCreator = new EntitiyWindowsCreator<Vendor, VendorVM, VendorEditWindow, VendorsWindow>(vendorsManager, mainWindow);
             catalogWindowsCreator = new EntitiyWindowsCreator<CatalogItem, CatalogItemVM, CatalogItemEditWindow, CatalogWindow>(catalogManager, mainWindow);
             positionsWindowsCreator = new EntitiyWindowsCreator<Position, PositionVM, PositionEditWindow, PositionsListWindow>(positionsManager, mainWindow);
             entriesWindowsCreator = new EntitiyWindowsCreator<Entry, EntryVM, EntryEditWindow, EntriesListWindow>(entriesManager, mainWindow);
+        }
 
+        private void ConfigureMainVM()
+        {
             mainVM.MainMenuVM = new MainMenuVM();
             mainVM.MainMenuVM.ShowVendorsRequest += vendorsWindowsCreator.ShowEntitiesListWindow;
             mainVM.MainMenuVM.ShowCatalogRequest += catalogWindowsCreator.ShowEntitiesListWindow;
@@ -59,9 +77,6 @@ namespace EMA
             mainVM.EntriesTreeVM.ShowAddChildEntryRequest += entriesWindowsCreator.ShowEntityAddDialog;
             mainVM.EntriesTreeVM.ShowEditEntryRequest += entriesWindowsCreator.ShowEntityEditDialog;
             mainVM.EntriesTreeVM.ShowDeleteEntryRequest += entriesWindowsCreator.ShowEntityDeleteDialog;
-
-            mainWindow.DataContext = mainVM;
-            mainWindow.Show();
         }
 
     }
