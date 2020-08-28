@@ -42,14 +42,9 @@
             <StackPanel Grid.Column="1">
                 <TextBlock Text="Position:"/>
                 <ComboBox ItemsSource="{Binding RelationEntities[1]}"
-                       SelectedValuePath="Id"
-                       SelectedValue="{Binding EntityViewModel.PositionId}">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Path=Name, Converter={StaticResource positionNameConverter}}"/>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
+                          DisplayMemberPath="Name"
+                          SelectedValuePath="Id"
+                          SelectedValue="{Binding EntityViewModel.PositionId}"/>
             </StackPanel>
             <StackPanel Grid.Column="2">
                 <TextBlock Text="Reason:"/>
@@ -126,7 +121,7 @@
                             <TextBlock>
                                 <TextBlock.Text>
                                     <MultiBinding StringFormat="{}{0} {1}">
-                                        <Binding Path="Position.Name" Converter="{StaticResource positionNameConverter}" FallbackValue=""/>
+                                        <Binding Path="Position.Name"/>
                                         <Binding Path="Title"/>
                                     </MultiBinding>
                                 </TextBlock.Text>

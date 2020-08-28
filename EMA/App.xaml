@@ -4,7 +4,7 @@
              xmlns:local="clr-namespace:EMA"
              Startup="OnStartup">
     <Application.Resources>
-        <local:PositionNameConverter x:Key="positionNameConverter"/>
-        <local:ObjectToFontConverter x:Key="objectToFontConverter"/>
+        <!--<local:PositionNameConverter x:Key="positionNameConverter"/>
+        <local:ObjectToFontConverter x:Key="objectToFontConverter"/>-->
     </Application.Resources>
 </Application>

@@ -118,7 +118,7 @@ namespace ViewModel
 
         private void FilterEntriesTree()
         {
-            if (EnableFilterPosition && !String.IsNullOrEmpty(FilterPosition))
+            if (EnableFilterPosition && !string.IsNullOrEmpty(FilterPosition))
                 EntriesTreeFiltered = new ObservableCollection<Entry>(entriesTree.Where(p => p.Position.Name.Contains(FilterPosition, StringComparison.InvariantCultureIgnoreCase)));
             else
                 EntriesTreeFiltered = entriesTree;

@@ -37,7 +37,7 @@
                     <TreeView.ItemTemplate>
                         <HierarchicalDataTemplate ItemsSource="{Binding Children, Mode=OneWay}">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Name, Converter={StaticResource positionNameConverter}}" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
                                 <TextBlock Text="{Binding Title}" Opacity="0.6" Margin="10 0 0 0" VerticalAlignment="Center"/>
                             </StackPanel>
                         </HierarchicalDataTemplate>
@@ -50,7 +50,7 @@
                                     Create entry
                                     <!--<StackPanel Orientation="Horizontal">
                                         <TextBlock Text="Create entry by " Margin="0"/>
-                                        <TextBlock Text="{Binding SelectedItem.Name, Converter={StaticResource positionNameConverter}}" Margin="0"/>
+                                        <TextBlock Text="{Binding SelectedItem.Name}" Margin="0"/>
                                     </StackPanel>-->
                                 </MenuItem.Header>
                             </MenuItem>
@@ -62,7 +62,7 @@
                                     Add child position
                                     <!--<StackPanel Orientation="Horizontal">
                                         <TextBlock Text="Add position in " Margin="0"/>
-                                        <TextBlock Text="{Binding SelectedItem.Name, Converter={StaticResource positionNameConverter}}" Margin="0"/>
+                                        <TextBlock Text="{Binding SelectedItem.Name}" Margin="0"/>
                                     </StackPanel>-->
                                 </MenuItem.Header>
                             </MenuItem>
@@ -72,7 +72,7 @@
                                     Edit position
                                     <!--<StackPanel Orientation="Horizontal">
                                         <TextBlock Text="Edit position " Margin="0"/>
-                                        <TextBlock Text="{Binding SelectedItem.Name, Converter={StaticResource positionNameConverter}}" Margin="0"/>
+                                        <TextBlock Text="{Binding SelectedItem.Name}" Margin="0"/>
                                     </StackPanel>-->
                                 </MenuItem.Header>
                             </MenuItem>
@@ -82,7 +82,7 @@
                                     Delete position
                                     <!--<StackPanel Orientation="Horizontal">
                                         <TextBlock Text="Delete position " Margin="0"/>
-                                        <TextBlock Text="{Binding SelectedItem.Name, Converter={StaticResource positionNameConverter}}" Margin="0"/>
+                                        <TextBlock Text="{Binding SelectedItem.Name}" Margin="0"/>
                                     </StackPanel>-->
                                 </MenuItem.Header>
                             </MenuItem>
@@ -109,7 +109,7 @@
                 <TextBlock Grid.Column="0" Grid.Row="0"
                        Text="Name:"/>
                 <TextBlock Grid.Column="1" Grid.Row="0"
-                       Text="{Binding Name, Converter={StaticResource positionNameConverter}}"/>
+                       Text="{Binding Name}"/>
 
                 <TextBlock Grid.Column="0" Grid.Row="1"
                        Text="Title:"/>

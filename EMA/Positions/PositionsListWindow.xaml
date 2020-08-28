@@ -38,11 +38,11 @@
                         </GridViewColumn>
 
                         <GridViewColumn Header="Parent" 
-                                    DisplayMemberBinding="{Binding Parent.Name, Converter={StaticResource positionNameConverter}}">
+                                    DisplayMemberBinding="{Binding Parent.Name}">
                         </GridViewColumn>
 
                         <GridViewColumn Header="Name" 
-                                    DisplayMemberBinding="{Binding Name, Converter={StaticResource positionNameConverter}}">
+                                    DisplayMemberBinding="{Binding Name}">
                         </GridViewColumn>
 
                         <GridViewColumn Header="Title" 

@@ -19,7 +19,7 @@
 
             <StackPanel Orientation="Horizontal">
                 <CheckBox IsChecked="{Binding EnableFilterPosition}"/>
-                <TextBox Text="{Binding FilterPosition, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource positionNameConverter}}" MinWidth="50"/>
+                <TextBox Text="{Binding FilterPosition, UpdateSourceTrigger=PropertyChanged}" MinWidth="50"/>
             </StackPanel>
             
             
@@ -132,7 +132,7 @@
                                        Style="{StaticResource fontStyle}"/>
                             <!--FontSize="{Binding Children, Converter={StaticResource objectToFontConverter}}"/>-->
                             <TextBlock Grid.Column="1" 
-                                       Text="{Binding Position.Name, Converter={StaticResource positionNameConverter}}" 
+                                       Text="{Binding Position.Name}" 
                                        Style="{StaticResource fontStyle}"/>
                             <TextBlock Grid.Column="2" 
                                        Text="{Binding Reason.Title}" 

@@ -8,8 +8,6 @@ namespace Model
 {
     public class PositionsManager : IEntityManager<Position>
     {
-        const char DELIMITER = ';';
-
         readonly IRepository<Position> positionsRepository = new RepositoryEF<Position>();
         private readonly IEntityManager<CatalogItem> catalogManager;
 
@@ -50,15 +48,15 @@ namespace Model
                 positionsRepository.Update(entity);
 
                 //update children names
-                if (entity.Name != old.Name && old.Children != null)
-                {
-                    var positions = positionsRepository.Get(n => n.Name.Contains(old.Name + DELIMITER));
-                    foreach (var item in positions)
-                    {
-                        item.Name = item.Name.Replace(old.Name, entity.Name);
-                        positionsRepository.Update(item);
-                    }
-                }
+                //if (entity.Name != old.Name && old.Children != null)
+                //{
+                //    var positions = positionsRepository.Get(n => n.Name.Contains(old.Name + DELIMITER));
+                //    foreach (var item in positions)
+                //    {
+                //        item.Name = item.Name.Replace(old.Name, entity.Name);
+                //        positionsRepository.Update(item);
+                //    }
+                //}
 
                 EntitiesChanged?.Invoke();
                 return true;
