@@ -3,6 +3,28 @@
                     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                     xmlns:local="clr-namespace:EMA" xmlns:system="clr-namespace:System;assembly=System.Runtime">
 
+    <DataTemplate x:Key="filterHeaderTextBlock">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                    HorizontalAlignment="Center"
+                    Text="{DynamicResource ResourceKey='Title'}"/>
+            <CheckBox Grid.Row="1" Grid.Column="0"
+                    VerticalAlignment="Center"
+                    IsChecked="{Binding FilterEnable}"/>
+            <TextBox Grid.Row="1" Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Text="{Binding FilterValue, UpdateSourceTrigger=PropertyChanged}"/>
+        </Grid>
+    </DataTemplate>
+    
     <ControlTemplate x:Key="EntriesTree">
         <ControlTemplate.Resources>
             <Style x:Key="textMargin">
@@ -17,20 +39,68 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <StackPanel Orientation="Horizontal">
-                <CheckBox IsChecked="{Binding EnableFilterPosition}"/>
-                <TextBox Text="{Binding FilterPosition, UpdateSourceTrigger=PropertyChanged}" MinWidth="50"/>
-            </StackPanel>
-            
-            
-            <ListView BorderThickness="0" Grid.Row="1">
+
+
+
+            <ListView BorderThickness="0" Grid.Row="1"
+                      DataContext="{Binding ItemsFilter}">
                 <ListView.View>
                     <GridView>
                         <GridView.Columns>
-                            <GridViewColumn Header="OccurDateTime" x:Name="OccurDateTimeColumn" Width="150"/>
-                            <GridViewColumn Header="Position" x:Name="PositionColumn" Width="100"/>
+                            <GridViewColumn x:Name="OccurDateTimeColumn" Width="150">
+                                <GridViewColumnHeader HorizontalContentAlignment="Stretch">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                                                   HorizontalAlignment="Center"
+                                                   Text="OccurDateTime"/>
+                                        <CheckBox Grid.Row="1" Grid.Column="0"
+                                                  VerticalAlignment="Center"
+                                                  IsChecked="{Binding PositionName.FilterEnable}"/>
+                                        <TextBox Grid.Row="1" Grid.Column="1"
+                                                 VerticalAlignment="Center"
+                                                 Text="{Binding PositionName.FilterValue, UpdateSourceTrigger=PropertyChanged}"/>
+                                    </Grid>
+                                </GridViewColumnHeader>
+                            </GridViewColumn>
+
+                            <GridViewColumn x:Name="PositionColumn" Width="100"
+                                            HeaderTemplate="{StaticResource filterHeaderTextBlock}">
+                                <GridViewColumnHeader HorizontalContentAlignment="Stretch" VerticalAlignment="Top"
+                                                      Content="{Binding PositionName}">
+                                    <GridViewColumnHeader.Resources>
+                                        <system:String x:Key="Title">Position</system:String>
+                                    </GridViewColumnHeader.Resources>
+                                </GridViewColumnHeader>
+                            </GridViewColumn>
+
+
+
+
                             <GridViewColumn Header="Reason" x:Name="ReasonColumn" Width="300"/>
-                            <GridViewColumn Header="Title" x:Name="TitleColumn" Width="300"/>
+                            
+                            
+                            
+                            <GridViewColumn x:Name="TitleColumn" Width="300"
+                                            HeaderTemplate="{StaticResource filterHeaderTextBlock}">
+                                <GridViewColumnHeader HorizontalContentAlignment="Stretch" VerticalAlignment="Top"
+                                                      Content="{Binding Title}">
+                                    <GridViewColumnHeader.Resources>
+                                        <system:String x:Key="Title">Title</system:String>
+                                    </GridViewColumnHeader.Resources>
+                                </GridViewColumnHeader>
+                            </GridViewColumn>
+
+
+
+
                             <GridViewColumn Header="ContinuationCriteria" x:Name="ContinuationCriteriaColumn" Width="150"/>
                             <GridViewColumn Header="Priority" x:Name="PriorityColumn" Width="150"/>
                             <GridViewColumn Header="PlannedStartDate" x:Name="PlannedStartDateColumn" Width="150"/>
@@ -85,17 +155,17 @@
             <TreeView ItemsSource="{Binding EntriesTreeFiltered}"
                       BorderThickness="0"
                       Grid.Row="2">
-                
+
                 <TreeView.ItemContainerStyle>
                     <Style TargetType="{x:Type TreeViewItem}">
                         <Setter Property="IsExpanded" Value="True" />
                     </Style>
                 </TreeView.ItemContainerStyle>
-                
+
                 <i:Interaction.Behaviors>
                     <local:TreeViewSelectedItemBehavior SelectedItem="{Binding SelectedItem}" />
                 </i:Interaction.Behaviors>
-                
+
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Children, Mode=OneWay}">
                         <Grid>
