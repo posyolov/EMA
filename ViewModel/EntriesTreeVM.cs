@@ -33,7 +33,6 @@ namespace ViewModel
                 NotifyPropertyChanged();
             }
         }
-
         public ObservableCollection<Entry> EntriesTree
         {
             get => entriesTree;
@@ -44,7 +43,6 @@ namespace ViewModel
                 FilterEntriesTree();
             }
         }
-
         public ObservableCollection<Entry> EntriesTreeFiltered
         {
             get => entriesTreeFiltered;
@@ -54,7 +52,6 @@ namespace ViewModel
                 NotifyPropertyChanged();
             }
         }
-
         public Entry SelectedItem
         {
             get => selectedItem;
@@ -67,12 +64,13 @@ namespace ViewModel
                 NotifyPropertyChanged();
             }
         }
-
+        public EntriesManager EntriesManager { get; }
         public EntriesFilter ItemsFilter { get; }
-
 
         public EntriesTreeVM(EntriesManager entriesManager)
         {
+            EntriesManager = entriesManager;
+
             ItemsFilter = new EntriesFilter();
             ItemsFilter.CriteriasChanged += FilterEntriesTree;
 

@@ -2,7 +2,7 @@
 
 namespace ViewModel
 {
-    public class FilterCriteria<T> where T : IComparable
+    public class FilterCriteria<T>
     {
         private bool filterEnable;
         private T filterValue;
@@ -63,16 +63,18 @@ namespace ViewModel
 
         public bool Include(T obj)
         {
+            IComparable comparableObj = obj as IComparable;
+
             if (!filterEnable || filterValue == null && filterValueTo == null)
                 return true;
-            if (obj == null)
+            if (comparableObj == null)
                 return false;
 
             bool result = true;
 
-            if (filterValue != null && obj.CompareTo(filterValue) < 0)
+            if (filterValue != null && comparableObj.CompareTo(filterValue) < 0)
                 result = false;
-            if (filterValueTo != null && obj.CompareTo(filterValueTo) > 0)
+            if (filterValueTo != null && comparableObj.CompareTo(filterValueTo) > 0)
                 result = false;
 
             return result;

@@ -7,38 +7,37 @@ namespace ViewModel
     {
         public event Action CriteriasChanged;
 
-        public FilterCriteria<string> PositionName { get; }
         public FilterCriteria<DateTime> OccurDateTime { get; }
-        public FilterCriteria<int> Reason { get; }
+        public FilterCriteria<string> PositionName { get; }
+        public FilterCriteria<int?> ReasonId { get; }
         public FilterCriteria<string> Title { get; }
+        public FilterCriteria<bool> IsCopmlete { get; }
 
         public EntriesFilter()
         {
-            PositionName = new FilterCriteria<string>();
-            PositionName.Changed += CriteriasChangeInvoke;
-
             OccurDateTime = new FilterCriteria<DateTime>();
-            OccurDateTime.Changed += CriteriasChangeInvoke;
+            OccurDateTime.Changed += () => CriteriasChanged?.Invoke();
 
-            Reason = new FilterCriteria<int>();
-            Reason.Changed += CriteriasChangeInvoke;
+            PositionName = new FilterCriteria<string>();
+            PositionName.Changed += () => CriteriasChanged?.Invoke();
+
+            ReasonId = new FilterCriteria<int?>();
+            ReasonId.Changed += () => CriteriasChanged?.Invoke();
 
             Title = new FilterCriteria<string>();
-            Title.Changed += CriteriasChangeInvoke;
+            Title.Changed += () => CriteriasChanged?.Invoke();
 
+            IsCopmlete = new FilterCriteria<bool>();
+            IsCopmlete.Changed += () => CriteriasChanged?.Invoke();
         }
 
         public bool Filter(Entry entry)
         {
-            return PositionName.ContainsIn(entry.Position.Name)
-                && OccurDateTime.Include(entry.OccurDateTime)
-                && Title.ContainsIn(entry.Title);
+            return OccurDateTime.Include(entry.OccurDateTime)
+                && PositionName.ContainsIn(entry.Position.Name)
+                && ReasonId.EqualTo(entry.ReasonId)
+                && Title.ContainsIn(entry.Title)
+                && IsCopmlete.EqualTo(entry.IsComplete);
         }
-
-        protected void CriteriasChangeInvoke()
-        {
-            CriteriasChanged?.Invoke();
-        }
-
     }
 }
