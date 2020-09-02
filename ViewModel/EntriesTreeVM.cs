@@ -13,8 +13,6 @@ namespace ViewModel
         private ObservableCollection<Entry> entriesTree;
         private ObservableCollection<Entry> entriesTreeFiltered;
         private Entry selectedItem;
-        private string filterPosition;
-        private bool enableFilterPosition;
 
         public event Action<Entry> ShowAddEntryRequest;
         public event Action<Entry> ShowAddChildEntryRequest;
@@ -35,7 +33,6 @@ namespace ViewModel
                 NotifyPropertyChanged();
             }
         }
-
         public ObservableCollection<Entry> EntriesTree
         {
             get => entriesTree;
@@ -46,7 +43,6 @@ namespace ViewModel
                 FilterEntriesTree();
             }
         }
-
         public ObservableCollection<Entry> EntriesTreeFiltered
         {
             get => entriesTreeFiltered;
@@ -56,7 +52,6 @@ namespace ViewModel
                 NotifyPropertyChanged();
             }
         }
-
         public Entry SelectedItem
         {
             get => selectedItem;
@@ -69,28 +64,16 @@ namespace ViewModel
                 NotifyPropertyChanged();
             }
         }
+        public EntriesManager EntriesManager { get; }
+        public EntriesFilter ItemsFilter { get; }
 
-        public string FilterPosition
+        public EntriesTreeVM(EntriesManager entriesManager)
         {
-            get => filterPosition;
-            set
-            {
-                filterPosition = value;
-                FilterEntriesTree();
-            }
-        }
-        public bool EnableFilterPosition
-        {
-            get => enableFilterPosition;
-            set
-            {
-                enableFilterPosition = value;
-                FilterEntriesTree();
-            }
-        }
+            EntriesManager = entriesManager;
 
-        public EntriesTreeVM(EntriesManager entriesManager/*Func<IEnumerable<Entry>> getListDelegate, Func<IEnumerable<Entry>> getTreeDelegate*/)
-        {
+            ItemsFilter = new EntriesFilter();
+            ItemsFilter.CriteriasChanged += FilterEntriesTree;
+
             Entries = new ObservableCollection<Entry>(entriesManager.Get());
             EntriesTree = new ObservableCollection<Entry>(entriesManager.GetEntriesTree());
 
@@ -118,10 +101,7 @@ namespace ViewModel
 
         private void FilterEntriesTree()
         {
-            if (EnableFilterPosition && !string.IsNullOrEmpty(FilterPosition))
-                EntriesTreeFiltered = new ObservableCollection<Entry>(entriesTree.Where(p => p.Position.Name.Contains(FilterPosition, StringComparison.InvariantCultureIgnoreCase)));
-            else
-                EntriesTreeFiltered = entriesTree;
+            EntriesTreeFiltered = new ObservableCollection<Entry>(entriesTree.Where(e => ItemsFilter.Filter(e)));
         }
     }
 }
