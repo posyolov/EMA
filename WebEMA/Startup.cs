@@ -20,6 +20,10 @@ namespace WebEMA
         {
             services.AddTransient<IEntityManager<Vendor>, VendorsManager>();
             services.AddTransient<IEntityManager<CatalogItem>, CatalogManager>();
+            services.AddTransient<IEntityManager<Position>, PositionsManager>();
+            services.AddTransient<IEntityManager<EntryReason>, EntryReasonsManager>();
+            services.AddTransient<IEntityManager<EntryContinuationCriteria>, EntryContinuationCriteriaManager>();
+            services.AddTransient<IEntityManager<Entry>, EntriesManager>();
 
             services.AddControllersWithViews();
         }

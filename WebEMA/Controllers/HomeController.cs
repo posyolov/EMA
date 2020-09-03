@@ -10,17 +10,21 @@ namespace WebEMA.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IEntityManager<Position> positionManager;
         private readonly IEntityManager<CatalogItem> catalogManager;
 
-        public HomeController(IEntityManager<CatalogItem> catalogManager)
+        public HomeController(IEntityManager<Position> positionManager, IEntityManager<CatalogItem> catalogManager)
         {
+            this.positionManager = positionManager;
             this.catalogManager = catalogManager;
         }
 
         public IActionResult Index()
         {
-            var catalog = catalogManager.Get();
-            return View(catalog);
+            ViewBag.PostionsTreeVM = positionManager.Get();
+            ViewBag.CatalogVM = catalogManager.Get();
+            return View();
         }
+
     }
 }

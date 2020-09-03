@@ -10,18 +10,17 @@
 </head>
 <body>
     <div class="container">
+
         <div class="header">
-            HEADER
+            @await Html.PartialAsync("../Partial/_Menu")
         </div>
-        <div class="tree">
-            TREE
-        </div>
-        <div class="content">
-            @RenderBody()
-        </div>
+
+        @RenderBody()
+
         <div class="footer">
             FOOTER
         </div>
+
     </div>
 </body>
 </html>

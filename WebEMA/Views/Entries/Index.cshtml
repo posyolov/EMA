@@ -1,0 +1,17 @@
+﻿@model IEnumerable<Repository.Entry>
+
+<div class="content">
+    <table class="table">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.OccurDateTime</td>
+                <td>@item.Title</td>
+                <td>@item.Position.Name</td>
+                <td>@item.Reason.Title</td>
+                <td>@item.IsComplete</td>
+            </tr>
+        }
+    </table>
+</div>

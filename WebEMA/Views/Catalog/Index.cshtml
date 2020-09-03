@@ -1,0 +1,16 @@
+﻿@model IEnumerable<Repository.CatalogItem>
+
+<div class="content">
+    <table class="table">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.GlobalId</td>
+                <td>@item.ProductCode</td>
+                <td>@item.Title</td>
+                <td>@item.Vendor.Name</td>
+            </tr>
+        }
+    </table>
+</div>

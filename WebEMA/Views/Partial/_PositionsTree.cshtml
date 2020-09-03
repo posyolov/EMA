@@ -1,0 +1,8 @@
+﻿@model IEnumerable<Repository.Position>
+
+@foreach (var item in Model)
+{
+    <li>
+        <a href="">@item.Name @item.Title</a>
+    </li>
+}
