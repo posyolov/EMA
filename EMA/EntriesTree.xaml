@@ -132,7 +132,7 @@
                             <GridViewColumn Header="ContinuationCriteria" x:Name="ContinuationCriteriaColumn" Width="150"/>
                             <GridViewColumn Header="Priority" x:Name="PriorityColumn" Width="150"/>
                             <GridViewColumn Header="PlannedStartDate" x:Name="PlannedStartDateColumn" Width="150"/>
-                            <GridViewColumn Header="EstimatedResources" x:Name="EstimatedResourcesColumn" Width="150"/>
+                            <GridViewColumn Header="User" x:Name="UserColumn" Width="150"/>
 
                             <GridViewColumn x:Name="IsCompleteColumn" Width="80">
                                 <GridViewColumnHeader HorizontalContentAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Top">
@@ -244,12 +244,12 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="{Binding Path=Width, Mode=OneWay, ElementName=OccurDateTimeColumn}"/>
                                 <ColumnDefinition Width="{Binding Path=Width, Mode=OneWay, ElementName=PositionColumn}"/>
-                                <ColumnDefinition Width="{Binding Path=Width, Mode=OneWay, ElementName=TitleColumn}"/>
                                 <ColumnDefinition Width="{Binding Path=Width, Mode=OneWay, ElementName=ReasonColumn}"/>
+                                <ColumnDefinition Width="{Binding Path=Width, Mode=OneWay, ElementName=TitleColumn}"/>
                                 <ColumnDefinition Width="{Binding Path=Width, Mode=OneWay, ElementName=ContinuationCriteriaColumn}"/>
                                 <ColumnDefinition Width="{Binding Path=Width, Mode=OneWay, ElementName=PriorityColumn}"/>
                                 <ColumnDefinition Width="{Binding Path=Width, Mode=OneWay, ElementName=PlannedStartDateColumn}"/>
-                                <ColumnDefinition Width="{Binding Path=Width, Mode=OneWay, ElementName=EstimatedResourcesColumn}"/>
+                                <ColumnDefinition Width="{Binding Path=Width, Mode=OneWay, ElementName=UserColumn}"/>
                                 <ColumnDefinition Width="{Binding Path=Width, Mode=OneWay, ElementName=IsCompleteColumn}"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" 
@@ -275,7 +275,7 @@
                                        Text="{Binding PlannedStartDate, ConverterCulture=ru}" 
                                        Style="{StaticResource fontStyle}"/>
                             <TextBlock Grid.Column="7" 
-                                       Text="{Binding EstimatedResources}" 
+                                       Text="{Binding User.Name}" 
                                        Style="{StaticResource fontStyle}"/>
                             <CheckBox Grid.Column="8" 
                                       IsChecked="{Binding IsComplete}"
