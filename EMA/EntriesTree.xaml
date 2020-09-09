@@ -278,9 +278,9 @@
                                        Text="{Binding User.Name}" 
                                        Style="{StaticResource fontStyle}"/>
                             <CheckBox Grid.Column="8" 
-                                      IsChecked="{Binding IsComplete}"
-                                      Style="{StaticResource childrenVisibility}"
-                                      VerticalAlignment="Center" HorizontalAlignment="Center" IsEnabled="False"/>
+                                      VerticalAlignment="Center" HorizontalAlignment="Center" IsEnabled="False"
+                                      IsChecked="{Binding IsComplete}"/>
+                            <!--Style="{StaticResource childrenVisibility}"-->
                         </Grid>
                     </HierarchicalDataTemplate>
                 </TreeView.ItemTemplate>
