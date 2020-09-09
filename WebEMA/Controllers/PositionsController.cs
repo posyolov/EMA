@@ -5,18 +5,11 @@ using Repository;
 
 namespace WebEMA.Controllers
 {
-    public class PositionsController : Controller
+    public class PositionsController : GenericController<Position>
     {
-        private readonly IEntityManager<Position> entityManager;
-
         public PositionsController(IEntityManager<Position> entityManager)
+            : base(entityManager)
         {
-            this.entityManager = entityManager;
-        }
-
-        public IActionResult Index()
-        {
-            return View(entityManager.Get());
         }
     }
 }

@@ -4,18 +4,11 @@ using Repository;
 
 namespace WebEMA.Controllers
 {
-    public class CatalogController : Controller
+    public class CatalogController : GenericController<CatalogItem>
     {
-        private readonly IEntityManager<CatalogItem> entityManager;
-
         public CatalogController(IEntityManager<CatalogItem> entityManager)
+            : base(entityManager)
         {
-            this.entityManager = entityManager;
-        }
-
-        public IActionResult Index()
-        {
-            return View(entityManager.Get());
         }
     }
 }

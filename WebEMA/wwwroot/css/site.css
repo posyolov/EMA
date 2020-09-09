@@ -1,17 +1,17 @@
-﻿.container {
+﻿header {
+    background-color: aqua;
+}
+
+footer {
+    background-color: darkgoldenrod;
+}
+
+.container_home {
     display: grid;
     grid-gap: 5px;
     grid-template-columns: repeat(12, 1fr);
-    grid-template-rows: 50px 1fr 50px;
-    grid-template-areas: 
-        "h h h h h h h h h h h h" 
-        "t t c c c c c c c c c c" 
-        "f f f f f f f f f f f f";
-}
-
-.header {
-    grid-area: h;
-    background-color: aqua;
+    grid-template-rows: 1fr;
+    grid-template-areas: "t t c c c c c c c c c c";
 }
 
 .tree {
@@ -24,7 +24,3 @@
     background-color: mediumspringgreen;
 }
 
-.footer {
-    grid-area: f;
-    background-color: darkgoldenrod;
-}

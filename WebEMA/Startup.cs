@@ -25,7 +25,10 @@ namespace WebEMA
             services.AddTransient<IEntityManager<EntryContinuationCriteria>, EntryContinuationCriteriaManager>();
             services.AddTransient<IEntityManager<Entry>, EntriesManager>();
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddRazorOptions(options => 
+            {
+                options.ViewLocationFormats.Add("/Views/Entities/{1}/{0}.cshtml");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

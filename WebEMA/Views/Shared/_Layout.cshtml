@@ -9,18 +9,16 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-    <div class="container">
 
-        <div class="header">
-            @await Html.PartialAsync("../Partial/_Menu")
-        </div>
+    <header class="header">
+        @await Html.PartialAsync("../Partial/_Menu")
+    </header>
 
-        @RenderBody()
+    @RenderBody()
 
-        <div class="footer">
-            FOOTER
-        </div>
+    <footer class="footer">
+        FOOTER
+    </footer>
 
-    </div>
 </body>
 </html>

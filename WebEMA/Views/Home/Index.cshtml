@@ -6,21 +6,27 @@
     <title>HomeController</title>
 </head>
 <body>
-    <div class="tree">
-        @await Html.PartialAsync("../Partial/_PositionsTree", (IEnumerable<Repository.Position>)ViewBag.PostionsTreeVM)
-    </div>
-    <div class="content">
-        <table class="table">
-            <tr><td>ID</td><td>Title</td><td>Vendor</td></tr>
-            @foreach (var item in (IEnumerable<Repository.CatalogItem>)ViewBag.CatalogVM)
-            {
-                <tr>
-                    <td>@item.Id</td>
-                    <td>@item.Title</td>
-                    <td>@item.Vendor.Name</td>
-                </tr>
-            }
-        </table>
+
+    <div class="container_home">
+
+        <div class="tree">
+            @await Html.PartialAsync("../Partial/_PositionsTree", (IEnumerable<Repository.Position>)ViewBag.PostionsTreeVM)
+        </div>
+
+        <div class="content">
+            <table class="table">
+                <tr><td>ID</td><td>Title</td><td>Vendor</td></tr>
+                @foreach (var item in (IEnumerable<Repository.CatalogItem>)ViewBag.CatalogVM)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.Title</td>
+                        <td>@item.Vendor.Name</td>
+                    </tr>
+                }
+            </table>
+        </div>
+
     </div>
 
 </body>

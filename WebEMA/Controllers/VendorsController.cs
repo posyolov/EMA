@@ -4,18 +4,11 @@ using Repository;
 
 namespace WebEMA.Controllers
 {
-    public class VendorsController : Controller
+    public class VendorsController  : GenericController<Vendor>
     {
-        private readonly IEntityManager<Vendor> entityManager;
-
         public VendorsController(IEntityManager<Vendor> entityManager)
+            : base(entityManager)
         {
-            this.entityManager = entityManager;
-        }
-
-        public IActionResult Index()
-        {
-            return View(entityManager.Get());
         }
     }
 }
