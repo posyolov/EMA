@@ -16,5 +16,16 @@ namespace WebEMA.Controllers
         {
             return View(entityManager.Get());
         }
+
+        public IActionResult Edit(TEntity entity)
+        {
+            return View(entity);
+        }
+
+        public IActionResult Update(TEntity entity)
+        {
+            entityManager.Update(entity);
+            return View("Index" ,entityManager.Get());
+        }
     }
 }
