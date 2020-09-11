@@ -107,6 +107,16 @@
 
 
         <Grid>
+            <Grid.Resources>
+                <Style x:Key="childrenVisibility" TargetType="CheckBox">
+                    <Setter Property="IsEnabled" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding EntityViewModel.ParentId}" Value="{x:Null}">
+                            <Setter Property="IsEnabled" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Resources>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="Auto"/>
@@ -134,7 +144,8 @@
                 <TextBlock Text="IsComplete:"
                            TextAlignment="Center"/>
                 <CheckBox HorizontalAlignment="Center"
-                       IsChecked="{Binding EntityViewModel.IsComplete}"/>
+                          IsChecked="{Binding EntityViewModel.IsComplete}"
+                          Style="{StaticResource childrenVisibility}"/>
             </StackPanel>
         </Grid>
 

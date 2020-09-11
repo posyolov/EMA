@@ -275,12 +275,12 @@
                                        Text="{Binding PlannedStartDate, ConverterCulture=ru}" 
                                        Style="{StaticResource fontStyle}"/>
                             <TextBlock Grid.Column="7" 
-                                       Text="{Binding User.Name}" 
+                                       Text="{Binding ChangeUser.Name}" 
                                        Style="{StaticResource fontStyle}"/>
                             <CheckBox Grid.Column="8" 
                                       VerticalAlignment="Center" HorizontalAlignment="Center" IsEnabled="False"
-                                      IsChecked="{Binding IsComplete}"/>
-                            <!--Style="{StaticResource childrenVisibility}"-->
+                                      IsChecked="{Binding IsComplete}"
+                                      Style="{StaticResource childrenVisibility}"/>
                         </Grid>
                     </HierarchicalDataTemplate>
                 </TreeView.ItemTemplate>

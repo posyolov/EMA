@@ -87,7 +87,7 @@ namespace ViewModel
                 execute: (obj) => ShowAddEntryRequest?.Invoke(new Entry()));
 
             ShowAddChildEntryCommand = new DelegateCommand<object>(
-                canExecute: (obj) => SelectedItem != null,
+                canExecute: (obj) => SelectedItem != null && SelectedItem.Parent == null,
                 execute: (obj) => ShowAddChildEntryRequest?.Invoke(new Entry() { ParentId = selectedItem.Id, PositionId = selectedItem.PositionId }));
 
             ShowEditEntryCommand = new DelegateCommand<object>(
@@ -101,7 +101,7 @@ namespace ViewModel
 
         private void FilterEntriesTree()
         {
-            EntriesTreeFiltered = new ObservableCollection<Entry>(entriesTree.Where(e => ItemsFilter.Filter(e)));
+            EntriesTreeFiltered = new ObservableCollection<Entry>(entriesTree.Where(e => ItemsFilter.Filter(e) || e.Children != null && e.Children.Any(ech => ItemsFilter.Filter(ech))));
         }
     }
 }
