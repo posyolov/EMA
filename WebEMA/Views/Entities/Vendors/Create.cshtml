@@ -1,7 +1,7 @@
 ﻿@model Repository.Vendor
 
 <div class="content">
-    <form asp-action="Update" asp-controller="Vendors" asp-antiforgery="true">
+    <form asp-action="CreatePost" asp-controller="Vendors" asp-antiforgery="true">
         <div>
             <div>
                 <label asp-for="Id"></label>
@@ -12,7 +12,7 @@
                 <input asp-for="Name" />
             </div>
             <div>
-                <input type="submit" value="Save" />
+                <input type="submit" value="Create" />
             </div>
         </div>
     </form>

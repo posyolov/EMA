@@ -1,0 +1,10 @@
+﻿@model Repository.Vendor
+
+<div class="content">
+    <form asp-action="DeletePost" asp-controller="Vendors" asp-antiforgery="true">
+        <input type="hidden" asp-for="Id" />
+        <label>Delete item?</label>
+        <input type="submit" value="Yes" />
+        <input asp-action="Items" asp-controller="Vendors" type="submit" value="Cancel" />
+    </form>
+</div>

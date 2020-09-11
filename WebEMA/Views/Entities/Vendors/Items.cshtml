@@ -1,13 +1,17 @@
 ﻿@model IEnumerable<Repository.Vendor>
 
 <div class="content">
+    <div>
+        @Html.ActionLink("Add", "Create", "Vendors")
+    </div>
     <table class="table">
         @foreach (var item in Model)
         {
             <tr>
                 <td>@item.Id</td>
                 <td>@item.Name</td>
-                <td>@Html.ActionLink("Edit", "Edit", "Vendors", item)</td>
+                <td>@Html.ActionLink("Edit", "Update", "Vendors", item)</td>
+                <td>@Html.ActionLink("Delete", "Delete", "Vendors", item)</td>
             </tr>
         }
     </table>

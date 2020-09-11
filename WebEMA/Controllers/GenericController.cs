@@ -12,20 +12,43 @@ namespace WebEMA.Controllers
             this.entityManager = entityManager;
         }
 
-        public IActionResult Index()
+        public IActionResult Items()
         {
             return View(entityManager.Get());
         }
 
-        public IActionResult Edit(TEntity entity)
+        public IActionResult Create()
         {
-            return View(entity);
+            return View();
+        }
+
+        public IActionResult CreatePost(TEntity entity)
+        {
+            entityManager.Add(entity);
+            return View("Items", entityManager.Get());
         }
 
         public IActionResult Update(TEntity entity)
         {
-            entityManager.Update(entity);
-            return View("Index" ,entityManager.Get());
+            return View(entity);
         }
+
+        public IActionResult UpdatePost(TEntity entity)
+        {
+            entityManager.Update(entity);
+            return View("Items", entityManager.Get());
+        }
+
+        public IActionResult Delete(TEntity entity)
+        {
+            return View(entity);
+        }
+
+        public IActionResult DeletePost(TEntity entity)
+        {
+            entityManager.Delete(entity);
+            return View("Items", entityManager.Get());
+        }
+
     }
 }
