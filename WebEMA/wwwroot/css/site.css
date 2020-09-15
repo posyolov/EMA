@@ -10,8 +10,8 @@ footer {
     display: grid;
     grid-gap: 5px;
     grid-template-columns: repeat(12, 1fr);
-    grid-template-rows: 1fr;
-    grid-template-areas: "t t c c c c c c c c c c";
+    grid-template-rows: 4fr 1fr;
+    grid-template-areas: "t t c c c c c c c c c c" "ti ti c c c c c c c c c c";
 }
 
 .tree {
@@ -19,8 +19,20 @@ footer {
     background-color: coral;
 }
 
+.tree_item {
+    grid-area: ti;
+    background-color: chartreuse;
+}
+
 .content {
     grid-area: c;
     background-color: mediumspringgreen;
 }
 
+.link-button {
+    background: none;
+    border: none;
+    color: #0066ff;
+    text-decoration: underline;
+    cursor: pointer;
+}

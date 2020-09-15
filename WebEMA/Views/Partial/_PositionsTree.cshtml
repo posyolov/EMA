@@ -1,8 +1,19 @@
-﻿@model IEnumerable<Repository.Position>
+﻿@model IEnumerable<Position>
 
-@foreach (var item in Model)
-{
-    <li>
-        <a href="">@item.Name @item.Title</a>
-    </li>
-}
+<table class="table">
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Id</td>
+            <td>
+                <form asp-controller="Home" asp-action="PositionData"
+                      data-ajax="true"
+                      data-ajax-mode="replace"
+                      data-ajax-update="#positionData">
+                    <input type="hidden" name="Id" value="@item.Id" />
+                    <input type="submit" value="@item.Name @item.Title"/>
+                </form>
+            </td>
+        </tr>
+    }
+</table>

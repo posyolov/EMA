@@ -13,6 +13,10 @@
             @await Html.PartialAsync("../Partial/_PositionsTree", (IEnumerable<Repository.Position>)ViewBag.PostionsTreeVM)
         </div>
 
+        <div class="tree_item">
+            <div id="positionData"></div>
+        </div>
+
         <div class="content">
             <table class="table">
                 <tr><td>ID</td><td>Title</td><td>Vendor</td></tr>
