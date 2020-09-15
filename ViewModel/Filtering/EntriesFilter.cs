@@ -37,7 +37,7 @@ namespace ViewModel
                 && PositionName.ContainsIn(entry.Position.Name)
                 && ReasonId.EqualTo(entry.ReasonId)
                 && Title.ContainsIn(entry.Title)
-                && (IsCopmlete.EqualTo(entry.IsComplete) && entry.ParentId == null);
+                && IsCopmlete.EqualTo(entry.ParentId == null ? entry.IsComplete : entry.Parent.IsComplete);
         }
     }
 }
