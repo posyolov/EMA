@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 
 namespace Repository.EF
@@ -28,6 +30,22 @@ namespace Repository.EF
         public DbSet<Department> Departments { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Entry> Entries { get; set; }
+        public DbSet<EntryUser> EntryUsers { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<EntryUser>()
+                .HasKey(t => new { t.EntryId, t.UserId });
+
+            modelBuilder.Entity<EntryUser>()
+                .HasOne(sc => sc.Entry)
+                .WithMany(s => s.AssignedUsers)
+                .HasForeignKey(sc => sc.EntryId);
+
+            modelBuilder.Entity<EntryUser>()
+                .HasOne(sc => sc.User)
+                .WithMany(c => c.RelatedEntries)
+                .HasForeignKey(sc => sc.UserId);
+        }
     }
 }

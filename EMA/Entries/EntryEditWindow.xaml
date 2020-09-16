@@ -71,6 +71,13 @@
                      Text="{Binding EntityViewModel.Description, FallbackValue=Description}"/>
         </StackPanel>
 
+        <StackPanel>
+            <TextBlock Text="Assigned users:"/>
+            <ListBox ItemsSource="{Binding EntityViewModel.AssignedUsers}"
+                     DisplayMemberPath="UserId"
+                     IsEnabled="False"/>
+        </StackPanel>
+
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>

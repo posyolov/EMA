@@ -1,5 +1,7 @@
 ﻿using Repository;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ViewModel
 {
@@ -26,6 +28,7 @@ namespace ViewModel
         public float? EstimatedResources { get; set; }
         public DateTime ChangeDateTime { get; set; }
         public int ChangeUserId { get; set; }
+        public virtual List<EntryUser> AssignedUsers { get; set; }
 
         public void ToViewModel(Entry model)
         {
@@ -40,6 +43,7 @@ namespace ViewModel
             Priority = model.Priority;
             PlannedStartDate = model.PlannedStartDate;
             EstimatedResources = model.EstimatedResources;
+            AssignedUsers = model.AssignedUsers.ToList();
         }
 
         public void ToModel(Entry model)

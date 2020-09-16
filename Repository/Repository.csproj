@@ -11,6 +11,12 @@
     <Compile Remove="Migrations\20200614164647_positions2.Designer.cs" />
     <Compile Remove="Migrations\20200620154551_entries_no_linkedlist.cs" />
     <Compile Remove="Migrations\20200620154551_entries_no_linkedlist.Designer.cs" />
+    <Compile Remove="Migrations\20200915065840_EntryUsers.cs" />
+    <Compile Remove="Migrations\20200915065840_EntryUsers.Designer.cs" />
+    <Compile Remove="Migrations\20200915073758_EntryUsers.cs" />
+    <Compile Remove="Migrations\20200915073758_EntryUsers.Designer.cs" />
+    <Compile Remove="Migrations\20200915095213_EntryUsers.cs" />
+    <Compile Remove="Migrations\20200915095213_EntryUsers.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

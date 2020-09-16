@@ -26,6 +26,7 @@ namespace Repository
         public virtual EntryReason Reason { get; set; }
         public virtual EntryContinuationCriteria ContinuationCriteria { get; set; }
         public virtual User ChangeUser { get; set; }
+        public virtual ICollection<EntryUser> AssignedUsers { get; set; }
 
         public override string ToString()
         {
