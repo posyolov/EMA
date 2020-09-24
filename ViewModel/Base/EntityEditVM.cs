@@ -2,36 +2,25 @@
 
 namespace ViewModel
 {
-    public class EntityEditVM<TEntity, TEntityVM> : DialogVM where TEntityVM : IEntityVM<TEntity>, new()
+    public class EntityEditVM<TEntityVM> : DialogVM
     {
-        private readonly Func<TEntity, bool> executeDelegate;
+        private readonly Func<TEntityVM, bool> executeDelegate;
         private readonly Action closeDialogDelegate;
 
-        private readonly TEntity entityModel;
+        public TEntityVM EntityViewModel { get; set; }
 
-        public IEntityVM<TEntity> EntityViewModel { get; set; }
-        public object RelationEntities { get; set; }
-
-        public EntityEditVM(TEntity entity, Func<TEntity, bool> executeDelegate, Action closeDialogDelegate, object relationEntities = null)
+        public EntityEditVM(TEntityVM entityVM, Func<TEntityVM, bool> executeDelegate, Action closeDialogDelegate)
         {
-            entityModel = entity;
-            EntityViewModel = new TEntityVM();
-            EntityViewModel.ToViewModel(entityModel);
+            EntityViewModel = entityVM;
 
             this.executeDelegate = executeDelegate;
             this.closeDialogDelegate = closeDialogDelegate;
-
-            RelationEntities = relationEntities;
         }
 
         protected override void OnOk()
         {
-            if (EntityViewModel.IsValid)
-            {
-                EntityViewModel.ToModel(entityModel);
-                if (executeDelegate(entityModel))
-                    closeDialogDelegate();
-            }
+            if (executeDelegate(EntityViewModel))
+                closeDialogDelegate();
         }
     }
 }

@@ -1,7 +1,5 @@
 ﻿using Model;
-using Repository;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -9,22 +7,23 @@ namespace ViewModel
 {
     public class EntriesTreeVM : NotifyViewModel
     {
-        private ObservableCollection<Entry> entries;
-        private ObservableCollection<Entry> entriesTree;
-        private ObservableCollection<Entry> entriesTreeFiltered;
-        private Entry selectedItem;
+        private ObservableCollection<EntryVM> entries;
+        private ObservableCollection<EntryVM> entriesTree;
+        private ObservableCollection<EntryVM> entriesTreeFiltered;
+        private EntryVM selectedItem;
+        private readonly EntriesProxy entriesProxy;
 
-        public event Action<Entry> ShowAddEntryRequest;
-        public event Action<Entry> ShowAddChildEntryRequest;
-        public event Action<Entry> ShowEditEntryRequest;
-        public event Action<Entry> ShowDeleteEntryRequest;
+        public event Action<EntryVM> ShowAddEntryRequest;
+        public event Action<EntryVM> ShowAddChildEntryRequest;
+        public event Action<EntryVM> ShowEditEntryRequest;
+        public event Action<EntryVM> ShowDeleteEntryRequest;
 
-        public DelegateCommand<object> ShowAddEntryCommand { get; }
-        public DelegateCommand<object> ShowAddChildEntryCommand { get; }
-        public DelegateCommand<object> ShowEditEntryCommand { get; }
-        public DelegateCommand<object> ShowDeleteEntryCommand { get; }
+        public DelegateCommand<EntryVM> ShowAddEntryCommand { get; }
+        public DelegateCommand<EntryVM> ShowAddChildEntryCommand { get; }
+        public DelegateCommand<EntryVM> ShowEditEntryCommand { get; }
+        public DelegateCommand<EntryVM> ShowDeleteEntryCommand { get; }
 
-        public ObservableCollection<Entry> Entries
+        public ObservableCollection<EntryVM> Entries
         {
             get => entries;
             private set
@@ -33,7 +32,7 @@ namespace ViewModel
                 NotifyPropertyChanged();
             }
         }
-        public ObservableCollection<Entry> EntriesTree
+        public ObservableCollection<EntryVM> EntriesTree
         {
             get => entriesTree;
             set
@@ -43,7 +42,7 @@ namespace ViewModel
                 FilterEntriesTree();
             }
         }
-        public ObservableCollection<Entry> EntriesTreeFiltered
+        public ObservableCollection<EntryVM> EntriesTreeFiltered
         {
             get => entriesTreeFiltered;
             set
@@ -52,7 +51,7 @@ namespace ViewModel
                 NotifyPropertyChanged();
             }
         }
-        public Entry SelectedItem
+        public EntryVM SelectedItem
         {
             get => selectedItem;
             set
@@ -64,44 +63,44 @@ namespace ViewModel
                 NotifyPropertyChanged();
             }
         }
-        public EntriesManager EntriesManager { get; }
+
         public EntriesFilter ItemsFilter { get; }
 
-        public EntriesTreeVM(EntriesManager entriesManager)
+        public EntriesTreeVM(EntriesProxy entriesProxy)
         {
-            EntriesManager = entriesManager;
+            this.entriesProxy = entriesProxy;
 
             ItemsFilter = new EntriesFilter();
             ItemsFilter.CriteriasChanged += FilterEntriesTree;
 
-            Entries = new ObservableCollection<Entry>(entriesManager.Get());
-            EntriesTree = new ObservableCollection<Entry>(entriesManager.GetEntriesTree());
+            entriesProxy.EntitiesChanged += UpdateEntries;
+            UpdateEntries();
 
-            entriesManager.EntitiesChanged += () =>
-            {
-                Entries = new ObservableCollection<Entry>(entriesManager.Get());
-                EntriesTree = new ObservableCollection<Entry>(entriesManager.GetEntriesTree());
-            };
+            ShowAddEntryCommand = new DelegateCommand<EntryVM>(
+                execute: (obj) => ShowAddEntryRequest?.Invoke(new EntryVM()));
 
-            ShowAddEntryCommand = new DelegateCommand<object>(
-                execute: (obj) => ShowAddEntryRequest?.Invoke(new Entry()));
+            ShowAddChildEntryCommand = new DelegateCommand<EntryVM>(
+                canExecute: (obj) => SelectedItem != null && SelectedItem.ParentId == null,
+                execute: (obj) => ShowAddChildEntryRequest?.Invoke(new EntryVM() { ParentId = selectedItem.Id, PositionId = selectedItem.PositionId }));
 
-            ShowAddChildEntryCommand = new DelegateCommand<object>(
-                canExecute: (obj) => SelectedItem != null && SelectedItem.Parent == null,
-                execute: (obj) => ShowAddChildEntryRequest?.Invoke(new Entry() { ParentId = selectedItem.Id, PositionId = selectedItem.PositionId }));
-
-            ShowEditEntryCommand = new DelegateCommand<object>(
+            ShowEditEntryCommand = new DelegateCommand<EntryVM>(
                 canExecute: (obj) => SelectedItem != null,
                 execute: (obj) => ShowEditEntryRequest?.Invoke(selectedItem));
 
-            ShowDeleteEntryCommand = new DelegateCommand<object>(
+            ShowDeleteEntryCommand = new DelegateCommand<EntryVM>(
                 canExecute: (obj) => SelectedItem != null,
                 execute: (obj) => ShowDeleteEntryRequest?.Invoke(selectedItem));
         }
 
+        private void UpdateEntries()
+        {
+            Entries = entriesProxy.Get();
+            EntriesTree = entriesProxy.Get();
+        }
+
         private void FilterEntriesTree()
         {
-            EntriesTreeFiltered = new ObservableCollection<Entry>(entriesTree.Where(e => ItemsFilter.Filter(e) || e.Children != null && e.Children.Any(ech => ItemsFilter.Filter(ech))));
+            EntriesTreeFiltered = new ObservableCollection<EntryVM>(entriesTree.Where(e => ItemsFilter.Filter(e) || e.Children != null && e.Children.Any(ech => ItemsFilter.Filter(ech))));
         }
     }
 }

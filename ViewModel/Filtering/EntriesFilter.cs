@@ -31,13 +31,13 @@ namespace ViewModel
             IsCopmlete.Changed += () => CriteriasChanged?.Invoke();
         }
 
-        public bool Filter(Entry entry)
+        public bool Filter(EntryVM entryVM)
         {
-            return OccurDateTime.Include(entry.OccurDateTime)
-                && PositionName.ContainsIn(entry.Position.Name)
-                && ReasonId.EqualTo(entry.ReasonId)
-                && Title.ContainsIn(entry.Title)
-                && IsCopmlete.EqualTo(entry.ParentId == null ? entry.IsComplete : entry.Parent.IsComplete);
+            return OccurDateTime.Include(entryVM.OccurDateTime)
+                && PositionName.ContainsIn(entryVM.Position.Name)
+                && ReasonId.EqualTo(entryVM.ReasonId)
+                && Title.ContainsIn(entryVM.Title)
+                && IsCopmlete.EqualTo(entryVM.ParentId == null ? entryVM.IsComplete : entryVM.Parent.IsComplete);
         }
     }
 }

@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:EMA"
         mc:Ignorable="d"
         Title="Catalog" 
-        SizeToContent="WidthAndHeight" 
+        SizeToContent="Width" 
+        Height="800" 
         WindowStartupLocation="CenterOwner">
 
     <Window.Resources>
@@ -16,9 +17,13 @@
         </Style>
     </Window.Resources>
 
-    <StackPanel Margin="10">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
             <Button Content="Add"
                     Command="{Binding AddItemRequestCommand}"/>
             <Button Content="Edit"
@@ -27,7 +32,8 @@
                     Command="{Binding DeleteItemRequestCommand}"/>
         </StackPanel>
 
-        <ListView ItemsSource="{Binding Items}" 
+        <ListView Grid.Row="1"
+                  ItemsSource="{Binding Items}" 
                   SelectedItem="{Binding SelectedItem}">
             <ListView.View>
                 <GridView>
@@ -58,6 +64,6 @@
             </ListView.View>
         </ListView>
 
-    </StackPanel>
+    </Grid>
 
 </Window>

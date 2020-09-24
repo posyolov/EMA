@@ -10,27 +10,23 @@ namespace EMA
     /// </summary>
     public partial class App : Application
     {
-        VendorsManager vendorsManager;
-        CatalogManager catalogManager;
-        PositionsManager positionsManager;
-        EntryReasonsManager entryReasonsManager;
-        EntryContinuationCriteriaManager entryContinuationCriteriaManager;
-        EntriesManager entriesManager;
+        private readonly VendorsProxy vendorsProxy = new VendorsProxy();
+        private readonly CatalogProxy catalogProxy = new CatalogProxy();
+        private readonly PositionsProxy positionsProxy = new PositionsProxy();
+        private readonly EntriesProxy entriesProxy = new EntriesProxy();
 
-        EntitiyWindowsCreator<Vendor, VendorVM, VendorEditWindow, VendorsWindow> vendorsWindowsCreator;
-        EntitiyWindowsCreator<CatalogItem, CatalogItemVM, CatalogItemEditWindow, CatalogWindow> catalogWindowsCreator;
-        EntitiyWindowsCreator<Position, PositionVM, PositionEditWindow, PositionsListWindow> positionsWindowsCreator;
-        EntitiyWindowsCreator<Entry, EntryVM, EntryEditWindow, EntriesListWindow> entriesWindowsCreator;
+        private EntitiyWindowsCreator<VendorVM, VendorEditWindow, VendorsWindow> vendorsWindowsCreator;
+        private EntitiyWindowsCreator<CatalogItemVM, CatalogItemEditWindow, CatalogWindow> catalogWindowsCreator;
+        private EntitiyWindowsCreator<PositionVM, PositionEditWindow, PositionsListWindow> positionsWindowsCreator;
+        private EntitiyWindowsCreator<EntryVM, EntryEditWindow, EntriesListWindow> entriesWindowsCreator;
 
-        MainVM mainVM;
-        MainWindow mainWindow;
+        private MainVM mainVM;
+        private MainWindow mainWindow;
 
         private void OnStartup(object sender, StartupEventArgs e)
         {
             mainVM = new MainVM();
             mainWindow = new MainWindow();
-
-            ConfigureEntitiesManagers();
 
             ConfigureEntityWindowsCreators();
 
@@ -40,22 +36,12 @@ namespace EMA
             mainWindow.Show();
         }
 
-        private void ConfigureEntitiesManagers()
-        {
-            vendorsManager = new VendorsManager();
-            catalogManager = new CatalogManager(vendorsManager);
-            positionsManager = new PositionsManager(catalogManager);
-            entryReasonsManager = new EntryReasonsManager();
-            entryContinuationCriteriaManager = new EntryContinuationCriteriaManager();
-            entriesManager = new EntriesManager(positionsManager, entryReasonsManager, entryContinuationCriteriaManager);
-        }
-
         private void ConfigureEntityWindowsCreators()
         {
-            vendorsWindowsCreator = new EntitiyWindowsCreator<Vendor, VendorVM, VendorEditWindow, VendorsWindow>(vendorsManager, mainWindow);
-            catalogWindowsCreator = new EntitiyWindowsCreator<CatalogItem, CatalogItemVM, CatalogItemEditWindow, CatalogWindow>(catalogManager, mainWindow);
-            positionsWindowsCreator = new EntitiyWindowsCreator<Position, PositionVM, PositionEditWindow, PositionsListWindow>(positionsManager, mainWindow);
-            entriesWindowsCreator = new EntitiyWindowsCreator<Entry, EntryVM, EntryEditWindow, EntriesListWindow>(entriesManager, mainWindow);
+            vendorsWindowsCreator = new EntitiyWindowsCreator<VendorVM, VendorEditWindow, VendorsWindow>(vendorsProxy, mainWindow);
+            catalogWindowsCreator = new EntitiyWindowsCreator<CatalogItemVM, CatalogItemEditWindow, CatalogWindow>(catalogProxy, mainWindow);
+            positionsWindowsCreator = new EntitiyWindowsCreator<PositionVM, PositionEditWindow, PositionsListWindow>(positionsProxy, mainWindow);
+            entriesWindowsCreator = new EntitiyWindowsCreator<EntryVM, EntryEditWindow, EntriesListWindow>(entriesProxy, mainWindow);
         }
 
         private void ConfigureMainVM()
@@ -66,13 +52,13 @@ namespace EMA
             mainVM.MainMenuVM.ShowPositionsRequest += positionsWindowsCreator.ShowEntitiesListWindow;
             mainVM.MainMenuVM.ShowEntriesRequest += entriesWindowsCreator.ShowEntitiesListWindow;
 
-            mainVM.PositionsTreeVM = new PositionsTreeVM(positionsManager);
+            mainVM.PositionsTreeVM = new PositionsTreeVM(positionsProxy);
             mainVM.PositionsTreeVM.ShowAddEntryByPositionRequest += entriesWindowsCreator.ShowEntityAddDialog;
             mainVM.PositionsTreeVM.ShowAddChildPositionRequest += positionsWindowsCreator.ShowEntityAddDialog;
             mainVM.PositionsTreeVM.ShowEditPositionRequest += positionsWindowsCreator.ShowEntityEditDialog;
             mainVM.PositionsTreeVM.ShowDeletePositionRequest += positionsWindowsCreator.ShowEntityDeleteDialog;
 
-            mainVM.EntriesTreeVM = new EntriesTreeVM(entriesManager);
+            mainVM.EntriesTreeVM = new EntriesTreeVM(entriesProxy);
             mainVM.EntriesTreeVM.ShowAddEntryRequest += entriesWindowsCreator.ShowEntityAddDialog;
             mainVM.EntriesTreeVM.ShowAddChildEntryRequest += entriesWindowsCreator.ShowEntityAddDialog;
             mainVM.EntriesTreeVM.ShowEditEntryRequest += entriesWindowsCreator.ShowEntityEditDialog;

@@ -1,20 +1,14 @@
 ﻿using Repository;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace ViewModel
 {
-    public class EntryVM : IEntityVM<Entry>
+    public class EntryVM
     {
-        public bool IsValid
-        {
-            get
-            {
-                return true;
-            }
-        }
-
+        public int Id { get; set; }
         public int? ParentId { get; set; }
         public bool IsComplete { get; set; }
         public DateTime OccurDateTime { get; set; }
@@ -28,26 +22,18 @@ namespace ViewModel
         public float? EstimatedResources { get; set; }
         public DateTime ChangeDateTime { get; set; }
         public int ChangeUserId { get; set; }
-        public virtual List<EntryUser> AssignedUsers { get; set; }
 
-        public void ToViewModel(Entry model)
-        {
-            ParentId = model.ParentId;
-            IsComplete = model.IsComplete;
-            OccurDateTime = model.OccurDateTime != default ? model.OccurDateTime : DateTime.Now;
-            Title = model.Title;
-            Description = model.Description;
-            PositionId = model.PositionId;
-            ReasonId = model.ReasonId;
-            ContinuationCriteriaId = model.ContinuationCriteriaId;
-            Priority = model.Priority;
-            PlannedStartDate = model.PlannedStartDate;
-            EstimatedResources = model.EstimatedResources;
-            AssignedUsers = model.AssignedUsers.ToList();
-        }
+        public EntryVM Parent { get; set; }
+        public virtual ObservableCollection<EntryVM> Children { get; set; }
+        public virtual PositionVM Position { get; set; }
+        //public virtual EntryReason Reason { get; set; }
+        //public virtual EntryContinuationCriteria ContinuationCriteria { get; set; }
+        //public virtual User ChangeUser { get; set; }
+        //public virtual ICollection<EntryUser> AssignedUsers { get; set; }
 
-        public void ToModel(Entry model)
+        public Entry FillModel(Entry model)
         {
+            model.Id = Id;
             model.ParentId = ParentId;
             model.IsComplete = IsComplete;
             model.OccurDateTime = OccurDateTime;
@@ -62,6 +48,8 @@ namespace ViewModel
 
             model.ChangeDateTime = DateTime.Now;
             model.ChangeUserId = 2; //GetCurrentUser;
+
+            return model;
         }
     }
 }

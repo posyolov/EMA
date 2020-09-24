@@ -1,27 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ViewModel
 {
-    public class EntityDeleteVM<TEntity> : DialogVM
+    public class EntityDeleteVM<TEntityVM> : DialogVM
     {
-        private readonly Func<TEntity, bool> executeDelegate;
+        private readonly Func<TEntityVM, bool> executeDelegate;
         private readonly Action closeDialogDelegate;
 
-        public TEntity Entity { get; }
+        public TEntityVM EntityViewModel { get; }
 
-        public EntityDeleteVM(TEntity entity, Func<TEntity, bool> executeDelegate, Action closeDialogDelegate)
+        public EntityDeleteVM(TEntityVM entityVM, Func<TEntityVM, bool> executeDelegate, Action closeDialogDelegate)
         {
-            Entity = entity;
+            EntityViewModel = entityVM;
             this.executeDelegate = executeDelegate;
             this.closeDialogDelegate = closeDialogDelegate;
         }
 
         protected override void OnOk()
         {
-            if (executeDelegate(Entity))
-                closeDialogDelegate();
+            //if (executeDelegate(EntityViewModel.ToModel()))
+            //    closeDialogDelegate();
         }
     }
 }

@@ -1,27 +1,26 @@
 ﻿using Model;
-using Repository;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace ViewModel
 {
     public class PositionsTreeVM : NotifyViewModel
     {
-        private ObservableCollection<Position> positions;
-        private Position selectedItem;
+        private ObservableCollection<PositionVM> positions;
+        private PositionVM selectedItem;
+        private readonly PositionsProxy positionProxy;
 
-        public event Action<Entry> ShowAddEntryByPositionRequest;
-        public event Action<Position> ShowAddChildPositionRequest;
-        public event Action<Position> ShowEditPositionRequest;
-        public event Action<Position> ShowDeletePositionRequest;
+        public event Action<EntryVM> ShowAddEntryByPositionRequest;
+        public event Action<PositionVM> ShowAddChildPositionRequest;
+        public event Action<PositionVM> ShowEditPositionRequest;
+        public event Action<PositionVM> ShowDeletePositionRequest;
 
-        public DelegateCommand<object> ShowAddEntryByPositionCommand { get; }
-        public DelegateCommand<object> ShowAddChildPositionCommand { get; }
-        public DelegateCommand<object> ShowEditPositionCommand { get; }
-        public DelegateCommand<object> ShowDeletePositionCommand { get; }
+        public DelegateCommand<EntryVM> ShowAddEntryByPositionCommand { get; }
+        public DelegateCommand<PositionVM> ShowAddChildPositionCommand { get; }
+        public DelegateCommand<PositionVM> ShowEditPositionCommand { get; }
+        public DelegateCommand<PositionVM> ShowDeletePositionCommand { get; }
 
-        public ObservableCollection<Position> Positions
+        public ObservableCollection<PositionVM> Positions
         {
             get
             {
@@ -34,7 +33,7 @@ namespace ViewModel
             }
         }
 
-        public Position SelectedItem
+        public PositionVM SelectedItem
         {
             get => selectedItem;
             set
@@ -48,27 +47,33 @@ namespace ViewModel
             }
         }
 
-        public PositionsTreeVM(PositionsManager positionManager)
+        public PositionsTreeVM(PositionsProxy positionProxy)
         {
-            Positions = new ObservableCollection<Position>(positionManager.GetPositionsTree());
+            this.positionProxy = positionProxy;
 
-            positionManager.EntitiesChanged += () => { Positions = new ObservableCollection<Position>(positionManager.GetPositionsTree()); };
+            positionProxy.EntitiesChanged += UpdatePositions;
+            UpdatePositions();
 
-            ShowAddEntryByPositionCommand = new DelegateCommand<object>(
+            ShowAddEntryByPositionCommand = new DelegateCommand<EntryVM>(
                 canExecute: (obj) => SelectedItem != null,
-                execute: (obj) => ShowAddEntryByPositionRequest?.Invoke(new Entry { PositionId = selectedItem.Id }));
+                execute: (obj) => ShowAddEntryByPositionRequest?.Invoke(new EntryVM() { PositionId = selectedItem.Id }));
 
-            ShowAddChildPositionCommand = new DelegateCommand<object>(
+            ShowAddChildPositionCommand = new DelegateCommand<PositionVM>(
                 canExecute: (obj) => SelectedItem != null,
-                execute: (obj) => ShowAddChildPositionRequest?.Invoke(new Position() { ParentId = selectedItem.Id, Name = selectedItem.Name}));
+                execute: (obj) => ShowAddChildPositionRequest?.Invoke(new PositionVM() { ParentId = selectedItem.Id, Name = selectedItem.Name}));
 
-            ShowEditPositionCommand = new DelegateCommand<object>(
+            ShowEditPositionCommand = new DelegateCommand<PositionVM>(
                 canExecute: (obj) => SelectedItem != null,
                 execute: (obj) => ShowEditPositionRequest?.Invoke(selectedItem));
 
-            ShowDeletePositionCommand = new DelegateCommand<object>(
+            ShowDeletePositionCommand = new DelegateCommand<PositionVM>(
                 canExecute: (obj) => SelectedItem != null,
                 execute: (obj) => ShowDeletePositionRequest?.Invoke(selectedItem));
+        }
+
+        private void UpdatePositions()
+        {
+            Positions = positionProxy.Get();
         }
     }
 }

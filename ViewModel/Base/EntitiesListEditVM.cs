@@ -1,24 +1,24 @@
 ﻿using Model;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace ViewModel
 {
-    public class EntitiesListEditVM<TEntity> : NotifyViewModel where TEntity : class, new()
+    public class EntitiesListEditVM<TEntityVM> : NotifyViewModel where TEntityVM : class, new()
     {
-        public event Action<TEntity> AddItemRequest;
-        public event Action<TEntity> EditItemRequest;
-        public event Action<TEntity> DeleteItemRequest;
+        public event Action<TEntityVM> AddItemRequest;
+        public event Action<TEntityVM> EditItemRequest;
+        public event Action<TEntityVM> DeleteItemRequest;
 
-        public DelegateCommand<object> AddItemRequestCommand { get; }
-        public DelegateCommand<object> EditItemRequestCommand { get; }
-        public DelegateCommand<object> DeleteItemRequestCommand { get; }
+        public DelegateCommand<TEntityVM> AddItemRequestCommand { get; }
+        public DelegateCommand<TEntityVM> EditItemRequestCommand { get; }
+        public DelegateCommand<TEntityVM> DeleteItemRequestCommand { get; }
 
-        private TEntity selectedItem;
-        private ObservableCollection<TEntity> items;
+        private ObservableCollection<TEntityVM> items;
+        private TEntityVM selectedItem;
+        private readonly IEntityProxy<TEntityVM> entityProxy;
 
-        public ObservableCollection<TEntity> Items
+        public ObservableCollection<TEntityVM> Items
         {
             get
             {
@@ -31,7 +31,7 @@ namespace ViewModel
             }
         }
 
-        public TEntity SelectedItem
+        public TEntityVM SelectedItem
         {
             get => selectedItem;
             set
@@ -42,23 +42,28 @@ namespace ViewModel
             }
         }
 
-
-        public EntitiesListEditVM(IEntityManager<TEntity> entityManager)
+        public EntitiesListEditVM(IEntityProxy<TEntityVM> entityProxy)
         {
-            Items = new ObservableCollection<TEntity>(entityManager.Get());
+            this.entityProxy = entityProxy;
+            this.entityProxy.EntitiesChanged += UpdateEntitiesList;
 
-            entityManager.EntitiesChanged += () => { Items = new ObservableCollection<TEntity>(entityManager.Get()); };
+            UpdateEntitiesList();
 
-            AddItemRequestCommand = new DelegateCommand<object>(
-                (obj) => AddItemRequest?.Invoke(new TEntity()));
+            AddItemRequestCommand = new DelegateCommand<TEntityVM>(
+                (obj) => AddItemRequest?.Invoke(new TEntityVM()));
 
-            EditItemRequestCommand = new DelegateCommand<object>(
+            EditItemRequestCommand = new DelegateCommand<TEntityVM>(
                 canExecute: (obj) => SelectedItem != null,
                 execute: (obj) => EditItemRequest?.Invoke(selectedItem));
 
-            DeleteItemRequestCommand = new DelegateCommand<object>(
+            DeleteItemRequestCommand = new DelegateCommand<TEntityVM>(
                 canExecute: (obj) => SelectedItem != null,
                 execute: (obj) => DeleteItemRequest?.Invoke(selectedItem));
+        }
+
+        private void UpdateEntitiesList()
+        {
+            Items = entityProxy.Get();
         }
     }
 }
