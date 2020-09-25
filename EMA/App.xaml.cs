@@ -10,10 +10,12 @@ namespace EMA
     /// </summary>
     public partial class App : Application
     {
-        private readonly VendorsProxy vendorsProxy = new VendorsProxy();
-        private readonly CatalogProxy catalogProxy = new CatalogProxy();
-        private readonly PositionsProxy positionsProxy = new PositionsProxy();
-        private readonly EntriesProxy entriesProxy = new EntriesProxy();
+        private readonly EntitiesMapper entitiesMapper = new EntitiesMapper();
+
+        private VendorsProxy vendorsProxy;
+        private CatalogProxy catalogProxy;
+        private PositionsProxy positionsProxy;
+        private EntriesProxy entriesProxy;
 
         private EntitiyWindowsCreator<VendorVM, VendorEditWindow, VendorsWindow> vendorsWindowsCreator;
         private EntitiyWindowsCreator<CatalogItemVM, CatalogItemEditWindow, CatalogWindow> catalogWindowsCreator;
@@ -25,6 +27,11 @@ namespace EMA
 
         private void OnStartup(object sender, StartupEventArgs e)
         {
+            vendorsProxy = new VendorsProxy(entitiesMapper);
+            catalogProxy = new CatalogProxy(entitiesMapper);
+            positionsProxy = new PositionsProxy(entitiesMapper);
+            entriesProxy = new EntriesProxy(entitiesMapper);
+
             mainVM = new MainVM();
             mainWindow = new MainWindow();
 

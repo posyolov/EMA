@@ -4,9 +4,9 @@ using System.Reflection.Metadata.Ecma335;
 
 namespace ViewModel
 {
-    public static class ViewModelMapper
+    public class EntitiesMapper
     {
-        static public VendorVM ToViewModel(Vendor model)
+        public VendorVM ToViewModel(Vendor model)
         {
             if (model is null)
                 return null;
@@ -19,7 +19,7 @@ namespace ViewModel
             return vm;
         }
 
-        static public CatalogItemVM ToViewModel(CatalogItem model)
+        public CatalogItemVM ToViewModel(CatalogItem model)
         {
             if (model is null)
                 return null;
@@ -36,7 +36,7 @@ namespace ViewModel
             return vm;
         }
 
-        static public PositionVM ToViewModel(Position model)
+        public PositionVM ToViewModel(Position model)
         {
             if (model is null)
                 return null;
@@ -61,7 +61,7 @@ namespace ViewModel
             return vm;
         }
 
-        static public EntryVM ToViewModel(Entry model)
+        public EntryVM ToViewModel(Entry model)
         {
             if (model is null)
                 return null;

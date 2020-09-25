@@ -9,15 +9,21 @@ namespace ViewModel
     public class PositionsProxy : IEntityProxy<PositionVM>
     {
         private readonly IRepository<Position> repository = new RepositoryEF<Position>();
+        private readonly EntitiesMapper entitiesMapper;
 
         public event Action EntitiesChanged;
+
+        public PositionsProxy(EntitiesMapper entitiesMapper)
+        {
+            this.entitiesMapper = entitiesMapper;
+        }
 
         public ObservableCollection<PositionVM> Get()
         {
             var entities = repository.GetWithInclude(p => p.Parent, c => c.CatalogItem, v => v.CatalogItem.Vendor).OrderBy(n => n.Name);
             var entitiesVM = new ObservableCollection<PositionVM>();
             foreach (var item in entities)
-                entitiesVM.Add(ViewModelMapper.ToViewModel(item));
+                entitiesVM.Add(entitiesMapper.ToViewModel(item));
             return entitiesVM;
         }
 
