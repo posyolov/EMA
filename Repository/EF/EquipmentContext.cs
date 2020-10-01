@@ -19,7 +19,8 @@ namespace Repository.EF
             optionsBuilder
                 .UseLoggerFactory(MyLoggerFactory)
                 //.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=EmaDb;AttachDbFilename='C:\Temp\Projects\DB\EMA\EmaDb.mdf';Trusted_Connection=True;");
-                .UseSqlServer(@"Data Source=DESKTOP-6ALK028\SQLEXPRESS;Initial Catalog=EmaDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+                //.UseSqlServer(@"Data Source=DESKTOP-6ALK028\SQLEXPRESS;Initial Catalog=EmaDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+                .UseSqlServer(@"Data Source=DESKTOP-TAQL9JS;Initial Catalog=EmaDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
         }
 
         public DbSet<Vendor> Vendors { get; set; }
