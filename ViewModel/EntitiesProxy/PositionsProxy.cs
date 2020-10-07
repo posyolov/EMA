@@ -12,77 +12,103 @@ namespace ViewModel
 
         public event Action EntitiesChanged;
 
-        public ObservableCollection<PositionShortDataVM> GetPositionsTree()
+        public ObservableCollection<PositionFullData> GetPositionsList()
+        {
+            var entities = repository.Get();
+            var entitiesVM = new ObservableCollection<PositionFullData>();
+            foreach (var item in entities)
+                entitiesVM.Add(MakeFullData(item));
+            return entitiesVM;
+        }
+
+        public ObservableCollection<PositionShortData> GetPositionsTree()
         {
             var entities = repository.GetWithInclude(c => c.Children);
-            var entitiesVM = new ObservableCollection<PositionShortDataVM>();
+            var entitiesVM = new ObservableCollection<PositionShortData>();
             foreach (var item in entities)
             {
                 if (item.ParentId == null)
-                    entitiesVM.Add(MakeShortDataVM(item));
+                    entitiesVM.Add(MakeShortData(item));
             }
             return entitiesVM;
         }
 
-        public PositionInfoVM GetPositionInfoVM(int? id)
+        public PositionShortData GetPositionShortData(int? id)
         {
             if (id is null)
                 return null;
 
             var position = repository.FindById((int)id);
-            return MakeInfoVM(position);
+            return MakeShortData(position);
         }
 
-        public PositionEditVM GetPositionEditVM(int? id)
+        public PositionInfo GetPositionInfo(int? id)
         {
             if (id is null)
                 return null;
 
             var position = repository.FindById((int)id);
-            return MakeEditVM(position);
+            return MakeInfo(position);
         }
 
+        public PositionEdit GetPositionEdit(int? id)
+        {
+            if (id is null)
+                return null;
 
-        public bool Add(PositionEditVM entity)
+            var position = repository.FindById((int)id);
+            return MakeEdit(position);
+        }
+
+        public PositionFullData GetPositionFullData(int? id)
+        {
+            if (id is null)
+                return null;
+
+            var position = repository.FindById((int)id);
+            return MakeFullData(position);
+        }
+
+        public bool Add(PositionEdit entity)
         {
             EntitiesChanged?.Invoke();
             throw new NotImplementedException();
         }
 
-        public bool Update(PositionEditVM entity)
+        public bool Update(PositionEdit entity)
         {
             EntitiesChanged?.Invoke();
             throw new NotImplementedException();
         }
 
-        public bool Delete(int entityId)
+        public bool Delete(PositionEdit entityId)
         {
             EntitiesChanged?.Invoke();
             throw new NotImplementedException();
         }
 
-        private PositionShortDataVM MakeShortDataVM(Position position)
+        private PositionShortData MakeShortData(Position position)
         {
-            PositionShortDataVM vm = new PositionShortDataVM
+            PositionShortData vm = new PositionShortData
             {
                 Id = position.Id,
                 Name = position.Name,
                 Title = position.Title
             };
 
-            if(position.Children != null)
+            if (position.Children != null)
             {
-                vm.Children = new ObservableCollection<PositionShortDataVM>();
+                vm.Children = new ObservableCollection<PositionShortData>();
                 foreach (var child in position.Children)
-                    vm.Children.Add(MakeShortDataVM(child));
+                    vm.Children.Add(MakeShortData(child));
             }
 
             return vm;
         }
 
-        private PositionInfoVM MakeInfoVM(Position position)
+        private PositionInfo MakeInfo(Position position)
         {
-            PositionInfoVM vm = new PositionInfoVM
+            PositionInfo vm = new PositionInfo
             {
                 Id = position.Id,
                 Name = position.Name,
@@ -93,9 +119,9 @@ namespace ViewModel
             return vm;
         }
 
-        private PositionEditVM MakeEditVM(Position position)
+        private PositionEdit MakeEdit(Position position)
         {
-            PositionEditVM vm = new PositionEditVM
+            PositionEdit vm = new PositionEdit
             {
                 Id = position.Id,
                 Name = position.Name,
@@ -106,5 +132,18 @@ namespace ViewModel
             return vm;
         }
 
+        private PositionFullData MakeFullData(Position position)
+        {
+            PositionFullData vm = new PositionFullData
+            {
+                Id = position.Id,
+                ParentId = position.ParentId,
+                Name = position.Name,
+                Title = position.Title,
+                CatalogItemId = position.CatalogItemId
+            };
+
+            return vm;
+        }
     }
 }

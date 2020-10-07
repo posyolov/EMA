@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ViewModel
 {
-    public class PositionEditVM
+    public class PositionEdit
     {
         public int Id { get; set; }
         public int? ParentId { get; set; }

@@ -6,9 +6,9 @@ namespace ViewModel
 {
     public class PositionsTreeVM : NotifyViewModel
     {
-        private ObservableCollection<PositionShortDataVM> positionsTree;
+        private ObservableCollection<PositionShortData> positionsTree;
         private int? selectedItemId;
-        private PositionInfoVM selectedItemInfo;
+        private PositionInfo selectedItemInfo;
         private readonly PositionsProxy positionProxy;
 
         public event Action<int?> ShowAddEntryByPositionRequest;

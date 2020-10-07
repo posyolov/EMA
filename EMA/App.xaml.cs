@@ -12,14 +12,9 @@ namespace EMA
     {
         private readonly EntitiesMapper entitiesMapper = new EntitiesMapper();
 
-        private VendorsProxy vendorsProxy;
-        private CatalogProxy catalogProxy;
-        private PositionsProxy positionsProxy;
-        private EntriesProxy entriesProxy;
-
         private PositionCrudWindowsCreator<VendorVM, VendorEditWindow, VendorsWindow> vendorsWindowsCreator;
         private PositionCrudWindowsCreator<CatalogItemVM, CatalogItemEditWindow, CatalogWindow> catalogWindowsCreator;
-        private PositionCrudWindowsCreator<PositionEditVM, PositionEditWindow, PositionsListWindow> positionsWindowsCreator;
+        private PositionCrudWindowsCreator positionsWindowsCreator = new PositionCrudWindowsCreator();
         private PositionCrudWindowsCreator<EntryVM, EntryEditWindow, EntriesListWindow> entriesWindowsCreator;
 
         private MainVM mainVM;
@@ -27,28 +22,13 @@ namespace EMA
 
         private void OnStartup(object sender, StartupEventArgs e)
         {
-            vendorsProxy = new VendorsProxy(entitiesMapper);
-            catalogProxy = new CatalogProxy(entitiesMapper);
-            positionsProxy = new PositionsProxy(entitiesMapper);
-            entriesProxy = new EntriesProxy(entitiesMapper);
-
             mainVM = new MainVM();
             mainWindow = new MainWindow();
-
-            ConfigureCrudWindowsCreators();
 
             ConfigureMainVM();
 
             mainWindow.DataContext = mainVM;
             mainWindow.Show();
-        }
-
-        private void ConfigureCrudWindowsCreators()
-        {
-            vendorsWindowsCreator = new PositionCrudWindowsCreator<VendorVM, VendorEditWindow, VendorsWindow>(vendorsProxy);
-            catalogWindowsCreator = new PositionCrudWindowsCreator<CatalogItemVM, CatalogItemEditWindow, CatalogWindow>(catalogProxy);
-            positionsWindowsCreator = new PositionCrudWindowsCreator<PositionEditVM, PositionEditWindow, PositionsListWindow>(positionsProxy);
-            entriesWindowsCreator = new PositionCrudWindowsCreator<EntryVM, EntryEditWindow, EntriesListWindow>(entriesProxy);
         }
 
         private void ConfigureMainVM()

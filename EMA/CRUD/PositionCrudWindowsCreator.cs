@@ -11,32 +11,32 @@ namespace EMA
 
         public Window CreateEntitiesListWindow()
         {
-            var vm = new EntitiesListEditVM<TEntityVM>(entityProxy);
-            vm.AddItemRequest += CreateEntityAddWindow;
-            vm.EditItemRequest += CreateEntityEditWindow;
-            vm.DeleteItemRequest += CreateEntityDeleteWindow;
-            var win = new TEntitiesListV { DataContext = vm };
+            var vm = new EntitiesListEditVM<PositionFullData>(entityProxy.GetPositionsList());
+            vm.AddItemRequest += () => CreateEntityAddWindow();
+            vm.EditItemRequest += (id) => CreateEntityEditWindow(id);
+            vm.DeleteItemRequest += (id) => CreateEntityDeleteWindow(id);
+            var win = new PositionsListWindow { DataContext = vm };
             return win;
         }
 
-        public Window CreateEntityAddWindow(int entityId)
+        public Window CreateEntityAddWindow()
         {
             var win = new PositionEditWindow();
-            win.DataContext = new EntityEditVM<PositionEditVM>(entityProxy.GetPositionEditVM, entityProxy.Add, win.Close);
+            win.DataContext = new EntityEditVM<PositionEdit>(new PositionEdit(), entityProxy.Add, win.Close);
             return win;
         }
 
         public Window CreateEntityEditWindow(int entityId)
         {
-            var win = new TEntityV();
-            win.DataContext = new EntityEditVM<TEntityVM>(entityVM, entityProxy.Update, win.Close);
+            var win = new PositionEditWindow();
+            win.DataContext = new EntityEditVM<PositionEdit>(entityProxy.GetPositionEdit(entityId), entityProxy.Update, win.Close);
             return win;
         }
 
         public Window CreateEntityDeleteWindow(int entityId)
         {
             var win = new EntityDeleteWindow();
-            win.DataContext = new EntityDeleteVM<TEntityVM>(entityVM, entityProxy.Delete, win.Close);
+            win.DataContext = new EntityDeleteVM<PositionEdit>(entityProxy.GetPositionEdit(entityId), entityProxy.Delete, win.Close);
             return win;
         }
     }
