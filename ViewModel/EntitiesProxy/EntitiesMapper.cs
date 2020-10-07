@@ -36,20 +36,20 @@ namespace ViewModel
             return vm;
         }
 
-        public PositionVM ToViewModel(Position model)
+        public PositionShortDataVM ToViewModel(Position model)
         {
             if (model is null)
                 return null;
 
-            var vm = new PositionVM
+            var vm = new PositionShortDataVM
             {
                 Id = model.Id,
-                ParentId = model.ParentId,
+                //ParentId = model.ParentId,
                 Name = model.Name,
                 Title = model.Title,
-                CatalogItemId = model.CatalogItemId,
-                Parent = ToViewModel(model.Parent),
-                CatalogItem = ToViewModel(model.CatalogItem)
+                //CatalogItemId = model.CatalogItemId,
+                //Parent = ToViewModel(model.Parent),
+                //CatalogItem = ToViewModel(model.CatalogItem)
             };
             //        if (model.Children != null)
             //{

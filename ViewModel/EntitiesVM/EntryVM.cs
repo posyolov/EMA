@@ -25,7 +25,7 @@ namespace ViewModel
 
         public EntryVM Parent { get; set; }
         public virtual ObservableCollection<EntryVM> Children { get; set; }
-        public virtual PositionVM Position { get; set; }
+        public virtual PositionShortDataVM Position { get; set; }
         //public virtual EntryReason Reason { get; set; }
         //public virtual EntryContinuationCriteria ContinuationCriteria { get; set; }
         //public virtual User ChangeUser { get; set; }

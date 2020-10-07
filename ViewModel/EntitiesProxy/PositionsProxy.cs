@@ -6,43 +6,105 @@ using System.Linq;
 
 namespace ViewModel
 {
-    public class PositionsProxy : IEntityProxy<PositionVM>
+    public class PositionsProxy
     {
         private readonly IRepository<Position> repository = new RepositoryEF<Position>();
-        private readonly EntitiesMapper entitiesMapper;
 
         public event Action EntitiesChanged;
 
-        public PositionsProxy(EntitiesMapper entitiesMapper)
+        public ObservableCollection<PositionShortDataVM> GetPositionsTree()
         {
-            this.entitiesMapper = entitiesMapper;
-        }
-
-        public ObservableCollection<PositionVM> Get()
-        {
-            var entities = repository.GetWithInclude(p => p.Parent, c => c.CatalogItem, v => v.CatalogItem.Vendor).OrderBy(n => n.Name);
-            var entitiesVM = new ObservableCollection<PositionVM>();
+            var entities = repository.GetWithInclude(c => c.Children);
+            var entitiesVM = new ObservableCollection<PositionShortDataVM>();
             foreach (var item in entities)
-                entitiesVM.Add(entitiesMapper.ToViewModel(item));
+            {
+                if (item.ParentId == null)
+                    entitiesVM.Add(MakeShortDataVM(item));
+            }
             return entitiesVM;
         }
 
-        public bool Add(PositionVM entity)
+        public PositionInfoVM GetPositionInfoVM(int? id)
+        {
+            if (id is null)
+                return null;
+
+            var position = repository.FindById((int)id);
+            return MakeInfoVM(position);
+        }
+
+        public PositionEditVM GetPositionEditVM(int? id)
+        {
+            if (id is null)
+                return null;
+
+            var position = repository.FindById((int)id);
+            return MakeEditVM(position);
+        }
+
+
+        public bool Add(PositionEditVM entity)
         {
             EntitiesChanged?.Invoke();
             throw new NotImplementedException();
         }
 
-        public bool Update(PositionVM entity)
+        public bool Update(PositionEditVM entity)
         {
             EntitiesChanged?.Invoke();
             throw new NotImplementedException();
         }
 
-        public bool Delete(PositionVM entity)
+        public bool Delete(int entityId)
         {
             EntitiesChanged?.Invoke();
             throw new NotImplementedException();
         }
+
+        private PositionShortDataVM MakeShortDataVM(Position position)
+        {
+            PositionShortDataVM vm = new PositionShortDataVM
+            {
+                Id = position.Id,
+                Name = position.Name,
+                Title = position.Title
+            };
+
+            if(position.Children != null)
+            {
+                vm.Children = new ObservableCollection<PositionShortDataVM>();
+                foreach (var child in position.Children)
+                    vm.Children.Add(MakeShortDataVM(child));
+            }
+
+            return vm;
+        }
+
+        private PositionInfoVM MakeInfoVM(Position position)
+        {
+            PositionInfoVM vm = new PositionInfoVM
+            {
+                Id = position.Id,
+                Name = position.Name,
+                Title = position.Title,
+                //CatalogItem = entitiesMapper.ToViewModel(position.CatalogItem)
+            };
+
+            return vm;
+        }
+
+        private PositionEditVM MakeEditVM(Position position)
+        {
+            PositionEditVM vm = new PositionEditVM
+            {
+                Id = position.Id,
+                Name = position.Name,
+                Title = position.Title,
+                CatalogItemId = position.CatalogItemId
+            };
+
+            return vm;
+        }
+
     }
 }
