@@ -17,10 +17,10 @@ namespace EMA
         private PositionsProxy positionsProxy;
         private EntriesProxy entriesProxy;
 
-        private EntitiyWindowsCreator<VendorVM, VendorEditWindow, VendorsWindow> vendorsWindowsCreator;
-        private EntitiyWindowsCreator<CatalogItemVM, CatalogItemEditWindow, CatalogWindow> catalogWindowsCreator;
-        private EntitiyWindowsCreator<PositionVM, PositionEditWindow, PositionsListWindow> positionsWindowsCreator;
-        private EntitiyWindowsCreator<EntryVM, EntryEditWindow, EntriesListWindow> entriesWindowsCreator;
+        private PositionCrudWindowsCreator<VendorVM, VendorEditWindow, VendorsWindow> vendorsWindowsCreator;
+        private PositionCrudWindowsCreator<CatalogItemVM, CatalogItemEditWindow, CatalogWindow> catalogWindowsCreator;
+        private PositionCrudWindowsCreator<PositionEditVM, PositionEditWindow, PositionsListWindow> positionsWindowsCreator;
+        private PositionCrudWindowsCreator<EntryVM, EntryEditWindow, EntriesListWindow> entriesWindowsCreator;
 
         private MainVM mainVM;
         private MainWindow mainWindow;
@@ -35,7 +35,7 @@ namespace EMA
             mainVM = new MainVM();
             mainWindow = new MainWindow();
 
-            ConfigureEntityWindowsCreators();
+            ConfigureCrudWindowsCreators();
 
             ConfigureMainVM();
 
@@ -43,21 +43,21 @@ namespace EMA
             mainWindow.Show();
         }
 
-        private void ConfigureEntityWindowsCreators()
+        private void ConfigureCrudWindowsCreators()
         {
-            vendorsWindowsCreator = new EntitiyWindowsCreator<VendorVM, VendorEditWindow, VendorsWindow>(vendorsProxy, mainWindow);
-            catalogWindowsCreator = new EntitiyWindowsCreator<CatalogItemVM, CatalogItemEditWindow, CatalogWindow>(catalogProxy, mainWindow);
-            positionsWindowsCreator = new EntitiyWindowsCreator<PositionVM, PositionEditWindow, PositionsListWindow>(positionsProxy, mainWindow);
-            entriesWindowsCreator = new EntitiyWindowsCreator<EntryVM, EntryEditWindow, EntriesListWindow>(entriesProxy, mainWindow);
+            vendorsWindowsCreator = new PositionCrudWindowsCreator<VendorVM, VendorEditWindow, VendorsWindow>(vendorsProxy);
+            catalogWindowsCreator = new PositionCrudWindowsCreator<CatalogItemVM, CatalogItemEditWindow, CatalogWindow>(catalogProxy);
+            positionsWindowsCreator = new PositionCrudWindowsCreator<PositionEditVM, PositionEditWindow, PositionsListWindow>(positionsProxy);
+            entriesWindowsCreator = new PositionCrudWindowsCreator<EntryVM, EntryEditWindow, EntriesListWindow>(entriesProxy);
         }
 
         private void ConfigureMainVM()
         {
             mainVM.MainMenuVM = new MainMenuVM();
-            mainVM.MainMenuVM.ShowVendorsRequest += vendorsWindowsCreator.ShowEntitiesListWindow;
-            mainVM.MainMenuVM.ShowCatalogRequest += catalogWindowsCreator.ShowEntitiesListWindow;
-            mainVM.MainMenuVM.ShowPositionsRequest += positionsWindowsCreator.ShowEntitiesListWindow;
-            mainVM.MainMenuVM.ShowEntriesRequest += entriesWindowsCreator.ShowEntitiesListWindow;
+            mainVM.MainMenuVM.ShowVendorsRequest += () => vendorsWindowsCreator.CreateEntitiesListWindow().Show();
+            mainVM.MainMenuVM.ShowCatalogRequest += () => catalogWindowsCreator.CreateEntitiesListWindow().Show();
+            mainVM.MainMenuVM.ShowPositionsRequest += () => positionsWindowsCreator.CreateEntitiesListWindow().Show();
+            mainVM.MainMenuVM.ShowEntriesRequest += () => entriesWindowsCreator.CreateEntitiesListWindow().Show();
 
             mainVM.PositionsTreeVM = new PositionsTreeVM(positionsProxy);
             mainVM.PositionsTreeVM.ShowAddEntryByPositionRequest += entriesWindowsCreator.ShowEntityAddDialog;
@@ -68,8 +68,8 @@ namespace EMA
             mainVM.EntriesTreeVM = new EntriesTreeVM(entriesProxy);
             mainVM.EntriesTreeVM.ShowAddEntryRequest += entriesWindowsCreator.ShowEntityAddDialog;
             mainVM.EntriesTreeVM.ShowAddChildEntryRequest += entriesWindowsCreator.ShowEntityAddDialog;
-            mainVM.EntriesTreeVM.ShowEditEntryRequest += entriesWindowsCreator.ShowEntityEditDialog;
-            mainVM.EntriesTreeVM.ShowDeleteEntryRequest += entriesWindowsCreator.ShowEntityDeleteDialog;
+            mainVM.EntriesTreeVM.ShowEditEntryRequest += entriesWindowsCreator.CreateEntityEditWindow;
+            mainVM.EntriesTreeVM.ShowDeleteEntryRequest += entriesWindowsCreator.CreateEntityDeleteWindow;
         }
 
     }
