@@ -14,7 +14,7 @@ namespace Repository
 
         public override string ToString()
         {
-            return Title;
+            return Vendor?.Name + " " + ProductCode;
         }
     }
 }

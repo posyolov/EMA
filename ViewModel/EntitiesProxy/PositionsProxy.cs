@@ -14,7 +14,7 @@ namespace ViewModel
 
         public ObservableCollection<PositionFullData> GetPositionsList()
         {
-            var entities = repository.Get();
+            var entities = repository.GetWithInclude(p => p.Parent, c => c.CatalogItem, v => v.CatalogItem.Vendor);
             var entitiesVM = new ObservableCollection<PositionFullData>();
             foreach (var item in entities)
                 entitiesVM.Add(MakeFullData(item));
@@ -137,10 +137,10 @@ namespace ViewModel
             PositionFullData vm = new PositionFullData
             {
                 Id = position.Id,
-                ParentId = position.ParentId,
                 Name = position.Name,
                 Title = position.Title,
-                CatalogItemId = position.CatalogItemId
+                ParentName = position.Parent?.ToString(),
+                CatalogItemName = position.CatalogItem?.ToString()
             };
 
             return vm;

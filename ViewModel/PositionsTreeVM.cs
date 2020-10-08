@@ -21,7 +21,7 @@ namespace ViewModel
         public DelegateCommand<int?> ShowEditPositionCommand { get; }
         public DelegateCommand<int?> ShowDeletePositionCommand { get; }
 
-        public ObservableCollection<PositionShortDataVM> PositionsTree
+        public ObservableCollection<PositionShortData> PositionsTree
         {
             get
             {
@@ -50,7 +50,7 @@ namespace ViewModel
             }
         }
 
-        public PositionInfoVM SelectedItemInfo
+        public PositionInfo SelectedItemInfo
         {
             get => selectedItemInfo;
             set

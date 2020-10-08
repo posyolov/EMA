@@ -36,12 +36,12 @@ namespace ViewModel
             return vm;
         }
 
-        public PositionShortDataVM ToViewModel(Position model)
+        public PositionShortData ToViewModel(Position model)
         {
             if (model is null)
                 return null;
 
-            var vm = new PositionShortDataVM
+            var vm = new PositionShortData
             {
                 Id = model.Id,
                 //ParentId = model.ParentId,
